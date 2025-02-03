@@ -8,3 +8,16 @@
 
   <%= button_to "Destroy this event", @event, method: :delete %>
 </div>
+
+<h2>Комментарии:</h2>
+<% @event.comments.each do |comment| %>
+  <div class="M_Comment">
+    <%= render comment %>
+    <p>
+      <%= link_to "Destroy Comment", [comment.event, comment], data: { turbo_stream: false, turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+    </p>
+  </div>
+<% end %>
+
+<h2>Добавить комментарий:</h2>
+<%= render "comments/form" %>

@@ -26,3 +26,13 @@ h1 {
     text-decoration: none;
     color: black;
 }
+
+.M_Comment {
+    display: block;
+    padding: 20px;
+    margin-bottom: 10px;
+    background-color: rgb(232, 232, 232);
+    border-radius: 20px;
+    text-decoration: none;
+    color: black;
+}
