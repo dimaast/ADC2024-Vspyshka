@@ -17,3 +17,12 @@
 h1 {
     color: red;
 }
+
+.M_EventCard {
+    display: block;
+    padding: 20px;
+    background-color: rgb(232, 232, 232);
+    border-radius: 20px;
+    text-decoration: none;
+    color: black;
+}
