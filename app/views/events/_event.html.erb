@@ -1,4 +1,5 @@
 <div id="<%= dom_id event %>">
   <h2><%= event.title %></h2>
+  <%= image_tag event.cover.url, class: 'A_EventCover' %>
   <p><%= event.body %></p>
 </div>

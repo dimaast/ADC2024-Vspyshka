@@ -4,11 +4,11 @@
 
 <h1>События</h1>
 
-<div id="events">
+<div id="C_Events">
   <% @events.each do |event| %>
     <%= link_to event_path(event), class: 'M_EventCard' do %>
+      <%= event.hosted_at.strftime("%d/%m/%Y") %>
       <%= render event %>
-      <p><%= event.created_at %></p>
     <% end %>
   <% end %>
 </div>

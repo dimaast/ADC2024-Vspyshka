@@ -14,10 +14,6 @@
  *= require_self
  */
 
-h1 {
-    color: red;
-}
-
 .M_EventCard {
     display: block;
     padding: 20px;
@@ -27,12 +23,26 @@ h1 {
     color: black;
 }
 
+.A_EventCover {
+    width: 50%;
+    height: 300px;
+    object-fit: cover;
+}
+
 .M_Comment {
     display: block;
+    width: 400px;
     padding: 20px;
     margin-bottom: 10px;
-    background-color: rgb(232, 232, 232);
+    background-color: rgb(243, 243, 243);
     border-radius: 20px;
     text-decoration: none;
     color: black;
+}
+
+#C_Events {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    row-gap: 20px;
 }

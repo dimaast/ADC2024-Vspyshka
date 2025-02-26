@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_03_152648) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_25_170735) do
   create_table "comments", force: :cascade do |t|
     t.text "body"
     t.integer "event_id", null: false
@@ -24,6 +24,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_03_152648) do
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "hosted_at", null: false
+    t.string "cover"
   end
 
   add_foreign_key "comments", "events"
