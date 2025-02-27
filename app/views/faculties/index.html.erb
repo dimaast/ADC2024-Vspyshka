@@ -1,0 +1,13 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Факультеты" %>
+
+<h1>Факультеты</h1>
+
+<div id="faculties">
+  <% @faculties.each do |faculty| %>
+    <h2><%= link_to faculty.name, faculty %></h2>
+  <% end %>
+</div>
+
+<%= link_to "New faculty", new_faculty_path %>

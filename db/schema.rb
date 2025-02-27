@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_25_170735) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_27_012743) do
   create_table "comments", force: :cascade do |t|
     t.text "body"
     t.integer "event_id", null: false
@@ -28,5 +28,20 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_170735) do
     t.string "cover"
   end
 
+  create_table "faculties", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "programs", force: :cascade do |t|
+    t.string "name"
+    t.integer "faculty_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["faculty_id"], name: "index_programs_on_faculty_id"
+  end
+
   add_foreign_key "comments", "events"
+  add_foreign_key "programs", "faculties"
 end

@@ -1,0 +1,15 @@
+<% content_for :title, @faculty.name %>
+
+<p style="color: green"><%= notice %></p>
+
+<h2><%= render @faculty %></h2>
+<% @faculty.programs.each do |program| %>
+  <h3><%= link_to program.name, program %></h3>
+<% end%>
+
+<div>
+  <%= link_to "Edit this faculty", edit_faculty_path(@faculty) %> |
+  <%= link_to "Back to faculties", faculties_path %>
+
+  <%= button_to "Destroy this faculty", @faculty, method: :delete %>
+</div>
