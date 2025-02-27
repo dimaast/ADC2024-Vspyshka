@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :communities
+  devise_for :users
   resources :programs
   resources :faculties
   resources :events do

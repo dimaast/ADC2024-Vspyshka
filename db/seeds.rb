@@ -24,7 +24,11 @@
 # <%= render faculty, faculty: faculty %>
 # <% end %>
 # если в views/layouts создать html.erb с названием модели, у нее будет свой лэйаут, в который можно вывести что-то свое. в контролере можно распределить лэйауты layout "application", only: %i[ show new edit create update destroy ]
-#
+# gem "devise" добавляем девайс для юзеров
+# rails generate devise:install
+# rails g devise Model
+# current_user.events ивенты только пользователя
+# def create @event = current_user.events.new(event_params) прикрепряет юзера к новому ивенту
 
 
 # Вводим текст
@@ -32,6 +36,59 @@
 
 # Убираем из текста лишние символы и down-кейсим слова
 @words = @raw_text.downcase.gsub(/[—.—,«»:()]/, '').gsub(/  /, ' ').split(' ')
+
+# Список сообществ
+@communities = [
+    {
+        title: 'Центр лидерства и волонтёрства',
+        user_id: 1,
+        cover: 'будет',
+        link: 'https://vk.com/hse_volunteers ',
+        body: 'Волонтёрский центр Вышки – это команда инициативных и неравнодушных студентов, выпускников и сотрудников университета. Мы помогаем с организацией самых крупных вышкинских проектов: развлекательных и научных. Участвуем в городских фестивалях и конференциях. А ещё помогаем старшему поколению онлайн изучать иностранные языки и школьникам из Москвы и регионов не отставать по школьным предметам.'
+    },
+    {
+        title: 'Студенческий совет НИУ ВШЭ',
+        user_id: 1,
+        cover: 'будет',
+        link: 'https://vk.com/hsecouncil',
+        body: 'Студсовет Вышки'
+    },
+    {
+        title: 'HSE Outreach',
+        user_id: 1,
+        cover: 'будет',
+        link: 'https://vk.com/hseoutreach',
+        body: 'HSE Outreach — старейшая и одна из крупнейших благотворительных организаций в Вышке.'
+    },
+    {
+        title: 'Экологический клуб “Зелёная Вышка”',
+        user_id: 1,
+        cover: 'будет',
+        link: 'https://vk.com/hsegreen',
+        body: 'Экологический клуб'
+    },
+    {
+        title: 'Спортивный клуб',
+        user_id: 1,
+        cover: 'будет',
+        link: 'https://vk.com/hsessc',
+        body: 'Спорт для нас — не только здоровый образ жизни. Это люди, традиции и гордость нашего университета.'
+    },
+    {
+        title: 'InsideOut',
+        user_id: 1,
+        cover: 'будет',
+        link: 'https://vk.com/insideout_hse',
+        body: 'InsideOut – студенческая организация, выворачивающая «наизнанку» стереотипы об однообразной жизни студентов факультета Мировой Экономики и Мировой Политики. '
+    },
+    {
+        title: 'Клуб вьетнамской культуры',
+        user_id: 1,
+        cover: 'будет',
+        link: 'https://vk.com/vietnamculturehse',
+        body: 'Xin chào! Мы – клуб вьетнамской культуры ВШЭ, сообщество энтузиастов, исследующих жизнь Вьетнама'
+    }
+]
 
 # Список факультетов
 @faculties = [
@@ -331,11 +388,11 @@
 # Функция очистки и наполнения бд через сиды
 def seed
   reset_db
-  create_events(10)
-  # create_users(10)
+  create_users(10)
+  create_events(20)
   create_faculties
   create_programs
-  # create_communities
+  create_communities
   # create_meets(10)
   create_comments(2..8)
 end
@@ -368,15 +425,39 @@ def upload_random_image
   uploader
 end
 
+# Функция создания пользователей
+def create_users(quantity)
+  i = 0
+
+  quantity.times do
+      user_data = {
+          email: "user_#{i}@email.com",
+          password: "testtest"
+        # username: "user#{i}"
+      }
+
+      # if i == 0
+      #   user_data[:role] = "admin"
+      #   user_data[:username] = "admin"
+      # end
+
+      user = User.create!(user_data)
+      puts "User created with id #{user.id}"
+      i += 1
+  end
+end
+
 # Функция создания ивентов (quantity раз)
 def create_events(quantity)
   quantity.times do |i|
-      event = Event.create(
-        title: "Ивент №#{i + 1}",
-        body: create_sentence,
-        cover: upload_random_image,
-        hosted_at: DateTime.current.to_date)
-      puts "Event with id #{event.id} just created!"
+    user = User.all.sample
+    event = Event.create(
+      title: "Ивент №#{i + 1}",
+      body: create_sentence,
+      user_id: user.id,
+      cover: upload_random_image,
+      hosted_at: Time.now)
+    puts "Event with id #{event.id} just created!"
   end
 end
 
@@ -407,6 +488,14 @@ def create_programs
           program = Program.create(program)
           puts "Program #{ program.name } just created"
       end
+  end
+end
+
+# Функция создания сообществ
+def create_communities
+  @communities.each do |community|
+      community = Community.create(community)
+      puts "Community #{ community.title } with id #{ community.id } just created!"
   end
 end
 

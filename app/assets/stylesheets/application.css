@@ -13,6 +13,19 @@
  *= require_tree .
  *= require_self
  */
+ body {
+    padding: 30px 100px 0px 100px;
+ }
+
+ .S_Menubar {
+    display: flex;
+    justify-content: space-between;
+
+    div {
+        display: flex;
+        column-gap: 14px;
+    }
+ }
 
 .M_EventCard {
     display: block;
