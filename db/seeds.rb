@@ -16,6 +16,8 @@
 # rails g uploader Cover создаем аплоадер для обложек ивентов
 # rails g scaffold Program name:string faculty:references связь references
 # valifates :username, presence: true, uniqueness: true
+# optional :true если может не принадлежать
+# rails g controller welcome/about создаем новый контроллер и вьюс
 
 
 # Вводим текст
