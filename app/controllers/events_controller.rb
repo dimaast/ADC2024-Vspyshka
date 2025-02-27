@@ -1,9 +1,14 @@
 class EventsController < ApplicationController
+  # layout "application", only: %i[ show new edit create update destroy ]
   before_action :set_event, only: %i[ show edit update destroy ]
 
   # GET /events or /events.json
   def index
-    @events = Event.all
+    @events = Event.where("hosted_at > ?", Time.now)
+  end
+
+  def archive
+    @events = Event.where("hosted_at < ?", Time.now)
   end
 
   # GET /events/1 or /events/1.json

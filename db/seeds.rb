@@ -18,6 +18,13 @@
 # valifates :username, presence: true, uniqueness: true
 # optional :true если может не принадлежать
 # rails g controller welcome/about создаем новый контроллер и вьюс
+# .all все сущности
+# .where(attribute_id: 1) сущности где айди атрибута равно 1
+# <%= link_to faculty do %>
+# <%= render faculty, faculty: faculty %>
+# <% end %>
+# если в views/layouts создать html.erb с названием модели, у нее будет свой лэйаут, в который можно вывести что-то свое. в контролере можно распределить лэйауты layout "application", only: %i[ show new edit create update destroy ]
+#
 
 
 # Вводим текст

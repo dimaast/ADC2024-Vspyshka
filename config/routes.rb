@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   resources :faculties
   resources :events do
     resources :comments
+    collection do
+      get "archive"
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

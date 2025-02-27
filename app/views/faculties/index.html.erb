@@ -6,7 +6,11 @@
 
 <div id="faculties">
   <% @faculties.each do |faculty| %>
-    <h2><%= link_to faculty.name, faculty %></h2>
+    <% if faculty.id == 2 %>
+      <h2><%= link_to "Проверяю условие", faculty %></h2>
+    <% else %>
+      <h2><%= link_to faculty.name, faculty %></h2>
+    <% end %>
   <% end %>
 </div>
 
