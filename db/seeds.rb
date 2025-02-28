@@ -37,54 +37,82 @@
 # Убираем из текста лишние символы и down-кейсим слова
 @words = @raw_text.downcase.gsub(/[—.—,«»:()]/, '').gsub(/  /, ' ').split(' ')
 
+# Функция генерации предложений
+def create_sentence
+  # Создаем список предложений
+  sentence_words = []
+
+  # Добавляем 10-20 слов из words как один объект списка
+  (10..20).to_a.sample.times do
+      sentence_words << @words.sample
+  end
+
+  # Объединяем строку через пробел, делаем первую букву заглавной и ставим точну в конце
+  sentence_words.join(' ').capitalize + '.'
+end
+
+# Функция генерации рандомной картинки
+def upload_event_cover_image
+  uploader = CoverUploader.new(Event.new, :cover)
+  uploader.cache!(File.open(Dir.glob(File.join(Rails.root, 'public/autoupload/events', '*')).sample))
+  uploader
+end
+
+# Функция генерации рандомной обложки Сообщества
+def upload_community_cover_image
+  uploader = CommunityCoverUploader.new(Community.new, :cover)
+  uploader.cache!(File.open(Dir.glob(File.join(Rails.root, 'public/autoupload/communities', '*')).sample))
+  uploader
+end
+
 # Список сообществ
 @communities = [
     {
         title: 'Центр лидерства и волонтёрства',
         user_id: 1,
-        cover: 'будет',
+        cover: upload_community_cover_image,
         link: 'https://vk.com/hse_volunteers ',
         body: 'Волонтёрский центр Вышки – это команда инициативных и неравнодушных студентов, выпускников и сотрудников университета. Мы помогаем с организацией самых крупных вышкинских проектов: развлекательных и научных. Участвуем в городских фестивалях и конференциях. А ещё помогаем старшему поколению онлайн изучать иностранные языки и школьникам из Москвы и регионов не отставать по школьным предметам.'
     },
     {
         title: 'Студенческий совет НИУ ВШЭ',
         user_id: 1,
-        cover: 'будет',
+        cover: upload_community_cover_image,
         link: 'https://vk.com/hsecouncil',
         body: 'Студсовет Вышки'
     },
     {
         title: 'HSE Outreach',
         user_id: 1,
-        cover: 'будет',
+        cover: upload_community_cover_image,
         link: 'https://vk.com/hseoutreach',
         body: 'HSE Outreach — старейшая и одна из крупнейших благотворительных организаций в Вышке.'
     },
     {
         title: 'Экологический клуб “Зелёная Вышка”',
         user_id: 1,
-        cover: 'будет',
+        cover: upload_community_cover_image,
         link: 'https://vk.com/hsegreen',
         body: 'Экологический клуб'
     },
     {
         title: 'Спортивный клуб',
         user_id: 1,
-        cover: 'будет',
+        cover: upload_community_cover_image,
         link: 'https://vk.com/hsessc',
         body: 'Спорт для нас — не только здоровый образ жизни. Это люди, традиции и гордость нашего университета.'
     },
     {
         title: 'InsideOut',
         user_id: 1,
-        cover: 'будет',
+        cover: upload_community_cover_image,
         link: 'https://vk.com/insideout_hse',
         body: 'InsideOut – студенческая организация, выворачивающая «наизнанку» стереотипы об однообразной жизни студентов факультета Мировой Экономики и Мировой Политики. '
     },
     {
         title: 'Клуб вьетнамской культуры',
         user_id: 1,
-        cover: 'будет',
+        cover: upload_community_cover_image,
         link: 'https://vk.com/vietnamculturehse',
         body: 'Xin chào! Мы – клуб вьетнамской культуры ВШЭ, сообщество энтузиастов, исследующих жизнь Вьетнама'
     }
@@ -404,36 +432,15 @@ def reset_db
   Rake::Task['db:migrate'].invoke
 end
 
-# Функция генерации предложений
-def create_sentence
-  # Создаем список предложений
-  sentence_words = []
-
-  # Добавляем 10-20 слов из words как один объект списка
-  (10..20).to_a.sample.times do
-      sentence_words << @words.sample
-  end
-
-  # Объединяем строку через пробел, делаем первую букву заглавной и ставим точну в конце
-  sentence_words.join(' ').capitalize + '.'
-end
-
-# Функция генерации рандомной картинки
-def upload_random_image
-  uploader = CoverUploader.new(Event.new, :cover)
-  uploader.cache!(File.open(Dir.glob(File.join(Rails.root, 'public/autoupload/events', '*')).sample))
-  uploader
-end
-
 # Функция создания пользователей
 def create_users(quantity)
   i = 0
 
   quantity.times do
       user_data = {
-          email: "user_#{i}@email.com",
-          password: "testtest"
-        # username: "user#{i}"
+        email: "user_#{i}@email.com",
+        password: "testtest",
+        username: "user#{i}"
       }
 
       # if i == 0
@@ -455,8 +462,9 @@ def create_events(quantity)
       title: "Ивент №#{i + 1}",
       body: create_sentence,
       user_id: user.id,
-      cover: upload_random_image,
-      hosted_at: Time.now)
+      cover: upload_event_cover_image,
+      hosted_at: Time.now,
+      community_id: 1)
     puts "Event with id #{event.id} just created!"
   end
 end

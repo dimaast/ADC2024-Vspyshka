@@ -1,5 +1,10 @@
 <div id="<%= dom_id event %>">
-  <p><%= event.user_id %></p>
+  <p><%= event.user.username %></p>
+  <% if !event.nil? %>
+    <p>Индивидуальное событие</p>
+  <% else %>
+    <p><%= event.community.title %></p>
+  <% end %>
   <h2><%= event.title %></h2>
   <%= image_tag event.cover.url, class: 'A_EventCover' %>
   <p><%= event.body %></p>

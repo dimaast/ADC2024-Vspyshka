@@ -1,6 +1,6 @@
 <div id="<%= dom_id community %>">
   <p><%= community.user_id %></p>
-  <p><%= community.cover %></p>
+  <%= image_tag community.cover.url, class: 'A_CommunityCover' %>
   <h2><%= community.title %></h2>
   <p><%= community.body %></p>
   <p><%= community.link %></p>

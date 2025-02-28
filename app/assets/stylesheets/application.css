@@ -42,6 +42,12 @@
     object-fit: cover;
 }
 
+.A_CommunityCover {
+    width: 50%;
+    height: 300px;
+    object-fit: cover;
+}
+
 .M_Comment {
     display: block;
     width: 400px;

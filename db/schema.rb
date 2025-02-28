@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_27_213005) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_28_000753) do
   create_table "comments", force: :cascade do |t|
     t.text "body"
     t.integer "event_id", null: false
@@ -38,6 +38,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_213005) do
     t.datetime "hosted_at", null: false
     t.string "cover"
     t.integer "user_id"
+    t.integer "community_id"
   end
 
   create_table "faculties", force: :cascade do |t|
@@ -62,6 +63,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_213005) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "username", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
