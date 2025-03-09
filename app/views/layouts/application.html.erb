@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Вспышка" %> — Вспышка </title>
-    <%# <title><%= content_for(:title) + " - Вспышка" || "Вспышка" — Вспышка </title> %>
+    <%= display_meta_tags site: @title ||= "Вспышка", separator: " — ", reverse: true %>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
@@ -19,6 +18,8 @@
   </head>
 
   <body>
+  <p style="color: red"><%= alert %></p>
+  
     <%= render "header" %>
     <%= yield %>
     <%= render "footer" %>

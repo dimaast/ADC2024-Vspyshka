@@ -2,14 +2,14 @@
   <div>
     <%= link_to "Главная", root_url %>
     <%= link_to "События", events_url %>
+    <%= link_to "Встречи", meets_url %>
     <%= link_to "Архив событий", archive_events_url %>
-    <%= link_to "Факультеты", faculties_url %>
-    <%= link_to "Программы", programs_url %>
     <%= link_to "Сообщества", communities_url %>
   </div>
   
   <div>
     <% if user_signed_in? %>
+      <%= link_to current_user.profile.name, profile_path(current_user.profile) %>
       <%= link_to current_user.email, edit_user_registration_path %>
       <%= link_to "Выйти", destroy_user_session_path, data: { "turbo-method": :delete } %>
     <% else %>
@@ -18,3 +18,12 @@
     <% end %>
   </div>
 </nav>
+
+<div>
+  <% if user_signed_in? && current_user.role == "admin" %>
+    <%= link_to "Сообщества админа", admin_communities_url %>
+    <%= link_to "Факультеты", admin_faculties_url %>
+    <%= link_to "Программы", admin_programs_url %>
+    <%= link_to "Подписки на рассылку", admin_email_subscriptions_url %>
+  <% end %>
+</div>

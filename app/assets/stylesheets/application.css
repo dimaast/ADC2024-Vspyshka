@@ -10,58 +10,9 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree .
- *= require_self
+ *= require reset
+ *= require vars
+ *= require fonts
+ *= require basics
+ *= require_tree ./components
  */
- body {
-    padding: 30px 100px 0px 100px;
- }
-
- .S_Menubar {
-    display: flex;
-    justify-content: space-between;
-
-    div {
-        display: flex;
-        column-gap: 14px;
-    }
- }
-
-.M_EventCard {
-    display: block;
-    padding: 20px;
-    background-color: rgb(232, 232, 232);
-    border-radius: 20px;
-    text-decoration: none;
-    color: black;
-}
-
-.A_EventCover {
-    width: 50%;
-    height: 300px;
-    object-fit: cover;
-}
-
-.A_CommunityCover {
-    width: 50%;
-    height: 300px;
-    object-fit: cover;
-}
-
-.M_Comment {
-    display: block;
-    width: 400px;
-    padding: 20px;
-    margin-bottom: 10px;
-    background-color: rgb(243, 243, 243);
-    border-radius: 20px;
-    text-decoration: none;
-    color: black;
-}
-
-#C_Events {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    row-gap: 20px;
-}

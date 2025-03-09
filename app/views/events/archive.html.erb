@@ -1,7 +1,8 @@
 <% content_for :title, "Архив событий" %>
 
-<h1>Архив событий</h1>
-<div id="C_Events">
+<h1>Архив событий (<%= @events.count %> <%= Russian.p(@events.count, "событие", "события", "событий") %>) </h1>
+<p><%#= localize(@events.count, "событие", "события", "событий")  %></p>
+<div class="C_EventsAndMeets">
   <% @events.each do |event| %>
     <%= link_to event_path(event), class: 'M_EventCard' do %>
       <%= event.hosted_at.strftime("%d/%m/%Y") %>

@@ -1,0 +1,13 @@
+<% content_for :title, @faculty.name %>
+
+<h2><%= render @faculty %></h2>
+<% @faculty.programs.each do |program| %>
+  <h3><%= link_to program.name, admin_program_path(program) %></h3>
+<% end%>
+
+<div>
+  <%= link_to "Edit this faculty", edit_admin_faculty_path(@faculty) %> |
+  <%= link_to "Back to faculties", admin_faculties_path %>
+
+  <%= button_to "Destroy this faculty", admin_faculty_path(@faculty), method: :delete %>
+</div>

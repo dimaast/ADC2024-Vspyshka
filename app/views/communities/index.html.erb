@@ -1,6 +1,7 @@
-<p style="color: green"><%= notice %></p>
-
-<% content_for :title, "Сообщества" %>
+<% set_meta_tags( 
+  title: "Сообщества",
+  description: "Все студенческие организации Вышки от студентов и работников университета", 
+  keywords: "Студорги, Студенческие организации, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
 
 <h1>Сообщества</h1>
 
@@ -12,4 +13,6 @@
   <% end %>
 </div>
 
-<%= link_to "New community", new_community_path %>
+<% if current_user && current_user.role == "admin" %>
+  <%= link_to "New community", new_admin_community_path %>
+<% end %>

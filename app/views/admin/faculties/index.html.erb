@@ -1,0 +1,11 @@
+<% content_for :title, "Факультеты" %>
+
+<h1>Факультеты</h1>
+
+<div id="faculties">
+  <% @faculties.each do |faculty| %>
+    <h2><%= link_to faculty.name, admin_faculty_path(faculty) %></h2>
+  <% end %>
+</div>
+
+<%= link_to "New faculty", new_admin_faculty_path %>

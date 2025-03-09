@@ -1,0 +1,15 @@
+<% set_meta_tags( 
+  title: "Встречи",
+  description: "Студенческие встречи в Вышке", 
+  keywords: "Студорги, Студенческие организации, События, Встречи, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
+
+<h1>Встречи (<%= @meets.count %>)</h1>
+<div class="C_EventsAndMeets">
+  <% @meets.each do |meet| %>
+    <%= link_to meet_path(meet), class: 'M_MeetCard' do %>
+      <%= render meet %>
+    <% end %>
+  <% end %>
+</div>
+
+<%= link_to "New meet", new_meet_path %>

@@ -1,14 +1,22 @@
 class EventsController < ApplicationController
+  # before_action :authenticate_user!
   # layout "application", only: %i[ show new edit create update destroy ]
+  load_and_authorize_resource
   before_action :set_event, only: %i[ show edit update destroy ]
 
   # GET /events or /events.json
   def index
-    @events = Event.where("hosted_at > ?", Time.now)
+    if current_user
+      @user_events = current_user.events.where("hosted_at > ?", DateTime.now)
+      @events = Event.where("hosted_at > ?", DateTime.now).order(:hosted_at)
+    end
   end
 
   def archive
-    @events = Event.where("hosted_at < ?", Time.now)
+    authorize! :archive, Event
+    if current_user
+      @events = Event.where("hosted_at < ?", DateTime.now).order(:hosted_at)
+    end
   end
 
   # GET /events/1 or /events/1.json

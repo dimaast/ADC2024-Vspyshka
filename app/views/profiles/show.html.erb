@@ -1,0 +1,44 @@
+<% set_meta_tags( 
+  title: @profile.name,
+  description: @profile.body, 
+  keywords: "Студорги, Студенческие организации, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
+
+<%= render @profile %>
+<%= render "subscription/button", subscriptionable: @profile %>
+
+<h2>Ваши события</h2>
+<div class="C_EventsAndMeets">
+  <% @profile.user.events.each do |user_event| %>
+    <%= link_to event_path(user_event), class: 'M_EventCard' do %>
+      <%= user_event.hosted_at.strftime("%d/%m/%Y %H:%M") %>
+      <%= render user_event %>
+    <% end %>
+  <% end %>
+</div>
+
+<h2>Интересные вам события (лайки)</h2>
+<div class="C_EventsAndMeets">
+  <% @favourite_events.each do |favourite_event| %>
+    <%= link_to event_path(favourite_event), class: 'M_EventCard' do %>
+      <%= favourite_event.hosted_at.strftime("%d/%m/%Y %H:%M") %>
+      <%= render favourite_event %>
+    <% end %>
+  <% end %>
+</div>
+
+<h2>Интересные вам встречи (лайки)</h2>
+<div class="C_EventsAndMeets">
+  <% @favourite_meets.each do |favourite_meet| %>
+    <%= link_to event_path(favourite_meet), class: 'M_EventCard' do %>
+      <%= favourite_meet.hosted_at.strftime("%d/%m/%Y %H:%M") %>
+      <%= render favourite_meet %>
+    <% end %>
+  <% end %>
+</div>
+
+<div>
+  <%= link_to "Edit this profile", edit_profile_path(@profile) %> |
+  <%= link_to "Back to profiles", profiles_path %>
+
+  <%= button_to "Destroy this profile", @profile, method: :delete %>
+</div>

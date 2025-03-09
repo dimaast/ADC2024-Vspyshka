@@ -1,0 +1,72 @@
+body {
+    padding: 40px 150px 0px 150px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    font-size: 48px;
+    margin: 20px 0px 20px 0px;
+}
+
+h2 {
+    font-size: 28px;
+    margin: 20px 0px 20px 0px;
+}
+
+.S_Menubar {
+    display: flex;
+    justify-content: space-between;
+
+    div {
+        display: flex;
+        column-gap: 14px;
+    }
+}
+
+.M_EventCard {
+    display: block;
+    padding: 20px;
+    background-color: var(--gray);
+    border-radius: 20px;
+    text-decoration: none;
+    color: black;
+}
+
+.M_MeetCard {
+    display: block;
+    padding: 20px;
+    background-color: var(--gray);
+    border-radius: 20px;
+    text-decoration: none;
+    color: black;
+}
+
+.A_EventCover {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.A_CommunityCover {
+    width: 50%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.M_Comment {
+    display: block;
+    width: 700px;
+    padding: 20px;
+    margin-bottom: 10px;
+    background-color: rgb(243, 243, 243);
+    border-radius: 20px;
+    text-decoration: none;
+    color: black;
+}
+
+.M_Reply {
+    margin: 20px 0px 0px 50px;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: rgb(253, 253, 253);
+}

@@ -1,0 +1,13 @@
+<% set_meta_tags( 
+  title: "Создать новый профиль",
+  keywords: "Студорги, Студенческие организации, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
+
+<h1>New profile</h1>
+
+<%= render "form", profile: @profile %>
+
+<br>
+
+<div>
+  <%= link_to "Back to profiles", profiles_path %>
+</div>

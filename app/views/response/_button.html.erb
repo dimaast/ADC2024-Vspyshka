@@ -1,0 +1,5 @@
+<%
+response = responseable.responses.where(user_id: current_user.id)
+button_text = response && response.count > 0 ? "Unresponse" : "Response" %> 
+
+<div><%= link_to button_text, response_toggle_path(type: responseable.class, id: responseable.id), data: { turbo_stream: true }  %></div>

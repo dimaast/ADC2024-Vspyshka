@@ -1,0 +1,13 @@
+<% content_for :title, @program.name %>
+
+<p style="color: green"><%= notice %></p>
+
+<h2><%= render @program %></h2>
+
+<div>
+  <%= link_to "Редактировать", edit_admin_program_path(@program) %> |
+  <%= link_to "Программы", admin_programs_path %> | 
+  <%= link_to @program.faculty.name, admin_faculty_path(@program.faculty) %>
+
+  <%= button_to "Destroy this program", admin_program_path(@program), method: :delete %>
+</div>

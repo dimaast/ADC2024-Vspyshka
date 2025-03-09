@@ -1,0 +1,16 @@
+<% set_meta_tags( 
+  title: "Редактировать встречу",
+  description: "Редактирование встречи", 
+  keywords: "Студорги, Студенческие организации, Встречи, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
+
+<h1>Editing meet</h1>
+<%= turbo_frame_tag dom_id(@meet) do %>
+  <%= render "form", meet: @meet %>
+<% end %>
+
+<br>
+
+<div>
+  <%= link_to "Show this meet", @meet %> |
+  <%= link_to "Back to meets", meets_path %>
+</div>

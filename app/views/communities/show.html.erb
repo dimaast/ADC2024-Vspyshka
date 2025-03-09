@@ -1,10 +1,17 @@
-<p style="color: green"><%= notice %></p>
+<% set_meta_tags( 
+  title: @community.title,
+  description: @community.body, 
+  keywords: "Студорги, Студенческие организации, События, Волонтерство, Волонтеры, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
 
 <%= render @community %>
+<%= render "subscription/button", subscriptionable: @community %>
 
 <div>
-  <%= link_to "Edit this community", edit_community_path(@community) %> |
-  <%= link_to "Back to communities", communities_path %>
-
-  <%= button_to "Destroy this community", @community, method: :delete %>
+  <%= link_to "Back to communities", communities_path %> | 
+  <% if can? :edit, @community %>
+    <%= link_to "Edit this community", edit_community_path(@community) %>
+  <% end %>
+  <% if can? :destroy, @community %>
+    <%= button_to "Destroy this community", admin_community_path(@community), method: :delete %>
+  <% end %>
 </div>

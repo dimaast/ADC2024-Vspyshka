@@ -1,4 +1,44 @@
-<div id="<%= dom_id comment %>">
-  <p><%= comment.created_at.strftime("%d/%m/%Y") %></p>
-  <p><%= comment.body %></p>
+<div class="<%= "M_Reply" if comment.comment_id != nil %>" id="<%= dom_id comment %>">
+  <%= turbo_frame_tag dom_id(comment) do %>
+    <%# Дата создания %>
+    <p><%= comment.created_at.strftime("%d-%m-%Y %H:%M:%S") %></p>
+    
+    <%# Аватарка %>
+    <%= image_tag comment.user.profile.avatar.url, width: 80 if comment.user.profile.avatar.present? %>
+
+    <%# Ссылка на профиль пользователя %>
+    <%= link_to comment.user.profile.name, profile_path(comment.user.profile) %>
+
+    <%# Если у комментария есть родительский комментарий %>
+    <% if comment.comment_id.present? %>
+      <%# Кому %>
+      <p>ответ <%= Comment.find(comment.comment_id).user.profile.name %></p>
+    <% end %>
+
+    <%# Текст комментария %>
+    <p><%= comment.body %></p>
+
+    <%# Отредактировать %>
+    <%= link_to "Edit", comment.commentable.is_a?(Meet) ? edit_meet_comment_path(comment.commentable, comment) : edit_event_comment_path(comment.commentable, comment) %>
+
+    <%# Нравится %>
+    <%= render partial: "favourite/button", locals: { favouriteable: comment } %>
+
+    <%# Если может редактировать %>
+    <% if can? :manage, comment %>
+      <%# Удали %>
+      <p><%= link_to "Destroy Comment", [comment.commentable, comment], data: { turbo_stream: false, turbo_method: :delete, turbo_confirm: "Are you sure?" } %></p>
+    <% end %>
+  
+    <%# Если пользователь залогинен %>
+    <% if user_signed_in? %>
+      <%# Отрендери форму %>
+      <%= render partial: "comments/form", locals: { comment: Comment.new, commentable: comment.commentable, parent_comment_id: comment.id } %>
+    <% end %>
+  <% end %>
 </div>
+
+<%# Если есть ответы на комментарий, отрендери %>
+<% if comment.replies.any? %>
+  <%= render partial: "comments/comment", collection: comment.replies, as: :comment %>
+<% end %>

@@ -1,0 +1,11 @@
+<% content_for :title, "Подписки на рассылку" %>
+
+<h1>Подписки на рассылку</h1>
+
+<div id="email_subscriptions">
+  <% @email_subscriptions.each do |email_subscription| %>
+    <%= render email_subscription %>
+    <p><%= link_to "Show this email subscription", admin_email_subscription_path(email_subscription) %></p>
+    <%= button_to "Destroy this email subscription", admin_email_subscription_path(email_subscription), method: :delete %>
+  <% end %>
+</div>

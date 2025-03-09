@@ -8,28 +8,374 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-
+# Полезные штуки
 # views/layouts/application чтобы сменить title
 # has_many :comments, dependent: :destroy удаляем все связанные комментарии, если удален ивент
-# rails db:rollback убрать последнюю миграцию
-# bundle install устанавливаем джемы
-# rails g uploader Cover создаем аплоадер для обложек ивентов
-# rails g scaffold Program name:string faculty:references связь references
-# valifates :username, presence: true, uniqueness: true
+
+# Связи
+# valifdates :username, presence: true, uniqueness: true
 # optional :true если может не принадлежать
-# rails g controller welcome/about создаем новый контроллер и вьюс
 # .all все сущности
 # .where(attribute_id: 1) сущности где айди атрибута равно 1
 # <%= link_to faculty do %>
 # <%= render faculty, faculty: faculty %>
 # <% end %>
 # если в views/layouts создать html.erb с названием модели, у нее будет свой лэйаут, в который можно вывести что-то свое. в контролере можно распределить лэйауты layout "application", only: %i[ show new edit create update destroy ]
-# gem "devise" добавляем девайс для юзеров
-# rails generate devise:install
-# rails g devise Model
-# current_user.events ивенты только пользователя
-# def create @event = current_user.events.new(event_params) прикрепряет юзера к новому ивенту
 
+
+# Создание веб-сервиса
+# terminal          | создать проект                           | rails new ProjectName
+# terminal          | открыть сервер                           | rails s
+# terminal          | закрыть сервер                           | ctrl + c
+
+
+# Работа с моделью
+# terminal          | создать все для модели                   | rails g scaffold Model attribute_1:string attribute_2:references
+# terminal          | создать модель                           | rails g model Model body:text publication:references
+# terminal          | создать контроллер и вьюс                | rails g controller welcome/about
+# terminal          | добавить аттрибут в модель               | rails g migration add_attribute_to_models attribute:string
+# terminal          | запускаем миграции                       | rails db:migrate
+# terminal          | отменить последнюю миграцию              | rails db:rollback
+# write code        | models/event: запускаем валидацию        | validates :title, presence: true, length: { minimum: 5 }
+
+
+# Работа с роутами
+# write code        | routes: меняем главную                   | root "welcome#index"
+# write code        | routes: забираем данные контроллера      | get "welcome/index"
+# write code        | routes: забираем данные контроллера      | get "welcome/about"
+# write code        | routes: вкладываем путь                  | resources :publications do resources :comments end
+
+
+# Работа с контроллером
+# write code        | controller                               | current_user.events (ивенты только пользователя)
+
+
+# Работа с вью
+# write code        | model/form выбор коллекции селектор      | <%= form.collection_select :project_id, current_user.projects.order(:name), :id, :name, include_blank: true %>
+
+
+# Создание изображений
+# write code        | gemfile                                  | gem "carrierwave", "~> 3.0"
+# terminal          | установить gem                           | bundle install
+# create            | folder                                   | public/autoupload/models
+# write code        | gitignore                                | /public/uploads
+# write code        | gitignore                                | /public/autoupload
+# terminal          | создаем поле                             | rails g migration add_event_cover_to_events event_cover:string
+# terminal          | создаем поле                             | rails db:migrate
+# terminal          | создаем аплоадер                         | rails g uploader EventCover
+# write code        | models/event                             | mount_uploader :event_cover, EventCoverUploader
+# write code        | event partial                            | <%= image_tag event.event_image.url, width: 600 if event.cover.present? %>
+# write code        | event form                               | <%= form.label :event_cover, style: "display: block" %>
+# write code        | event form                               | <%= form.file_field :event_cover %>
+# write code        | controllers/event                        | :event_cover (в параметры для приема)
+
+
+# Создаем юзеров
+# write code        | gemfile                                  | gem "devise"
+# terminal          | установить gem                           | bundle install
+# terminal          | установить gem                           | rails g devise:install
+# terminal          | создаем модель                           | rails g devise Model
+# terminal          | запускаем миграции                       | rails db:migrate
+# write code        | controller                               | def create @event = current_user.events.new(event_params) (прикрепряет юзера к новому ивенту)
+# write code        | controller                               | before_action :authenticate_user! (фильтр/экшн коллбек, который запрашивает вход юзера)
+
+
+# Восстанавливаем пароль
+# write code        | gemfile group :development               | gem "letter_opener" (для проверки писем на почту при восстановлении пароля)
+# terminal          | установить gem                           | bundle install
+# write code        | config/environments/development.rb       | config.action_mailer.delivery_method = :letter_opener
+# write code        | config/environments/development.rb       | config.action_mailer.perform_deliveries = true
+
+
+# Аутентификация (вход — проверка личности) и авторизация (проверка доступов у личности)
+# write code        | gemfile                                  | gem "cancancan"
+# terminal          | установить gem                           | bundle install
+# terminal          | создать cancan                           | rails g cancan:ability
+# write code        | models/ability.rb                        | can [ :read, :archive ], Event (можно смотреть index, archive и их show)
+# write code        | models/ability.rb                        | can :manage, Event, user: user (можно редактировать show, которые принадлежат юзеру)
+# write code        | models/ability.rb                        | can :read, Community, user: user (можно смотреть index и show, которые принадлежат юзеру)
+# write code        | models/ability.rb                        | can :read, Community (можно смотреть index и show)
+# write code        | models/ability.rb                        | can :read, Event, user: 2 (можно смотреть index и show только у юзера с id 2)
+# load_and_authorize_resource для cancancan
+
+
+# Создаем дополнительный вью/контроллер/etc для админа (существует вид для пользователя и для админа)
+# create            | folder                                   | controllers/admin
+# create            | file                                     | controllers/admin/models_controller.rb
+# write code        | дублировать код из не admin              | class - end
+# write code        | редактировать название контроллера       | class Admin::ModelsController < ApplicationController
+# write code        | routes: создать namespace                | namespace :admin do resources :communities, only: [:index]
+# write code        | _header: создать линк на админскую       | <% if user_signed_in? && current_user.role == "admin" %>?
+# create            | folder                                   | views/admin
+# create            | file                                     | views/admin/index.html.erb
+# <%= link_to faculty.name, admin_faculty_path(faculty) %>
+# index: <%= link_to "New faculty", new_admin_faculty_path %>
+# application_controller: https://github.com/CanCanCommunity/cancancan/blob/develop/docs/handling_access_denied.md
+# admin_faculty_path(@program.faculty)
+# admin_program_path(@program)
+
+
+# Отдаем часть вью/контроллер/etc админу (доступно только админу)
+# write code        | views: изменить path                     | partial/index/form/edit/new/show
+# write code        | controller: изменить path                | create/update/destroy
+
+
+# Редирект вместо ошибки CanCanCan
+# write code        | application_controller                   | rescue_from CanCan::AccessDenied do |exception|
+
+
+# Запрещаем редактировать только какое-то поле
+# можно сделать две формы — для пользователя и для админа, но этого мало
+# в контроллере НЕ админа надо запретить принимать параметр
+
+
+# Условия
+# <% if current_user && current_user.role == "admin" %> если юзер зашел и его роль админ
+# <% if can? :destroy, @community %> если ability дает destroy
+
+
+# Работа с папками файлов для css
+# Rails.application.config.assets.paths << "app/assets'fonts" в config/initializers/assets.rb
+
+
+# Собираем почты
+# rails g scaffold EmailSubscription email:string
+# rails db:migrate
+# models/email_subscription: validates :email, presence: true
+# view/email_subsctiption/_form: model: EmailSubscroption.build email_field: email
+# welcome/index: создаем div с id email_subscription_form
+# welcome/index: вкладываем в div <%= render "email_subscriptions/form" %>
+# routes: resources :email_subscriptions, only: [ :create ]
+# view/email_subsctiption: создаем файл _success с сообщением p
+# view/email_subsctiption: создаем файл show.turbo_stream.erb
+# view/email_subsctiption/show.turbo_stream.erb: пишем <%= turbo_stream.replace "email_subscription_form", partial: "success" %>
+# email_subscriptions_controller: в def create if subscription.save format.turbo_stream { render :show }
+# abilities: can :create EmailSubscription
+
+
+# Смотрим почты (только админ)
+# welcome/index: <% if current_user && current_user.role == "admin" %>
+# welcome/index: link_to "Подписка на рассылку", admin_email_subscriptions_url
+# routes/admin: resources email_subscriptions
+# controller/admin: create email_subscriptions_controller.rb
+# admin/email_subscriptions_controller: add code favourite scaffold delete json
+
+
+# Создаем API
+# terminal          | создаем контроллер для модели            | rails g controller api/v1/events
+# write code        | controller/api/v1/events                 | def index (копируем из обычного)
+# write code        | config/routes                            | namespace :api, format: json do namespace :v1 do resources :events, only: [:index, :show]
+# write code        | views/welcome/index                      | <%= api_v1_events_url %> / <%= api_v1_events_path %>
+# write code        | # controller/api/v1/events def index     | render json: @events.as_json
+# note              | # ограничить вывод полей                 | .as_json(except: :title) or .as_json(only: :title)
+# write code        | # models/event                           | def as_json { title: title }
+# change folder     | из views/events в views/api/v1/events    | все json.jbuilder файлы
+# write code        | views/api/v1/events/index.json.jbuilder  | partial: "api/v1/events/event"
+# write code        | views/api/v1/events/_event.json.jbuilder | json.url event_url(event)
+# write code        | controller/api/v1/events def show        | @event = Event.find(params[:id])
+# write code        | views/api/v1/events/show.json.jbuilder   | partial: "api/v1/events/event"
+
+
+# API комментариев к ивентам
+# change folder     | views/api/v1/events/                     | views/comments/_comment.json.jbuilder
+# write code        | views/api/v1/events/show.json.jbuilder   | json.set! :comments do json.array! @event.comments, partial: "api/v1/events/comment", as: :comment end
+
+
+# API изображения к ивентам (как выводить нормальную ссылку)
+# write code        | views/api/v1/events/_event.json.jbuilder | проверить параметр cover
+# write code        | model/uploaders/event_uploaders_cover    | def asset_host return "http://localhost:3000" end
+
+
+# Разблокировать get и publication запросы с других источников (например приложение)
+# write code        | gemfile                                  | gem "rack-cors"
+# terminal          | установить gem                           | bundle install
+# create folder     | config/initializers                      | cors.rb
+# write code        | cors.rb                                  | Rails.application.config.middleware.insert_before 0, Rack::Cors do
+#                                                                  allow do
+#                                                                    origins 'http://localhost:3000/'
+#                                                                    resource '*', headers: :any, methods: [:get, :publication]
+#                                                                  end
+#                                                                end
+
+# Автоматическое возникновение профиля после юзера
+# terminal          | создаем Profile                          | rails g scaffold Profile name:string body:text contact:string avatar:string user:references
+# terminal          | запускаем миграции                       | rails db:migrate
+# write code        | пишем ассоциации в models/user           | has_one
+# write code        | пишем ассоциации в models/profile        | belongs_to
+# write code        | пишем after_create в models/user         | after_create :create_profile (можно еще after_create :create_user_profile private def create_user_profile with self.create_profile())
+
+
+# Делаем автоджоин (комментарии, отвечающие на комментарии)
+# rails g migration add_comment_id_to_comment comment_id:integer
+# rails db:migrate
+# has_many :replies, class_name: "Comment", foreign_key: "comment_id", dependent: :destroy
+# belongs_to :comment, optional: true
+# def create_comment_replies Comment.all.shuffle.last(30).each do |comment| user = User.all.sample comment_reply = comment.replies.create( event_id: comment.event_id, body: create_sentence, user_id: user.id) puts "Reply #{comment_reply.id} for event #{comment_reply.event.id} just created!" end end
+# rails db:seed
+# model/comment: scope :no_replies, -> { where(comment_id: nil) }
+# events/show: @event.comments.no_replies.each
+# views/comments/_comment: <div class="<%= "M_Reply" if comment.comment_id != nil %>" id="<%= dom_id comment %>">
+# views/comments/_comment: <% if comment.replies.any? %> <%= render comment.replies, partial: "comments/comment", as: :comment %> <% end %>
+# views/events/show: <% if user_signed_in? %> <h2>Добавить комментарий:</h2> <%= render "comments/form", comment: Comment.new, event: @event %> <% end %>
+# comments_controller: params.require(:comment).permit(:body, :comment_id).merge(event_id: params[:event_id])
+# model/comment: default_scope { order(created_at: "DESC") }
+# views/comments/_comment: <% if user_signed_in? %> <%= render partial: "comments/form", locals: { comment: Comment.new, event: comment.event, parent_comment_id: comment.id } %> <% end %>
+# views/comments/_form: <% if defined? parent_comment_id %> <%= form.hidden_field :comment_id, value: parent_comment_id %> <% end %>
+
+
+# Полиморфные связи
+# terminal          | создаем модель favourite                 | rails g model favourite favouriteable_type:string favouriteable_id:integer user:references
+# terminal          | запускаем миграции                       | rails db:migrate
+# write code        | model/favourite                          | belongs_to :user
+# write code        | model/favourite                          | belongs_to :favouriteable, polymorphic: true
+# write code        | model/event                              | has_many :favourites, as: :favouriteable
+# write code        | model/meet                               | has_many :favourites, as: :favouriteable
+# write code        | model/comment                            | has_many :favourites, as: :favouriteable
+# terminal          | создаем контроллер favourite             | rails g controller favourite toggle
+# write code        | # routes: меняет get на publication      | publication "favourite/toggle"
+# change folder     | переименовываем views/favourite/toggle   | views/favourite/_button
+# write code        | views/events/_button                     | <%= favourite = favouriteable.favourites.where(user_id: current_user.id) button_text = favourite && favourite.count > 0 ? "Unfavourite" : "favourite" %> <div><%= link_to "Нравится", favourite_toggle_path(type: favouriteable.class, id: favouriteable.id), data: { turbo_stream: true }  %></div>
+# write code        | views/events/show                        | <%= render partial: "favourite/button", locals: { favouriteable: @event } %> (если в паршл, будет a в a)
+# write code        | views/meets/show                         | <%= render partial: "favourite/button", locals: { favouriteable: @meet } %>
+# write code        | views/comments/_comment                  | <%= render partial: "favourite/button", locals: { favouriteable: comment } %>
+# write code        | controllers/favourite_controller         | def toggle favouriteable = Object.const_get(params[:type]).find(params[:id]) favourites = favouriteable.favourites.where(user_id: current_user.id) if favourites && favourites.count > 0 favourites.each do |favourite| favourite.destroy! end else current_user.favourites.create!(favouriteable_type: params[:type], favouriteable_id: params[:id]) end
+
+# favouriteable_type — тип объекта
+# favouriteable_id — сам объект внутри типа
+
+# Меняем комментарии с обычных на полиморфные
+# rails g migration  add_commentable_type_to_comment commentable_type:string
+# rails g migration  add_commentable_id_to_comment commentable_id:integer
+# rails generate migration RemoveEventIdFromComments event_id:integer
+
+
+# Теги
+# write code        | gemfile                                  | gem "acts-as-taggable-on"
+# terminal          | установить gem                           | bundle install
+# terminal          | установить gem                           | rake acts_as_taggable_on_engine:install:migrations
+# terminal          | установить gem                           | rake db:migrate
+# write code        | model/event                              | acts_as_taggable_on :tags
+# write code        | controllers/event_controller             | в permit: :tag_list
+# write code        | views/events/_form                       | <div><%= label for="">Tags</label><%= form.text_area :tag_list %></div>
+# write code        | routes                                   | get "/by_tag/:tag", to "events#by_tag", on: :collection, as: "tagged"
+# write code        | views/events/_event                      | <p><% event.tags.each do |tag| %> <%= link_to tag.name, tagged_events_path(tag.name) %> </p>
+# write code        | views/events/index                       | <div><%= link_to "All", events_path %> <% Event.tag_counts_on(:tags).each do |tag| %> <%= link_to tag.name, tagged_events_path(tag.name) %> </div>
+# write code        | controllers/event_controller             | def by_tag @events = Event.tagged_with(params[:tag]) render :index end
+
+# Добавляем категории
+# write code        | model/event                              | acts_as_taggable_on :categories
+# write code        | views/events/_form                       | <div><%= label for="">Категории</label><%= form.text_area :category_list %></div>
+# write code        | controllers/event_controller             | в permit: :category_list
+# write code        | controllers/event_controller             | def by_category @events = Event.tagged_with(params[:tag]) render :index end
+# write code        | views/events/_event                      | <p><% event.category.each do |tag| %> <%= link_to tag.name, tagged_events_path(tag.name) %> </p>
+# write code        | views/events/index                       | <div><%= link_to "All", events_path %> <% Event.tag_counts_on(:categories).each do |tag| %> <%= link_to tag.name, tagged_events_path(tag.name) %> </div>
+
+# STI (разные типы постов)
+# rails g scaffold Publication type:string title:string body:text embed:text
+# rails g model PublicationText --parent=Publication
+# rails g model PublicationText --parent=Publication
+# rails db:migrate
+# controllers/publicationtexts_controller + Publication = PublicationText
+# controllers/publicationfigmas_controller + Publication = PublicationFigma
+# publications/_form: <%= form.label :type, style: "display: block" %> <%= form.select :type, [["Текстовая публикация", "PublicationText"], ["Фигма-публикация", "PublicationFigma"]] %>
+# views/publication_texts/_publication_text: сюда копируем паршл, но меняем publication на publication_text
+# views/publication_texts/_publication_text: <%= link_to "Покажи публикацию", publication_path(publication_text) %>
+# views/publication_figmas/_publication_figma: сюда копируем паршл, но меняем publication на publication_figma и к ebmed.html_safe
+# views/publication_figmas/_publication_figma: <%= link_to "Покажи публикацию", publication_path(publication_figma) %>
+# views/publications/_form: url: url
+# views/publications/new: в форму url: publications_path
+# views/publications/edit: в форму url: publication_path(@publication)
+# views/publications/edit: в show publication_path(@publication)
+
+# Views для Devise (страницы логина и регистрации)
+# terminal          | установить gem                           | rails g devise:views
+# sessions — вход, passwords — смена пароля, registrations — регистрация, shared — все ссылки
+
+# SASS для RoR
+# write code        | gemfile                                  | gem "sassc"
+# terminal          | установить gem                           | bundle install
+# config/initializers/assets.rb  можно написать отдельный css для лендинга
+
+# Работа с yield
+# где-то content_for :something do end
+# application yield :something
+
+# Метатеги
+# write code        | gemfile                                  | gem "meta-tags"
+# terminal          | установить gem                           | bundle install
+# terminal          | установить gem                           | rails generate meta_tags:install
+# write code        | views/layouts/application                | <%= display_meta_tags site: @title ||= "Вспышка", separator: " — ", reverse: true %>
+# write code        | views (show/index/edit)                  | <% set_meta_tags( title: "События", description: "Все события Вышки для студентов и работников университета", keywords: "События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ")%>
+
+# Настройки carriervawe (загрузки изображений от пользователей)
+# brew install vips
+# brew install jpegoptim
+# brew install optipng
+# brew install pngquant
+# uploaders: include CarrierWave::Vips
+# uploaders: def extension_allowlist %w[jpg jpeg gif png] end
+# uploaders: def filename "#{secure_token(10).#{file.extension}}" if original_filename end
+# uploaders: version :thumb do process resize_to_fit: [50, 50] end
+# views/events/_event:  <%= image_tag event.cover.thumb.url if event.cover.present? %>
+# uploaders: include CarrierWave::ImageOptimizer
+# gemfile: gem "carrierwave-imageoptimizer"
+# bundle install
+# uploaders: version :q70 do process optimize: [ { quality: 70 } ] end
+
+# Настраиваем русский язык
+# gemdfile: gem "russian"
+# config/application.rb: config.i18n.default_locale = :ru
+# app/views/events/archive.html.erb: Архив событий (<%= @events.count %> <%= Russian.p(@events.count, "событие", "события", "событий") %>)
+# config/locales: ru.yml
+# config/locales/ru.yml: ru: hello: "Всем привет!"
+# app/views/welcome/index.html.erb: <%= t :hello %>
+
+# Турбофреймы (авторедактирование)
+# app/views/comments/_comment.html.erb: <%= turbo_frame_tag dom_id(comment) do %> <% end %>
+# app/controllers/comments_controller.rb: def edit @event = @comment.event
+# app/views/comments/edit.html.erb: <%= turbo_frame_tag dom_id(@comment) do %> <%= render "form", comment: @comment %> <% end %>
+# app/controllers/comments_controller.rb: def update redirect_to @comment.event
+
+# Турбостримы (автозамена)
+# создаем какой-то div с id mur (например)
+# кладем в него <%= render "mur" %>
+# создаем _mur.html.erb
+# кладем в него <%= "Слово" =%> или, если задали в контроллере @slovo, его
+# пишем <%= link_to "Ссылка на кнопку/страницу", folder_mur_path, data: { turbo_stream: true } %>
+# создаем _mur.turbo_stream.erb
+# кладем туда <#= turbo_stream.replace "mur", partial: "mur" %>
+
+# Турбострим + турбофрейм (создаение нового поста на странице индекс, а не по ссылке)
+# app/views/meets/index.html.erb: <%= link_to "New meet", new_meet_path, id: "new_meet_link", data { turbo_stream: true } %>
+# создаем файл new.turbo_stream.erb
+# кладем туда <#= turbo_stream.replace "new_meet_link", partial: "meets/form", locals: { meet: @meet } %>
+# app/views/meets/_form.html.erb: <%= form_with(model: meet, data: { turbo_stream: true }, id: "meet_form") do |form| %>
+# создаем файл show.turbo_stream.erb
+# кладем туда <#= turbo_stream.replace "meet_form" do %> <%= link_to "New meet", new_meet_path, id: "new_meet_link", data { turbo_stream: true } %> <% end %>
+# кладем туда <#= turbo_stream.prepend "C_EventsAndMeets", partial: "meets/meet", locals: { meet: @meet } %>
+# возможно надо убрать link_to
+# app/views/meets/index.html.erb: <div id="meet_index_heading"><h1>Встречи (<%= @meets.count %>)</h1> </div%>
+# show.turbo_stream.erb: <% @meets = Meet.all %> <div id="meet_index_heading"><h1>Встречи (<%= @meets.count %>)</h1> </div%>
+
+# Турбо-комментарии (автообновление)
+# пересмотреть и задать квесчены
+
+# Отправляем почту (мейлер)
+# rails g mailer User
+# app/mailers/user_mailer.rb: https://guides.rubyonrails.org/action_mailer_basics.html#edit-the-mailer
+# app/views/user_mailer: два файла welcome_email.html.erb и welcome_email.text.erb
+# в них добавляем код и текст: https://guides.rubyonrails.org/action_mailer_basics.html#create-a-mailer-view
+# if current_user.events.count == 1 UserMailer.with(user: current_user).welcome_email.deliver_now end
+
+# Сессия
+# <%= session.to_json %> сессия хранится на сервере
+# <%= cookies.to_json %> куки хранятся в браузере, на ios кук нет(
+
+# API на запись (JTI токены)
+# rails g migration add_jti_to_users jti:string
+# в миграции , null: false add_index :users, :jti, unique: true
+# rails db:migrate
+# для юзер сидов добавляем jti:
 
 # Вводим текст
 @raw_text = "Дом Наркомфина — один из знаковых памятников архитектуры советского авангарда и конструктивизма. Построен в 1928—1930 годах по проекту архитекторов Моисея Гинзбурга, Игнатия Милиниса и инженера Сергея Прохорова для работников Народного комиссариата финансов СССР (Наркомфина). Автор замысла дома Наркомфина Гинзбург определял его как «опытный дом переходного типа». Дом находится в Москве по адресу: Новинский бульвар, дом 25, корпус 1. С начала 1990-х годов дом находился в аварийном состоянии, был трижды включён в список «100 главных зданий мира, которым грозит уничтожение». В 2017—2020 годах отреставрирован по проекту АБ «Гинзбург Архитектс», функционирует как элитный жилой дом. Отдельно стоящий «Коммунальный блок» (историческое название) планируется как место проведения публичных мероприятий."
@@ -421,8 +767,12 @@ def seed
   create_faculties
   create_programs
   create_communities
-  # create_meets(10)
-  create_comments(2..8)
+  create_meets(10)
+  create_event_comments(2..8)
+  create_meet_comments(2..8)
+  5.times do
+    create_comment_replies
+  end
 end
 
 # Функция очистки бд, которую встраиваем в seed
@@ -443,10 +793,10 @@ def create_users(quantity)
         username: "user#{i}"
       }
 
-      # if i == 0
-      #   user_data[:role] = "admin"
-      #   user_data[:username] = "admin"
-      # end
+      if i == 0
+        user_data[:role] = "admin"
+        user_data[:username] = "admin"
+      end
 
       user = User.create!(user_data)
       puts "User created with id #{user.id}"
@@ -469,15 +819,58 @@ def create_events(quantity)
   end
 end
 
+# Функция создания митов (quantity раз)
+def create_meets(quantity)
+  quantity.times do |i|
+    user = User.all.sample
+    meet = Meet.create(
+      body: create_sentence,
+      user_id: user.id,
+      hosted_at: Time.now)
+    puts "Meet with id #{meet.id} just created!"
+  end
+end
+
 # Функция создания комментариев ко всем ивентам (quantity слов в комментарии)
-def create_comments(quantity)
+def create_event_comments(quantity)
   Event.all.each do |event|
       quantity.to_a.sample.times do
-          e_comment = Comment.create(
-            event_id: event.id,
-            body: create_sentence)
-          puts "Comment #{e_comment.id} for event #{e_comment.event.id} just created!"
+          user = User.all.sample
+          comment = Comment.create(
+            commentable_type: "Event",
+            commentable_id: event.id,
+            body: create_sentence,
+            user_id: user.id)
+          puts "Comment #{comment.id} for event #{comment.commentable.id} just created!"
       end
+  end
+end
+
+# Функция создания комментариев ко всем митам (quantity слов в комментарии)
+def create_meet_comments(quantity)
+  Meet.all.each do |meet|
+      quantity.to_a.sample.times do
+          user = User.all.sample
+          comment = Comment.create(
+            commentable_type: "Meet",
+            commentable_id: meet.id,
+            body: create_sentence,
+            user_id: user.id)
+          puts "Comment #{comment.id} for meet #{comment.commentable.id} just created!"
+      end
+  end
+end
+
+# Функция ответов на комментарии (все)
+def create_comment_replies
+  Comment.all.shuffle.last(30).each do |comment|
+    user = User.all.sample
+    comment_reply = comment.replies.create(
+      commentable_type: comment.commentable_type,
+      commentable_id: comment.commentable.id,
+      body: create_sentence,
+      user_id: user.id)
+    puts "Reply #{comment_reply.id} for #{comment_reply.commentable} #{comment_reply.commentable.id} just created!"
   end
 end
 

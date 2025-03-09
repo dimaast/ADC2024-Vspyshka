@@ -1,0 +1,5 @@
+<%
+favourite = favouriteable.favourites.where(user_id: current_user.id)
+button_text = favourite && favourite.count > 0 ? "Unfavourite" : "Favourite" %> 
+
+<div><%= link_to button_text, favourite_toggle_path(type: favouriteable.class, id: favouriteable.id), data: { turbo_stream: true }  %></div>

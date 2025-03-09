@@ -1,0 +1,31 @@
+<% set_meta_tags( 
+  description: @meet.body, 
+  keywords: "Студорги, Студенческие организации, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
+
+<%= turbo_frame_tag dom_id(@meet) do %>
+  <%= render @meet %>
+    <div>
+    <%= link_to "Edit this meet", edit_meet_path(@meet) %> |
+    <%= link_to "Back to meets", meets_path %>
+
+    <%= button_to "Destroy this meet", @meet, method: :delete %>
+  </div>
+<% end %>
+<%= render "favourite/button", favouriteable: @meet %>
+<%= render "response/button", responseable: @meet %>
+
+<% if user_signed_in? %>
+  <h2>Добавить комментарий:</h2>
+  <%= render "comments/form", comment: Comment.new, commentable: @meet %>
+<% end %>
+
+<%= turbo_stream_from @event, :comments %>
+
+<h2>Комментарии:</h2>
+<div id="C_Comments">
+  <% @meet.comments.no_replies.each do |comment| %>
+    <div class="M_Comment">
+      <%= render "comments/comment", comment: comment, commentable: @meet %>
+    </div>
+  <% end %>
+</div>

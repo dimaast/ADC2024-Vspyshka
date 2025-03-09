@@ -1,25 +1,59 @@
-<% content_for :title, @event.title %>
+<% set_meta_tags( 
+  title: @event.title,
+  description: @event.body, 
+  keywords: "Студорги, Студенческие организации, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
 
-<p style="color: green"><%= notice %></p>
+<%# Ивент %>
+<p>Случайное число: <%= rand(1..100) %></p>
 
 <%= render @event %>
 
-<div>
-  <%= link_to "Edit this event", edit_event_path(@event) %> |
-  <%= link_to "Back to events", events_path %>
+<%# Кнопка лайка %>
+<%= render "favourite/button", favouriteable: @event %>
 
-  <%= button_to "Destroy this event", @event, method: :delete %>
-</div>
+<%# Кнопка отклика %>
+<%= render "response/button", responseable: @event %>
 
-<h2>Комментарии:</h2>
-<% @event.comments.each do |comment| %>
-  <div class="M_Comment">
-    <%= render comment %>
-    <p>
-      <%= link_to "Destroy Comment", [comment.event, comment], data: { turbo_stream: false, turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-    </p>
-  </div>
+<%# Респонсы %>
+<p>Откликнулось: <%= @event.responses.count %></p>
+
+<%# Количество лайков %>
+<p>Поставлено лайков: <%= @event.favourites.count %></p>
+
+<%# Список лайкнувших %>
+<% if @event.favourites.any? %>
+  <%# Лайкнувшие %>
+  <h3>Лайки от:</h3>
+    <% @event.favourites.includes(:user).each do |favourite| %>
+      <%= favourite.user.profile.name %>
+    <% end %>
+<% else %>
+  <p>Никто не лайкнул</p>
 <% end %>
 
-<h2>Добавить комментарий:</h2>
-<%= render "comments/form" %>
+<%# Редактировать и удалять ивент %>
+<div>
+  <%= link_to "Back to events", events_path %>
+  <% if can? [:manage], @event %>
+    <%= link_to "Edit this event", edit_event_path(@event) %>
+    <%= button_to "Destroy this event", @event, method: :delete %>
+  <% end %>
+</div>
+
+<%# Оставить комментарий %>
+<% if user_signed_in? %>
+  <h2>Добавить комментарий:</h2>
+  <%= render "comments/form", comment: Comment.new, commentable: @event %>
+<% end %>
+
+<%= turbo_stream_from @event, :comments %>
+
+<%# Список комментариев %>
+<h2>Комментарии:</h2>
+<div id="C_Comments">
+  <% @event.comments.no_replies.each do |comment| %>
+    <div class="M_Comment">
+      <%= render "comments/comment", comment: comment, commentable: @event %>
+    </div>
+  <% end %>
+</div>
