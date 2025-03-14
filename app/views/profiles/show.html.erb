@@ -29,7 +29,7 @@
 <h2>Интересные вам встречи (лайки)</h2>
 <div class="C_EventsAndMeets">
   <% @favourite_meets.each do |favourite_meet| %>
-    <%= link_to event_path(favourite_meet), class: 'M_EventCard' do %>
+    <%= link_to meet_path(favourite_meet), class: 'M_MeetCard' do %>
       <%= favourite_meet.hosted_at.strftime("%d/%m/%Y %H:%M") %>
       <%= render favourite_meet %>
     <% end %>
