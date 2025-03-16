@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_09_010456) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_16_145349) do
   create_table "comments", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_09_010456) do
     t.text "body"
     t.integer "user_id", null: false
     t.string "cover"
-    t.string "link"
+    t.string "contact"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_communities_on_user_id"

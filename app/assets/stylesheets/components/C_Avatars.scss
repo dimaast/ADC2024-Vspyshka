@@ -1,0 +1,12 @@
+.C_Avatars {
+    display: flex;
+    flex-direction: row;
+
+    a {
+        margin-left: -20px;
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+}

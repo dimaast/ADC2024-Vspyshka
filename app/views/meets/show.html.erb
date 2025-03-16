@@ -14,12 +14,34 @@
 <%= render "favourite/button", favouriteable: @meet %>
 <%= render "response/button", responseable: @meet %>
 
+<%# Список лайкнувших %>
+<% if @meet.favourites.any? %>
+  <%# Лайкнувшие %>
+  <h3>Лайки от:</h3>
+    <% @meet.favourites.includes(:user).each do |favourite| %>
+      <%= favourite.user.profile.name %>
+    <% end %>
+<% else %>
+  <p>Никто не лайкнул</p>
+<% end %>
+
+<%# Список откликнувшихся %>
+<% if @meet.responses.any? %>
+  <%# Откикнувшиеся %>
+  <h3>Отклики от:</h3>
+    <% @meet.responses.includes(:user).each do |response| %>
+      <%= response.user.profile.name %>
+    <% end %>
+<% else %>
+  <p>Никто не откликнулся</p>
+<% end %>
+
 <% if user_signed_in? %>
   <h2>Добавить комментарий:</h2>
   <%= render "comments/form", comment: Comment.new, commentable: @meet %>
 <% end %>
 
-<%= turbo_stream_from @event, :comments %>
+<%= turbo_stream_from @meet, :comments %>
 
 <h2>Комментарии:</h2>
 <div id="C_Comments">

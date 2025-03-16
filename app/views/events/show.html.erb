@@ -14,7 +14,7 @@
 <%# Кнопка отклика %>
 <%= render "response/button", responseable: @event %>
 
-<%# Респонсы %>
+<%# Количество откликов %>
 <p>Откликнулось: <%= @event.responses.count %></p>
 
 <%# Количество лайков %>
@@ -29,6 +29,17 @@
     <% end %>
 <% else %>
   <p>Никто не лайкнул</p>
+<% end %>
+
+<%# Список откликнувшихя %>
+<% if @event.responses.any? %>
+  <%# Лайкнувшие %>
+  <h3>Отклики от:</h3>
+    <% @event.responses.includes(:user).each do |response| %>
+      <%= response.user.profile.name %>
+    <% end %>
+<% else %>
+  <p>Никто не откликнулся</p>
 <% end %>
 
 <%# Редактировать и удалять ивент %>

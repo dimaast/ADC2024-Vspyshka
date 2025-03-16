@@ -13,7 +13,7 @@
 
   <div>
     <%= form.label :hosted_at, style: "display: block" %>
-    <%= form.datetime_field :hosted_at, min: Date.today %>
+    <%= form.datetime_field :hosted_at, min: DateTime.now.change(sec: 0) %>
   </div>
 
   <div>

@@ -6,9 +6,25 @@
 <h1>Встречи (<%= @meets.count %>)</h1>
 <div class="C_EventsAndMeets">
   <% @meets.each do |meet| %>
-    <%= link_to meet_path(meet), class: 'M_MeetCard' do %>
-      <%= render meet %>
-    <% end %>
+    <div class="M_MeetCard">
+      <%= link_to meet_path(meet) do %>
+        <%= render meet %>
+      <% end %>
+      <%# Список последних 3 откликнувшихся %>
+      <% if meet.responses.any? %>
+        <h3>Отклики от:</h3>
+        <div class="C_Avatars">
+          <% meet.responses.includes(user: :profile).last(3).each do |response| %>
+            <%= link_to profile_path(response.user.profile) do %>
+              <%= image_tag response.user.profile.avatar.url, class: "A_Avatar" if response.user.profile.avatar.present? %>
+            <% end %>
+          <% end %>
+          <% if meet.responses.count > 3 %>
+            <%= "+#{ meet.responses.count-meet.responses.includes(user: :profile).last(3).count }" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   <% end %>
 </div>
 
