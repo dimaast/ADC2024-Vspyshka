@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_26_200517) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_27_112736) do
   create_table "comments", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -140,6 +139,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_26_200517) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "taggings_count", default: 0
+    t.string "tag_type"
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 

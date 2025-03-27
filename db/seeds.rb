@@ -763,6 +763,7 @@ end
 def seed
   reset_db
   create_users(10)
+  create_tags
   create_events(20)
   create_faculties
   create_programs
@@ -897,6 +898,23 @@ def create_communities
   @communities.each do |community|
       community = Community.create(community)
       puts "Community #{ community.title } with id #{ community.id } just created!"
+  end
+end
+
+# Функция создания тегов
+def create_tags
+  tags = [
+    { name: 'раз', tag_type: 'tag' },
+    { name: 'два', tag_type: 'tag' },
+    { name: 'три', tag_type: 'tag' },
+    { name: 'четыре', tag_type: 'category' },
+    { name: 'пять', tag_type: 'category' },
+    { name: 'шесть', tag_type: 'category' }
+  ]
+
+  tags.each do |tag_data|
+    Tag.create(tag_data)
+    puts "Tag with #{ tag_data[:name] } was created"
   end
 end
 

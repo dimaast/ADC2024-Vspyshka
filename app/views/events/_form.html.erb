@@ -33,17 +33,22 @@
 
   <div>
     <label for="tags">Tags</label>
-    <% ['раз', 'два', 'три', 'четыре', 'пять', 'шесть'].each do |tag| %>
+    <% Tag.tags_list.each do |tag| %> <!-- Получаем только теги с типом 'tag' -->
       <div class="form-check">
-        <%= check_box_tag "event[tag_list][]", tag, false, class: 'form-check-input', id: "event_tag_list_#{tag}" %>
-        <%= label_tag "event_tag_list_#{tag}", tag, class: 'form-check-label', for: "event_tag_list_#{tag}" %>
+        <%= check_box_tag "event[tag_list][]", tag.name, false, class: 'form-check-input', id: "event_tag_list_#{tag.name}" %>
+        <%= label_tag "event_tag_list_#{tag.name}", tag.name, class: 'form-check-label', for: "event_tag_list_#{tag.name}" %>
       </div>
     <% end %>
   </div>
 
   <div>
-    <label for="">Category</label>
-    <%= form.text_area :category_list %>
+    <label for="tags">Categories</label>
+    <% Tag.categories_list.each do |tag| %> <!-- Получаем только теги с типом 'tag' -->
+      <div class="form-check">
+        <%= check_box_tag "event[category_list][]", tag.name, false, class: 'form-check-input', id: "event_category_list_#{tag.name}" %>
+        <%= label_tag "event_category_list_#{tag.name}", tag.name, class: 'form-check-label', for: "event_category_list_#{tag.name}" %>
+      </div>
+    <% end %>
   </div>
 
   <%# if current_user.present? && current_user.id == 1 %>
