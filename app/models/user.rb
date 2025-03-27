@@ -16,6 +16,6 @@ class User < ApplicationRecord
   after_create :create_profile
 
   def create_profile
-    Profile.create!(user: self, name: username)
+    Profile.create!(user: self, name: "ФИО")
   end
 end

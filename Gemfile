@@ -41,6 +41,7 @@ gem "carrierwave"
 gem "carrierwave-imageoptimizer"
 gem "cancancan"
 gem "rack-cors"
+gem "acts-as-taggable-on"
 gem "russian"
 
 group :development, :test do

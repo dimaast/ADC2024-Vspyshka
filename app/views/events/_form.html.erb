@@ -31,6 +31,21 @@
     <%= form.text_area :body %>
   </div>
 
+  <div>
+    <label for="tags">Tags</label>
+    <% ['раз', 'два', 'три', 'четыре', 'пять', 'шесть'].each do |tag| %>
+      <div class="form-check">
+        <%= check_box_tag "event[tag_list][]", tag, false, class: 'form-check-input', id: "event_tag_list_#{tag}" %>
+        <%= label_tag "event_tag_list_#{tag}", tag, class: 'form-check-label', for: "event_tag_list_#{tag}" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    <label for="">Category</label>
+    <%= form.text_area :category_list %>
+  </div>
+
   <%# if current_user.present? && current_user.id == 1 %>
     <div>
       <%= form.label :community_id, style: "display: block" %>

@@ -1,23 +1,6 @@
 <div id="<%= dom_id profile %>">
-  <p>
-    <strong>Name:</strong>
-    <%= profile.name %>
-  </p>
-
-  <p>
-    <strong>Body:</strong>
-    <%= profile.body %>
-  </p>
-
-  <p>
-    <strong>Contact:</strong>
-    <%= profile.contact %>
-  </p>
-
-  <p>
-    <strong>Avatar:</strong>
-  </p>
-  <%= image_tag profile.avatar.url, width: 200 if profile.avatar.present? %>
+  <h2><%= profile.user.username %> (<%= profile.name %>)</h2>
+  <%= image_tag profile.avatar.url, width: 100 if profile.avatar.present? %>
 
   <p>
     <strong>User:</strong>

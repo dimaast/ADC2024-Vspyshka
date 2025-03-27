@@ -6,6 +6,9 @@ class Event < ApplicationRecord
   has_many :favourites, as: :favouriteable
   has_many :responses, as: :responseable
   mount_uploader :cover, CoverUploader
+
+  acts_as_taggable_on :tags
+  acts_as_taggable_on :categories
 end
 
 # def as_json

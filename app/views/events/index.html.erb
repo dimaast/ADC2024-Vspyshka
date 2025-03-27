@@ -5,27 +5,43 @@
 
 <% content_for :title, "События" %>
 
-<h1>Твои события (<%= @user_events.count if @user_events.present? %>)</h1>
-<% if @user_events.present? %>
-  <div class="C_EventsAndMeets">
-    <% @user_events.each do |user_event| %>
-      <%= link_to event_path(user_event), class: 'M_EventCard' do %>
-        <%= user_event.hosted_at.strftime("%d/%m/%Y %H:%M") %>
-        <%= render user_event %>
-      <% end %>
+
+<div class="C_Tags">
+  <div class="A_Tag"><%= link_to "Все", events_path %></div>
+    <% Event.tag_counts_on(:categories).each do |tag| %>
+      <div class="A_Tag">
+        <%= link_to tag.name, tagged_events_path(tag.name) %>
+      </div>
     <% end %>
-  </div>
-<% else %>
-  <p>You have no events.</p>
-<% end %>
+</div>
+<div class="C_Tags">
+  <div class="A_Tag"><%= link_to "Все", events_path %></div>
+    <% Event.tag_counts_on(:tags).each do |tag| %>
+      <div class="A_Tag">
+        <%= link_to tag.name, tagged_events_path(tag.name) %>
+      </div>
+    <% end %>
+</div>
 
 <h1>События (<%= @events.count %>)</h1>
 <div class="C_EventsAndMeets">
   <% @events.each do |event| %>
-    <%= link_to event_path(event), class: 'M_EventCard' do %>
-      <%= event.hosted_at.strftime("%d/%m/%Y %H:%M") %>
-      <%= render event %>
-    <% end %>
+    <div class="M_EventCard">
+      <%= link_to event_path(event) do %>
+        <%= event.hosted_at.strftime("%d/%m/%Y %H:%M") %>
+        <%= render event %>
+      <% end %>
+      <div class="C_Tags">
+        <% event.tags.each do |tag| %>
+          <%= link_to tag.name, tagged_events_path(tag.name), class: 'A_Tag' %>
+        <% end %>
+      </div>
+      <div class="C_Tags">
+        <% event.categories.each do |tag| %>
+          <%= link_to tag.name, tagged_events_path(tag.name), class: 'A_Tag' %>
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>
 

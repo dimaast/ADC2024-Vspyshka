@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
     collection do
       get "archive"
+      get "/by_tag/:tag", to: "events#by_tag", as: "tagged"
     end
   end
 
