@@ -1,7 +1,8 @@
 <% set_meta_tags( 
   title: @profile.name,
   description: @profile.body, 
-  keywords: "Студорги, Студенческие организации, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
+  keywords: "Студорги, Студенческие организации, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ"
+  )%>
 
 <%= render @profile %>
 <%= render "subscription/button", subscriptionable: @profile %>

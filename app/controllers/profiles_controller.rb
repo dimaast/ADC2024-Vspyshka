@@ -26,6 +26,7 @@ class ProfilesController < ApplicationController
   # POST /profiles or /profiles.json
   def create
     @profile = Profile.new(profile_params)
+    @profile.tag_list = params[:profile][:tag_list].to_a.reject(&:blank?)
 
     respond_to do |format|
       if @profile.save
@@ -69,6 +70,6 @@ class ProfilesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def profile_params
-      params.require(:profile).permit(:name, :body, :contact, :avatar, :user_id)
+      params.require(:profile).permit(:name, :body, :contact, :avatar, :user_id, tag_list: [])
     end
 end

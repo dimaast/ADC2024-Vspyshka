@@ -1,0 +1,25 @@
+<div class="C_Filters">
+  <div>
+    <label for="category_select">Тип события:</label><br>
+    <select id="category_select" class="M_SelectBox" onchange="if(this.value) window.location.href=this.value;">
+      <option value="<%= events_path %>" <%= params[:tag] ? '' : 'selected' %>>Все</option>
+      <% Tag.categories_list.each do |tag| %>
+        <option value="<%= tagged_events_path(tag.name) %>" <%= params[:tag] == tag.name ? 'selected' : '' %>>
+          <%= tag.name %>
+        </option>
+      <% end %>
+    </select>
+  </div>
+
+  <div>
+    <label for="tag_select">Теги:</label><br>
+    <select id="tag_select" class="M_SelectBox" onchange="if(this.value) window.location.href=this.value;">
+      <option value="<%= events_path %>" <%= params[:tag] ? '' : 'selected' %>>Все</option>
+      <% Tag.tags_list.each do |tag| %>
+        <option value="<%= tagged_events_path(tag.name) %>" <%= params[:tag] == tag.name ? 'selected' : '' %>>
+          <%= tag.name %>
+        </option>
+      <% end %>
+    </select>
+  </div>
+</div>

@@ -11,39 +11,34 @@
     </div>
   <% end %>
 
+  <%# Дата %>
   <div>
     <%= form.label :hosted_at, style: "display: block" %>
     <%= form.datetime_field :hosted_at, min: DateTime.now.change(sec: 0) %>
   </div>
 
+  <%# Изображение %>
   <div>
     <%= form.label :cover, style: "display: block" %>
     <%= form.file_field :cover %>
   </div>
 
+  <%# Название %>
   <div>
     <%= form.label :title, style: "display: block" %>
     <%= form.text_field :title %>
   </div>
 
+  <%# Описание %>
   <div>
     <%= form.label :body, style: "display: block" %>
     <%= form.text_area :body %>
   </div>
 
+  <%# Тип события %>
   <div>
-    <label for="tags">Tags</label>
-    <% Tag.tags_list.each do |tag| %> <!-- Получаем только теги с типом 'tag' -->
-      <div class="form-check">
-        <%= check_box_tag "event[tag_list][]", tag.name, false, class: 'form-check-input', id: "event_tag_list_#{tag.name}" %>
-        <%= label_tag "event_tag_list_#{tag.name}", tag.name, class: 'form-check-label', for: "event_tag_list_#{tag.name}" %>
-      </div>
-    <% end %>
-  </div>
-
-  <div>
-    <label for="tags">Categories</label>
-    <% Tag.categories_list.each do |tag| %> <!-- Получаем только теги с типом 'tag' -->
+    <label for="tags">Тип события</label>
+    <% Tag.categories_list.each do |tag| %>
       <div class="form-check">
         <%= check_box_tag "event[category_list][]", tag.name, false, class: 'form-check-input', id: "event_category_list_#{tag.name}" %>
         <%= label_tag "event_category_list_#{tag.name}", tag.name, class: 'form-check-label', for: "event_category_list_#{tag.name}" %>
@@ -51,12 +46,56 @@
     <% end %>
   </div>
 
-  <%# if current_user.present? && current_user.id == 1 %>
+  <%# Теги %>
+  <div>
+    <label for="tags">Теги</label>
+    <% Tag.tags_list.each do |tag| %>
+      <div class="form-check">
+        <%= check_box_tag "event[tag_list][]", tag.name, false, class: 'form-check-input', id: "event_tag_list_#{tag.name}" %>
+        <%= label_tag "event_tag_list_#{tag.name}", tag.name, class: 'form-check-label', for: "event_tag_list_#{tag.name}" %>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Сообщество %>
+  <% if current_user.present? && current_user.id == 1 %>
     <div>
       <%= form.label :community_id, style: "display: block" %>
       <%= form.collection_select :community_id, current_user.communities.order(:title), :id, :title, {include_blank: "Индивидуальное событие"} %>
     </div>
-  <%# end %>
+  <% end %>
+  
+  <%# Место проведения %>
+  <div>
+    <%= form.label :placed_at, "Место проведения" %>
+    <%= form.collection_select :placed_at, ['Онлайн', 'Корпус 1', 'Корпус 2', 'Корпус 3', 'Корпус 4', 'Другое'], :to_s, :to_s, { include_blank: "Выберите корпус" } %>
+  </div>
+
+  <%# Место проведения, если ранее выбрано другое %>
+  <% if @event.placed_at == "Другое" %>
+    <div>
+      <%= form.label :placed_at, "Введите место проведения" %>
+      <%= form.text_field :placed_at %>
+    </div>
+  <% end %>
+
+  <%# Дополнительные данные (ссылка, аудитория, уточнения) %>
+  <% if @event.placed_at == "Онлайн" %>
+    <div>
+      <%= form.label :placed_additional, "Ссылка" %>
+      <%= form.text_field :placed_additional %>
+    </div>
+  <% elsif @event.placed_at == "Другое" %>
+    <div>
+      <%= form.label :placed_additional, "Дополнительные данные" %>
+      <%= form.text_field :placed_additional %>
+    </div>
+  <% elsif @event.placed_at.present? %>
+    <div>
+      <%= form.label :placed_additional, "Аудитория" %>
+      <%= form.text_field :placed_additional %>
+    </div>
+  <% end %>
 
   <div>
     <%= form.submit %>

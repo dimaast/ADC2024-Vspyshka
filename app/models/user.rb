@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  validates :username, presence: { message: "Необходимо указать имя пользователя" }
+
   has_many :events
   has_many :meets
   has_many :communities
@@ -12,10 +14,12 @@ class User < ApplicationRecord
   has_many :responses
   has_many :subscriptions
 
-  has_one :profile
+  has_one :profile, dependent: :destroy
   after_create :create_profile
 
   def create_profile
-    Profile.create!(user: self, name: "ФИО")
+    Profile.create!(user: self, name: "Ваше имя")
   end
+
+  acts_as_taggable_on :tags
 end

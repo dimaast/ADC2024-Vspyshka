@@ -17,7 +17,6 @@ class EventsController < ApplicationController
     render :index
   end
 
-
   def archive
     authorize! :archive, Event
     if current_user
@@ -41,7 +40,7 @@ class EventsController < ApplicationController
   # POST /events or /events.json
   def create
     @event = current_user.events.new(event_params)
-    @event.tag_list = params[:event][:tag_list].reject(&:blank?)
+    @event.tag_list = params[:event][:tag_list].to_a.reject(&:blank?)
 
     respond_to do |format|
       if @event.save
@@ -85,6 +84,6 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:title, :body, :hosted_at, :cover, :user_id, :community_id, tag_list: [], category_list: [])
+      params.require(:event).permit(:title, :body, :hosted_at, :cover, :user_id, :community_id, :placed_at, :placed_additional, tag_list: [], category_list: [])
     end
 end

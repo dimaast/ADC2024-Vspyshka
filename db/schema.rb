@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_27_112736) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_27_153435) do
   create_table "comments", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -48,6 +48,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_27_112736) do
     t.string "cover"
     t.integer "user_id"
     t.integer "community_id"
+    t.string "placed_at"
+    t.string "placed_additional"
   end
 
   create_table "faculties", force: :cascade do |t|

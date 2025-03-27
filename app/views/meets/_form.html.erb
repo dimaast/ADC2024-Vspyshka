@@ -21,6 +21,17 @@
     <%= form.text_area :body %>
   </div>  
 
+  <%# Теги %>
+  <div>
+    <label for="tags">Теги</label>
+    <% Tag.tags_list.each do |tag| %>
+      <div class="form-check">
+        <%= check_box_tag "meet[tag_list][]", tag.name, false, class: 'form-check-input', id: "meet_tag_list_#{tag.name}" %>
+        <%= label_tag "meet_tag_list_#{tag.name}", tag.name, class: 'form-check-label', for: "meet_tag_list_#{tag.name}" %>
+      </div>
+    <% end %>
+  </div>
+
   <div>
     <%= form.submit %>
   </div>

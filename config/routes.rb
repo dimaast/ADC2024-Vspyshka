@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   get "response/toggle"
   get "favourite/toggle"
 
-  resources :profiles
+  resources :profiles do
+    collection do
+      get "/by_tag/:tag", to: "events#by_tag", as: "tagged"
+    end
+  end
   resources :email_subscriptions, only: [ :create ]
 
   devise_for :users
@@ -23,6 +27,10 @@ Rails.application.routes.draw do
 
   resources :meets do
     resources :comments
+
+    collection do
+      get "/by_tag/:tag", to: "events#by_tag", as: "tagged"
+    end
   end
 
   namespace :admin do
@@ -35,6 +43,10 @@ Rails.application.routes.draw do
   namespace :api, format: "json" do
     namespace :v1 do
       resources :events, only: [ :index, :show ]
+      resources :meets, only: [ :index, :show ]
+      resources :communities, only: [ :index, :show ]
+      resources :profiles, only: [ :index, :show ]
+      resources :users, only: [ :index, :show ]
     end
   end
 

@@ -165,7 +165,7 @@
 # terminal          | создаем контроллер для модели            | rails g controller api/v1/events
 # write code        | controller/api/v1/events                 | def index (копируем из обычного)
 # write code        | config/routes                            | namespace :api, format: json do namespace :v1 do resources :events, only: [:index, :show]
-# write code        | views/welcome/index                      | <%= api_v1_events_url %> / <%= api_v1_events_path %>
+# write code        | # views/welcome/index                      | <%= api_v1_events_url %> / <%= api_v1_events_path %>
 # write code        | # controller/api/v1/events def index     | render json: @events.as_json
 # note              | # ограничить вывод полей                 | .as_json(except: :title) or .as_json(only: :title)
 # write code        | # models/event                           | def as_json { title: title }
@@ -759,6 +759,8 @@ end
       ]
     } ]
 
+@places = [ 'Покровский бульвар', 'Малая Пионерская', 'Онлайн', 'Другое' ]
+
 # Функция очистки и наполнения бд через сиды
 def seed
   reset_db
@@ -815,7 +817,8 @@ def create_events(quantity)
       user_id: user.id,
       cover: upload_event_cover_image,
       hosted_at: Time.now,
-      community_id: 1)
+      community_id: 1,
+      placed_at: @places.sample)
     puts "Event with id #{event.id} just created!"
   end
 end

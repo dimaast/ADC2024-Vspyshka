@@ -31,6 +31,17 @@
     <%= form.file_field :avatar %>
   </div>
 
+    <%# Теги %>
+  <div>
+    <label for="tags">Теги</label>
+    <% Tag.tags_list.each do |tag| %>
+      <div class="form-check">
+        <%= check_box_tag "profile[tag_list][]", tag.name, false, class: 'form-check-input', id: "profile_tag_list_#{tag.name}" %>
+        <%= label_tag "profile_tag_list_#{tag.name}", tag.name, class: 'form-check-label', for: "profile_tag_list_#{tag.name}" %>
+      </div>
+    <% end %>
+  </div>
+
   <div>
     <%= form.submit %>
   </div>

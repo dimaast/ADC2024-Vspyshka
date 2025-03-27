@@ -5,4 +5,6 @@ class Meet < ApplicationRecord
   has_many :responses, as: :responseable
 
   validates :body, presence: true, length: { minimum: 50 }
+
+  acts_as_taggable_on :tags
 end

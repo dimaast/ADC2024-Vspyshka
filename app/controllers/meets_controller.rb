@@ -7,6 +7,11 @@ class MeetsController < ApplicationController
     @meets = Meet.all
   end
 
+  def by_tag
+    @meets = Meet.tagged_with(params[:tag])
+    render :index
+  end
+
   # GET /meets/1 or /meets/1.json
   def show
   end
@@ -23,6 +28,7 @@ class MeetsController < ApplicationController
   # POST /meets or /meets.json
   def create
     @meet = current_user.meets.new(meet_params)
+    @meet.tag_list = params[:meet][:tag_list].to_a.reject(&:blank?)
 
     respond_to do |format|
       if @meet.save
@@ -66,6 +72,6 @@ class MeetsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def meet_params
-      params.require(:meet).permit(:body, :hosted_at, :user_id)
+      params.require(:meet).permit(:body, :hosted_at, :user_id, tag_list: [])
     end
 end
