@@ -43,6 +43,8 @@ gem "cancancan"
 gem "rack-cors"
 gem "acts-as-taggable-on"
 gem "russian"
+gem "devise-jwt"
+gem "jwt"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

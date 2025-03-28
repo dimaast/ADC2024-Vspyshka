@@ -42,11 +42,17 @@ Rails.application.routes.draw do
 
   namespace :api, format: "json" do
     namespace :v1 do
-      resources :events, only: [ :index, :show ]
-      resources :meets, only: [ :index, :show ]
+      resources :events, only: [ :index, :show, :create, :update, :destroy ]
+      resources :meets, only: [ :index, :show, :create, :update, :destroy ]
       resources :communities, only: [ :index, :show ]
       resources :profiles, only: [ :index, :show ]
       resources :users, only: [ :index, :show ]
+
+      devise_scope :user do
+        post "sign_up", to: "registrations#create"
+        post "sign_in", to: "sessions#create"
+        post "sign_out", to: "sessions#destroy"
+      end
     end
   end
 

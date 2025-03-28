@@ -371,11 +371,29 @@
 # <%= session.to_json %> сессия хранится на сервере
 # <%= cookies.to_json %> куки хранятся в браузере, на ios кук нет(
 
-# API на запись (JTI токены)
+# JTI токены для кук
 # rails g migration add_jti_to_users jti:string
 # в миграции , null: false add_index :users, :jti, unique: true
 # rails db:migrate
-# для юзер сидов добавляем jti:
+# для юзер сидов добавляем jti: SecureRandom.uuid
+# rails db:drop
+# rails db:seed
+# в юзер модель include Devise::JWT::RevocationStrategies::JTIMatcher devise :database_authenticatable, :jwt_authenticatable, jwt_revocation_strategy: self
+# gemfile gem "devise-jwt"
+# можно в целом убрать jti из юзер сидов
+# проверяем в апликейшн контроллере
+# def authenticate_user
+#   if current_user
+#     if cookies[:guest_token]
+#       puts cookies[:guest_token] == current_user.jti
+#     else
+#       cookies[:guest_token] = current_user.jti
+#     end
+#   end
+# end
+
+# API на запись (аутентификация)
+# config routes в api
 
 # Вводим текст
 @raw_text = "Дом Наркомфина — один из знаковых памятников архитектуры советского авангарда и конструктивизма. Построен в 1928—1930 годах по проекту архитекторов Моисея Гинзбурга, Игнатия Милиниса и инженера Сергея Прохорова для работников Народного комиссариата финансов СССР (Наркомфина). Автор замысла дома Наркомфина Гинзбург определял его как «опытный дом переходного типа». Дом находится в Москве по адресу: Новинский бульвар, дом 25, корпус 1. С начала 1990-х годов дом находился в аварийном состоянии, был трижды включён в список «100 главных зданий мира, которым грозит уничтожение». В 2017—2020 годах отреставрирован по проекту АБ «Гинзбург Архитектс», функционирует как элитный жилой дом. Отдельно стоящий «Коммунальный блок» (историческое название) планируется как место проведения публичных мероприятий."
@@ -794,6 +812,7 @@ def create_users(quantity)
         email: "user_#{i}@email.com",
         password: "testtest",
         username: "user#{i}"
+        # jti: SecureRandom.uuid
       }
 
       if i == 0
@@ -802,7 +821,7 @@ def create_users(quantity)
       end
 
       user = User.create!(user_data)
-      puts "User created with id #{user.id}"
+      puts "User created with id #{user.id} with JTI #{user.jti}"
       i += 1
   end
 end
