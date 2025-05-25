@@ -10,7 +10,7 @@ class WelcomeController < ApplicationController
   end
 
   def search
-    @items = PgSearch.multisearch(params['search'])
+    @items = PgSearch.multisearch(params['query'])
     puts @items.count
   end
 end
