@@ -71,5 +71,7 @@ Rails.application.routes.draw do
   get "welcome/index"
   get "welcome/about"
 
+  post "search", to: "welcome#search", as: "welcome_search"
+
   root "welcome#index"
 end
