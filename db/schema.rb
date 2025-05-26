@@ -10,12 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_27_232744) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_25_114617) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "comments", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.integer "comment_id"
     t.string "commentable_type"
     t.integer "commentable_id"
@@ -25,7 +28,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_27_232744) do
   create_table "communities", force: :cascade do |t|
     t.string "title"
     t.text "body"
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.string "cover"
     t.string "contact"
     t.datetime "created_at", null: false
@@ -61,7 +64,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_27_232744) do
   create_table "favourites", force: :cascade do |t|
     t.string "favouriteable_type"
     t.integer "favouriteable_id"
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_favourites_on_user_id"
@@ -70,10 +73,19 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_27_232744) do
   create_table "meets", force: :cascade do |t|
     t.text "body"
     t.datetime "hosted_at"
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_meets_on_user_id"
+  end
+
+  create_table "pg_search_documents", force: :cascade do |t|
+    t.text "content"
+    t.string "searchable_type"
+    t.bigint "searchable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -81,7 +93,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_27_232744) do
     t.text "body"
     t.string "contact"
     t.string "avatar"
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_profiles_on_user_id"
@@ -89,7 +101,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_27_232744) do
 
   create_table "programs", force: :cascade do |t|
     t.string "name"
-    t.integer "faculty_id", null: false
+    t.bigint "faculty_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["faculty_id"], name: "index_programs_on_faculty_id"
@@ -98,7 +110,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_27_232744) do
   create_table "responses", force: :cascade do |t|
     t.string "responseable_type"
     t.integer "responseable_id"
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_responses_on_user_id"
@@ -107,18 +119,18 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_27_232744) do
   create_table "subscriptions", force: :cascade do |t|
     t.string "subscriptionable_type"
     t.integer "subscriptionable_id"
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
   create_table "taggings", force: :cascade do |t|
-    t.integer "tag_id"
+    t.bigint "tag_id"
     t.string "taggable_type"
-    t.integer "taggable_id"
+    t.bigint "taggable_id"
     t.string "tagger_type"
-    t.integer "tagger_id"
+    t.bigint "tagger_id"
     t.string "context", limit: 128
     t.datetime "created_at", precision: nil
     t.string "tenant", limit: 128

@@ -1,4 +1,7 @@
 class Event < ApplicationRecord
+  include PgSearch::Model
+  multisearchable against: [:title, :body]
+
   validates :title, presence: true, length: { minimum: 5 }
   has_many :comments, as: :commentable, dependent: :destroy
   belongs_to :user, optional: true

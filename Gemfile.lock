@@ -227,6 +227,10 @@ GEM
     parser (3.3.7.0)
       ast (~> 2.4.1)
       racc
+    pg (1.5.9)
+    pg_search (2.3.7)
+      activerecord (>= 6.1)
+      activesupport (>= 6.1)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -338,14 +342,6 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    sqlite3 (2.5.0-aarch64-linux-gnu)
-    sqlite3 (2.5.0-aarch64-linux-musl)
-    sqlite3 (2.5.0-arm-linux-gnu)
-    sqlite3 (2.5.0-arm-linux-musl)
-    sqlite3 (2.5.0-arm64-darwin)
-    sqlite3 (2.5.0-x86_64-darwin)
-    sqlite3 (2.5.0-x86_64-linux-gnu)
-    sqlite3 (2.5.0-x86_64-linux-musl)
     ssrf_filter (1.2.0)
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
@@ -409,6 +405,8 @@ DEPENDENCIES
   jwt
   letter_opener
   meta-tags
+  pg
+  pg_search
   puma (>= 5.0)
   rack-cors
   rails (~> 7.2.2)
@@ -417,7 +415,6 @@ DEPENDENCIES
   sassc
   selenium-webdriver
   sprockets-rails
-  sqlite3 (>= 1.4)
   stimulus-rails
   turbo-rails
   tzinfo-data

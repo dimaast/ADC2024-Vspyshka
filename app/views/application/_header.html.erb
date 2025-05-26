@@ -8,6 +8,7 @@
   </div>
   
   <div>
+    <%= render "search_form" %>
     <% if user_signed_in? %>
       <%= link_to current_user.profile.name, profile_path(current_user.profile) %>
       <%= link_to current_user.email, edit_user_registration_path %>
