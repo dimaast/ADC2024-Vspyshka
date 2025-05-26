@@ -1,4 +1,9 @@
-<form action='<%= welcome_search_path %>' method = 'POST' data-turbo = 'false' data-controller = 'search'>
-<input type='text' placeholer ='Введи запрос', name='search' data-search-target = 'query'>
-<input type='submit' value ='Найти' data-action = 'click->search#getSearch'>
-</form>
+<div class="searchForm">
+  <form action="<%= welcome_search_path %>" data-turbo-stream="true" data-controller="search" data-search-url-value="<%= welcome_search_url %>">
+    <input type="text" placeholder="Введи запрос" name="query" data-search-target="query" data-action="input->search#getAutocomplete">
+    <input type="submit" value="Найти" hidden="true" data-search-target="submit">
+    <input type="submit" value="Найти" data-action="click->search#getSearch">
+  </form>
+  
+  <div class="searchFormAutocompleteResult" id="searchFormAutocompleteResult"></div>
+</div>

@@ -1,18 +1,29 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-  static targets = ['query'];
+  static targets = ['query', 'submit'];
+  static values = { url: String };
 
-  initialize() {
-    console.log('Search Controller Initialized')
+  // Actions
+
+  getAutocomplete() {
+    if (this.queryTarget.value.length >= 3) {
+      this.element.action = this.setQueryUrl();
+      this.submitTarget.click();
+    }
   }
-  connect() {
-    console.log('Search Controller Initialized')
-  }
+
   getSearch(e) {
     e.preventDefault();
-    const url = this.element.action;
+    window.location.href = this.setQueryUrl();
+  }
+
+  // Utilities
+
+  setQueryUrl() {
+    const url = this.urlValue;
     const query = this.queryTarget.value;
-    window.location.href = `${url}?query=${query}`;
+    const queryUrl = `${url}?query=${query}`;
+    return queryUrl;
   }
 }
