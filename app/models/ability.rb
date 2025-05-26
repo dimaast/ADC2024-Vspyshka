@@ -8,6 +8,7 @@ class Ability
     guest ||= User.new # guest user
 
     can :create, EmailSubscription
+    can [ :index, :by_tag ], Event
 
     return unless user.present?
     if user.role == "admin"

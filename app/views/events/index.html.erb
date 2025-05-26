@@ -16,14 +16,15 @@
         <%= event.hosted_at.strftime("%d/%m/%Y %H:%M") %>
         <%= render event %>
       <% end %>
+      <%= event.favourites.count %>
       <div class="C_Tags">
         <% event.tags.each do |tag| %>
-          <%= link_to tag.name, tagged_events_path(tag.name), class: 'A_Tag' %>
+          <%= link_to tag.name, by_tag_events_path(category: tag.name, tag: params[:tag]), class: 'A_Tag' %>
         <% end %>
       </div>
       <div class="C_Tags">
         <% event.categories.each do |tag| %>
-          <%= link_to tag.name, tagged_events_path(tag.name), class: 'A_Tag' %>
+          <%= link_to tag.name, by_tag_events_path(tag: tag.name, category: params[:category]), class: 'A_Tag' %>
         <% end %>
       </div>
     </div>

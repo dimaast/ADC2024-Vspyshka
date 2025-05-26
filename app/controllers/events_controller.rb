@@ -6,6 +6,9 @@ class EventsController < ApplicationController
 
   # GET /events or /events.json
   def index
+    @categories = Tag.categories_list
+    @tags = Tag.tags_list
+
     if current_user
       @user_events = current_user.events.where("hosted_at > ?", DateTime.now)
       @events = Event.where("hosted_at > ?", DateTime.now).order(:hosted_at)
@@ -13,7 +16,22 @@ class EventsController < ApplicationController
   end
 
   def by_tag
-    @events = Event.tagged_with(params[:tag])
+    @categories = Tag.categories_list
+    @tags = Tag.tags_list
+
+    @category = params[:category]
+    @tag = params[:tag]
+
+    @events = Event.where("hosted_at > ?", DateTime.now)
+
+    # Фильтрация по категории (типу события)
+    @events = @events.tagged_with(@category, on: :categories) if @category.present?
+
+    # Фильтрация по тегу
+    @events = @events.tagged_with(@tag, on: :tags) if @tag.present?
+
+    @events = @events.order(:hosted_at)
+
     render :index
   end
 
