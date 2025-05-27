@@ -1,4 +1,4 @@
-<div id="<%= dom_id event %>">
+<div class='eventAutocomplete'id="<%= dom_id event %>">
   <p><%= event.user.profile.name %></p>
   <% if event.community.nil? %>
     <p>Индивидуальное событие</p>
@@ -7,6 +7,7 @@
   <% end %>
   <h2><%= event.title %></h2>
   <%= image_tag event.cover.url, class: 'A_EventCover' if event.cover.present? %>
+  <p><%= event.body %></p>
   <div class="A_Tag"><%= event.placed_at %></div>
   <p><%= event.placed_additional %></p>
 </div>

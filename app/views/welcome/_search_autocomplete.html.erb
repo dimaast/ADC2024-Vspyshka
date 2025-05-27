@@ -1,0 +1,11 @@
+<div class="searchFormAutocompleteResult" id="searchFormAutocompleteResult">
+  <% items.each do |item| %>
+    <% if item.searchable_type == "Event" %>
+      <%= render "events/event_autocomplete", event: item.searchable %>
+    <% elsif item.searchable_type == "Meet" %>
+      <%= render "meets/meet_autocomplete", meet: item.searchable %>
+    <% elsif item.searchable_type == "Community" %>
+      <%= render "communities/community_autocomplete", community: item.searchable %>
+    <% end %>
+  <% end %>
+</div>
