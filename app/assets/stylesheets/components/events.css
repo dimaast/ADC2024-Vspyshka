@@ -9,7 +9,7 @@
   font-weight: 600;
 }
 
-/* Кнопка-ссылка */
+/* Кнопка-ссылка
 .A_Button {
   display: inline-block;
   text-decoration: none;
@@ -18,7 +18,7 @@
   border-radius: 4px;
   padding: 8px 16px;
   transition: background-color 0.2s ease;
-}
+} */
 
 /* Вариант primary для кнопки */
 .A_Button--primary {
