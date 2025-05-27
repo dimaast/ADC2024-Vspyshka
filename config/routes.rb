@@ -75,5 +75,15 @@ Rails.application.routes.draw do
   get "search", to: "welcome#search", as: "welcome_search"
   # post "search", to: "welcome#search", as: "welcome_search_page"
 
+  # Страница правила сервиса
+  get 'rules', to: 'welcome#rules', as: 'rules'
+
+  # Страница лиценз соглашение
+  get 'license_agreement', to: 'welcome#license_agreement', as: 'license_agreement'
+
+  # Страница о команде
+  get 'team', to: 'welcome#team', as: 'team'
+
+
   root "welcome#index"
 end

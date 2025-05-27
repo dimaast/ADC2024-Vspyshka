@@ -1,1 +1,46 @@
-<%= link_to "О проекте", welcome_about_url %>
+<footer class="SO_Footer">
+  <div class="O_FooterInner">
+    <!-- Блок брендинга -->
+    <div class="O_FooterBranding">
+      <div class="M_LogoBlock">
+        <h2 class="A_Logo">Вспышка</h2>
+        <p class="A_Tagline">мир крутится вокруг тебя</p>
+      </div>
+
+      <div class="M_FooterSocials">
+        <%= link_to 'https://vk.com/yourpage', target: "_blank", rel: "noopener", class: "A_Link A_SocialLink" do %>
+          <%= image_tag "vk.svg", alt: "VK", class: "Q_Icon" %>
+        <% end %>
+        <%= link_to 'https://t.me/yourchannel', target: "_blank", rel: "noopener", class: "A_Link A_SocialLink" do %>
+          <%= image_tag "telegram.svg", alt: "Telegram", class: "Q_Icon" %>
+        <% end %>
+        <%= link_to 'https://www.hse.ru', target: "_blank", rel: "noopener", class: "A_Link A_SocialLink" do %>
+          <%= image_tag "hse.svg", alt: "HSE", class: "Q_Icon" %>
+        <% end %>
+      </div>
+
+      <div class="M_LegalLinks">
+        <%= link_to "Правила сервиса",           rules_path,             class: "A_Link A_LegalLink" %>
+        <%= link_to "Лицензионное соглашение",   license_agreement_path, class: "A_Link A_LegalLink" %>
+      </div>
+    </div>
+
+    <!-- Навигационный блок -->
+    <div class="O_FooterNav">
+      <nav class="M_Nav">
+        <%= link_to "События",      events_path,          class: "A_Link A_NavLink" %>
+        <%= link_to "Встречи",      meets_path,           class: "A_Link A_NavLink" %>
+        <%= link_to "Сообщества",   communities_path,     class: "A_Link A_NavLink" %>
+        <%= link_to "О команде",    team_path,            class: "A_Link A_NavLink" %>
+        <%= link_to "О проекте",    welcome_about_path,   class: "A_Link A_NavLink" %>
+      </nav>
+    </div>
+
+    <!-- Блок обновлений -->
+    <div class="O_FooterUpdates">
+      <h3 class="A_Heading A_UpdatesTitle">Следи за обновлениями</h3>
+      <p class="A_Text">Москва, 2025</p>
+    </div>
+  </div>
+</footer>
+

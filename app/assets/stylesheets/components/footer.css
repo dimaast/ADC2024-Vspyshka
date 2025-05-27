@@ -1,0 +1,88 @@
+.SO_Footer {
+  background: linear-gradient(to top, #6C63FF, rgba(108, 99, 255, 0.1));
+  padding: 60px 20px;
+  color: #000;
+}
+
+.O_FooterInner {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.O_FooterBranding,
+.O_FooterNav,
+.O_FooterUpdates {
+  flex: 1;
+}
+.O_FooterNav    { text-align: center; }
+.O_FooterUpdates{ text-align: right; }
+
+.M_LogoBlock {
+  margin-bottom: 24px;
+}
+
+.A_Logo {
+  font-size: 32px;
+  margin: 0;
+}
+.A_Tagline {
+  font-size: 14px;
+  margin: 8px 0 24px;
+}
+
+.M_FooterSocials {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.Q_Icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.A_Link {
+  text-decoration: none;
+  color: inherit;
+}
+.A_Link:hover {
+  text-decoration: underline;
+}
+
+.A_SocialLink {
+  display: inline-block;
+}
+
+.M_LegalLinks {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.A_LegalLink {
+  font-size: 12px;
+}
+
+.M_Nav {
+  display: flex;
+  flex-direction: column;
+}
+.A_NavLink {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.A_Heading {
+  margin: 0 0 16px;
+  font-weight: normal;
+}
+.A_UpdatesTitle {
+  font-size: 24px;
+}
+
+.A_Text {
+  font-size: 12px;
+  margin: 0;
+}

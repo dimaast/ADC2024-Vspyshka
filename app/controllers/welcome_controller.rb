@@ -13,4 +13,17 @@ class WelcomeController < ApplicationController
     @items = PgSearch.multisearch(params['query'])
     puts @items.count
   end
+  
+  # Правила сервиса
+  def rules
+  end
+
+  # Лицензионное соглашение
+  def license_agreement
+  end
+
+  # О команде
+  def team
+  end
+
 end
