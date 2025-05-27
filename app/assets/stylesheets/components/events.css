@@ -1,15 +1,33 @@
-/* ================================
-   Atoms
-   ================================ */
-
-/* Заголовок карточки события */
+.Q_BookmarkIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: none;
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+}
+.M_EventImageWrapper {
+  position: relative;
+}
 .A_EventTitle {
   margin: 0 0 8px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--black)
 }
 
-/* Кнопка-ссылка */
+.M_EventAuthor {
+  font-size: 18px;
+}
+.A_EventCover {
+  border-radius: 8px;
+}
+
+.A_EventDate {
+  font-size: 22px;
+  color: var(--violet);
+}
 .A_Button {
   display: inline-block;
   text-decoration: none;
@@ -20,7 +38,6 @@
   transition: background-color 0.2s ease;
 }
 
-/* Вариант primary для кнопки */
 .A_Button--primary {
   background-color: #6C63FF;
   color: #fff;
@@ -29,7 +46,6 @@
   background-color: #574fc2;
 }
 
-/* Тег-ярлык */
 .A_Tag {
   display: inline-block;
   font-size: 12px;
@@ -44,11 +60,6 @@
   background-color: #dde0ff;
 }
 
-
-/* ================================
-   Containers / Organisms
-   ================================ */
-
 /* Сетка со списком событий и встреч */
 .C_EventsAndMeets {
   display: grid;
@@ -57,20 +68,14 @@
   margin: 24px 0;
 }
 
-
-/* ================================
-   Molecules
-   ================================ */
-
 /* Карточка события */
-.M_EventCard {
+/* .M_EventCard {
   background: #fff;
   border: 1px solid #eaeaea;
   border-radius: 8px;
   padding: 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+} */
 .M_EventCard:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -98,20 +103,3 @@
   margin-top: 12px;
 }
 
-
-/* ================================
-   New Event Button (optional)
-   ================================ */
-
-/* Если вы добавите в вью класс M_NewEventLink и обернёте в A_Button--primary */
-.M_NewEventLink {
-  margin-top: 24px;
-}
-
-/* Или «хак» без изменения вью: */
-a[href$="/events/new"] {
-  @extend .A_Button;
-  @extend .A_Button--primary;
-  margin-top: 24px;
-  display: inline-block;
-}

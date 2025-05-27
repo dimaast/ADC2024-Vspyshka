@@ -6,7 +6,7 @@
 <%# Ивент %>
 <p>Случайное число: <%= rand(1..100) %></p>
 
-<%= render @event %>
+<%= render partial: 'event_card', locals: { event: @event } %>
 
 <%# Кнопка лайка %>
 <%= render "favourite/button", favouriteable: @event %>

@@ -4,9 +4,6 @@
 <p><%#= localize(@events.count, "событие", "события", "событий")  %></p>
 <div class="C_EventsAndMeets">
   <% @events.each do |event| %>
-    <%= link_to event_path(event), class: 'M_EventCard' do %>
-      <%= event.hosted_at.strftime("%d/%m/%Y") %>
-      <%= render event %>
-    <% end %>
+    <%= render partial: 'event_card', locals: { event: event } %>
   <% end %>
 </div>

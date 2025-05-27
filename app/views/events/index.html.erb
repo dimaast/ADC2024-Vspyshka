@@ -1,7 +1,8 @@
 <% set_meta_tags(
-  title: "События",
+  title:       "События",
   description: "Все события Вышки для студентов и работников университета",
-  keywords: "События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
+  keywords:    "События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ"
+) %>
 
 <% content_for :title, "События" %>
 
@@ -11,24 +12,8 @@
 
 <div class="C_EventsAndMeets">
   <% @events.each do |event| %>
-    <div class="M_EventCard">
-      <%= link_to event_path(event) do %>
-        <%= event.hosted_at.strftime("%d/%m/%Y %H:%M") %>
-        <%= render event %>
-      <% end %>
-      <%= event.favourites.count %>
-      <div class="C_Tags">
-        <% event.tags.each do |tag| %>
-          <%= link_to tag.name, by_tag_events_path(category: tag.name, tag: params[:tag]), class: 'A_Tag' %>
-        <% end %>
-      </div>
-      <div class="C_Tags">
-        <% event.categories.each do |tag| %>
-          <%= link_to tag.name, by_tag_events_path(tag: tag.name, category: params[:category]), class: 'A_Tag' %>
-        <% end %>
-      </div>
-    </div>
+    <%= render partial: 'event_card', locals: { event: event } %>
   <% end %>
 </div>
 
-<%= link_to "New event", new_event_path %>
+<%= link_to "New event", new_event_path, class: "A_Button A_Button--primary" %>

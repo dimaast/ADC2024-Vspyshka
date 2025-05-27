@@ -1,0 +1,42 @@
+<%# app/views/events/_event_card.html.erb %>
+<div id="<%= dom_id(event) %>" class="M_EventCardDetailed">
+  <%# Ссылка на полную страницу события, включает картинку, избранное, заголовок и дату %>
+  <%= link_to event_path(event), class: 'M_EventCardDetailed__link' do %>
+    <div class="M_EventImageWrapper">
+      <% if event.cover.present? %>
+        <%= image_tag event.cover.url, class: "A_EventCover" %>
+      <% end %>
+      <button type="button" class="Q_BookmarkIcon" aria-label="Добавить в избранное">
+        <%= image_tag "bookmark.svg", alt: "Закладка" %>
+      </button>
+    </div>
+
+    <h2 class="A_EventTitle"><%= event.title %></h2>
+    <time class="A_EventDate"><%= event.hosted_at.strftime("%d/%m/%Y %H:%M") %></time>
+  <% end %>
+
+  <%# Автор события %>
+  <div class="M_EventAuthor">
+    <span class="A_EventAuthorName">
+      <%= event.community.present? ? event.community.title : event.user.profile.name %>
+    </span>
+  </div>
+
+  <%# Теги (tags) %>
+  <div class="C_Tags">
+    <% event.tags.each do |tag| %>
+      <%= link_to tag.name,
+                  by_tag_events_path(category: tag.name, tag: params[:tag]),
+                  class: 'A_Tag' %>
+    <% end %>
+  </div>
+
+  <%# Категории (categories) %>
+  <div class="C_Tags">
+    <% event.categories.each do |category| %>
+      <%= link_to category.name,
+                  by_tag_events_path(tag: category.name, category: params[:category]),
+                  class: 'A_Tag' %>
+    <% end %>
+  </div>
+</div>
