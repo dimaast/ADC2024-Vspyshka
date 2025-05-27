@@ -1,0 +1,21 @@
+.A_Button {
+    &.NavbarButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 41px;
+        height: 41px;
+        border-radius: 12px;
+
+        &.SearchButton {
+            background-color: #FBFBFB;
+            border: 1px solid #DDDDDD;
+        }
+
+        &.AddButton {
+            background-color: #0F0F0F;
+        }
+    }
+
+
+}

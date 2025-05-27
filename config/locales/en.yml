@@ -31,3 +31,6 @@ en:
   hello: "Hello world"
   event: "Event"
   meet: "Meet"
+  time:
+    formats:
+      myformat: "%a, %d %B %H:%M"

@@ -1,0 +1,37 @@
+<nav class="O_Navbar">
+    <div class="W_NavbarPageLinks">
+        <%= link_to "События", events_url, class: "A_NavbarPageLink" %>
+        <%= link_to "Встречи", meets_url, class: "A_NavbarPageLink" %>
+        <%= link_to "Сообщества", communities_url, class: "A_NavbarPageLink" %>
+    </div>
+    <div class="A_NavbarLogoLink"></div>
+    <div class="W_NavbarButtons">
+        <div class="A_Button NavbarButton SearchButton" id="SearchButton">
+            <div class="Q_Icon MIcon IconSearch"></div>
+        </div>
+        <div class="A_Button NavbarButton AddButton" id="AddButton">
+            <div class="Q_Icon MIcon IconAdd"></div>
+        </div>
+        <div class="A_NavbarProfileButton">
+            <div>
+                <% if user_signed_in? %>
+                    <%= link_to profile_path(current_user.profile) do %>
+                        <% if current_user.profile.avatar.present? && current_user.profile.avatar.url.present? %>
+                            <%= image_tag(current_user.profile.avatar.url, class: "A_NavbarAvatar") %>
+                        <% else %>
+                            <div class="A_NavbarAvatar">
+                                <div class="Q_Icon MIcon IconProfile"></div>
+                            </div>
+                        <% end %>
+                    <% end %>
+                    <%# link_to current_user.email, edit_user_registration_path %>
+                    <%# link_to "Выйти", destroy_user_session_path, data: { "turbo-method": :delete } %>
+                <% else %>
+                    <%= link_to "Войти", new_user_session_path %>
+                    <%= link_to "Зарегистрироваться", new_user_registration_path %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    
+</nav>
