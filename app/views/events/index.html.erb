@@ -13,7 +13,8 @@
   <% @events.each do |event| %>
     <div class="M_EventCard">
       <%= link_to event_path(event) do %>
-        <%= event.hosted_at.strftime("%d/%m/%Y %H:%M") %>
+        <%# event.hosted_at.strftime("%a %d/%m/%Y %H:%M") %>
+        <%= I18n.localize(event.created_at.to_time, format: :myformat, :locale => :ru)  %>
         <%= render event %>
       <% end %>
       <%= event.favourites.count %>
