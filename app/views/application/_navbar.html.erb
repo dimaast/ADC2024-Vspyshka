@@ -4,11 +4,11 @@
         <%= link_to "Встречи", meets_url, class: "A_NavbarPageLink" %>
         <%= link_to "Сообщества", communities_url, class: "A_NavbarPageLink" %>
     </div>
-    <div class="A_NavbarLogoLink"></div>
+    <%= link_to "", root_url, class: "A_NavbarLogoLink" %>
     <div class="W_NavbarButtons">
-        <div class="A_Button NavbarButton SearchButton" id="SearchButton">
+        <button class="A_Button NavbarButton SearchButton" id="SearchButton">
             <div class="Q_Icon MIcon IconSearch"></div>
-        </div>
+        </button>
         <div class="A_Button NavbarButton AddButton" id="AddButton">
             <div class="Q_Icon MIcon IconAdd"></div>
         </div>
@@ -33,5 +33,5 @@
             </div>
         </div>
     </div>
-    
 </nav>
+<%= render "search_form" %>
