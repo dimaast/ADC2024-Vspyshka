@@ -1,13 +1,12 @@
 .SO_Footer {
-  background: linear-gradient(to top, #947BFF, rgba(108, 99, 255, 0.1));
   padding: 60px 20px;
-  color: #000;
+  color: var(--black);
+  width: 100%;
 }
 
 .O_FooterInner {
   display: flex;
   justify-content: space-between;
-  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -45,7 +44,7 @@
   color: inherit;
 }
 .A_Link:hover {
-  text-decoration: underline;
+  
 }
 
 .A_SocialLink {

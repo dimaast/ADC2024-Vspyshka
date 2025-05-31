@@ -9,6 +9,12 @@ a {
 body {
     padding: 40px 150px 0px 150px;
     font-family: 'TT Interphases Educational', sans-serif;
+    background-color: var(--almostwhite);
+
+    background:
+    url('grid_bottom.svg') no-repeat top center,
+    url('grid_bottom.svg') no-repeat bottom center,
+    linear-gradient(to bottom, #ffffff 0%, #6C63FF 100%);
 }
 
 h1 {
