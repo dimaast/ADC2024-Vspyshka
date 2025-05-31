@@ -1,0 +1,12 @@
+<div id="<%= dom_id(meet) %>" class="M_MeetCard">
+  <div class="M_MeetContent">
+   <div class="M_MeetHeader">
+    <p class="A_MeetAuthor"><%= meet.user.profile.name %></p>
+    <button type="button" class="Q_BookmarkIconNoBg" aria-label="Добавить в избранное">
+      <%= image_tag "bookmarknobg.svg", alt: "Закладка" %>
+    </button>
+    </div>
+    <p class="A_MeetText"><%= meet.body %></p>
+    <time class="A_MeetDate"><%= meet.hosted_at.strftime("%d/%m/%Y %H:%M") %></time>
+  </div>
+</div>
