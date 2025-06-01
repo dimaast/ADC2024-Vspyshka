@@ -1,0 +1,26 @@
+# <%# Этот паршл подключается из navbar прямо во вложении NotificationsWrapper %>
+# <% return unless current_user %>
+
+# <%# Панель уведомлений (скрыта изначально атрибутом hidden) %>
+#   <!-- Счетчик «Уведомления» сверху -->
+#   <div class="notificationsCounter">
+#     Уведомления
+#     <span data-notifications-target="counter">
+#       <%= current_user.unread_notifications.count %>
+#     </span>
+#   </div>
+
+#   <!-- Список всех непрочитанных уведомлений -->
+#   <div data-notifications-target="list" class="notificationsList">
+#     <% current_user.unread_notifications.each do |notification| %>
+#       <% comment = Comment.find_by(id: notification.comment_id) %>
+#       <% if comment %>
+#         <% parent = comment.commentable %>
+#         <% url = polymorphic_url(parent, anchor: "comment_#{comment.id}") %>
+#         <div class="notification">
+#           <%= link_to notification.body, url %>
+#         </div>
+#       <% end %>
+#     <% end %>
+#   </div>
+# </div>

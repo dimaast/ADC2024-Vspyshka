@@ -1,0 +1,299 @@
+/* -----------------------
+   Профиль: обёртка
+   ----------------------- */
+.A_NavbarProfileWrapper {
+  position: relative;
+  display: inline-block;
+  margin-left: 16px;
+}
+
+/* -----------------------
+   Кнопка-аватар
+   ----------------------- */
+.A_NavbarProfileButton {
+  background-color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+.A_NavbarProfileButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Аватар внутри кнопки */
+.A_NavbarAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.A_NavbarAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* -----------------------
+   Выпадающее меню
+   ----------------------- */
+.M_ProfileDropdownMenu {
+  position: absolute;
+  top: 48px; /* немножко ниже кнопки */
+  right: 0;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+  min-width: 160px;
+  z-index: 100;
+}
+
+/* Каждый пункт меню */
+.M_ProfileMenuItem {
+  margin: 0;
+  padding: 0;
+}
+
+/* Ссылка/кнопка внутри меню */
+.A_ProfileMenuLink {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+.A_ProfileMenuLink:hover {
+  background-color: #f5f5f5;
+}
+
+/* Если нужно стилизовать ссылку «Войти / Зарегистрироваться» */
+.A_NavbarAuthLink {
+  margin-left: 12px;
+  font-size: 14px;
+  color: #000;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.A_NavbarAuthLink:hover {
+  color: #6C63FF;
+}
+
+
+/* --------------------------------------------------------------------
+   Базовый стиль для панели уведомлений (скрыта по умолчанию)
+   -------------------------------------------------------------------- */
+.NotificationsPanel {
+  position: absolute;
+  top: 60px;              /* пример: чуть ниже навбара */
+  right: 16px;            /* пример: справа выравниваем */
+  width: 300px;           /* задайте нужную ширину */
+  max-height: 400px;      /* например, можно ограничить высоту и сделать прокрутку */
+  overflow-y: auto;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 8px 0;
+  z-index: 100;           /* чтобы панель была поверх прочих блоков */
+  display: none;          /* скрываем по умолчанию */
+}
+
+/* --------------------------------------------------------------------
+   Когда у панели есть класс .is-open, переключаем display: block
+   -------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------
+   Стили для счётчика «Уведомления» в шапке панели
+   -------------------------------------------------------------------- */
+.notificationsCounter {
+  padding: 8px 16px;
+  font-weight: bold;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------
+   Стили для списка уведомлений внутри */
+.notificationsList {
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+/* --------------------------------------------------------------------
+   Каждый элемент уведомления */
+.notification {
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.notification:last-child {
+  border-bottom: none;
+}
+
+.notification a {
+  text-decoration: none;
+  color: #333;
+}
+
+.notification:hover {
+  background-color: #f9f9f9;
+}
+
+/* --------------------------------------------------------------------
+   Класс “notification--new” (новое уведомление подсветим) */
+.notification--new {
+  background-color: #fffbea; /* лёгкий жёлтый фон, на ваше усмотрение */
+}
+
+/* --------------------------------------------------------------------
+   Стили для иконки-кнопки “NotificationsButton” */
+.NavbarButton.NotificationsButton {
+  position: relative;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* «Красная точка», если есть непрочитанные */
+.NotificationDot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  background-color: #e02d2d;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Класс “has-unread” можно дублировать поверх кнопки, если нужно добавить анимацию */
+.NavbarButton.has-unread .NotificationDot {
+  display: inline-block;
+}
+/* -------------------
+   Базовое скрытие панели
+   ------------------- */
+.NotificationsPanel {
+  position: absolute;
+  top: 60px;           /* отступ от верха, подстраивайте по своему макету */
+  right: 16px;         /* отступ от правого края навбара */
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 0;
+  z-index: 1000;
+  display: none;       /* скрываем по умолчанию */
+}
+
+/* -------------------
+   Когда класс .is-open — показываем панель
+   ------------------- */
+
+
+/* -------------------
+   Стили для «шапки» панели с заголовком + счётчиком
+   ------------------- */
+.notificationsCounter {
+  padding: 12px 16px;
+  font-weight: bold;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* -------------------
+   Контейнер, в котором лежат все уведомления
+   ------------------- */
+.notificationsList {
+  max-height: 340px; /* чуть меньше, чтобы счётчик всегда оставался видимым */
+  overflow-y: auto;
+}
+
+/* -------------------
+   Приключенная «новая» подсветка для каждого уведомления
+   ------------------- */
+.notification--new a {
+  background-color: #fffbea;
+}
+
+/* -------------------
+   Каждый элемент уведомления
+   ------------------- */
+.notification {
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.notification:last-child {
+  border-bottom: none;
+}
+
+.notification a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+
+.notification:hover {
+  background-color: #f9f9f9;
+}
+
+/* -------------------
+   Стили для кнопки-колокольчика
+   ------------------- */
+.NotificationsWrapper .NotificationsButton {
+  position: relative;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 16px; /* при необходимости */
+}
+
+/* «красная точка» для непрочитанных */
+.NotificationDot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  background-color: #e02d2d;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Если у кнопки есть класс has-unread, точка остаётся видимой */
+.NotificationsButton.has-unread .NotificationDot {
+  display: inline-block;
+}

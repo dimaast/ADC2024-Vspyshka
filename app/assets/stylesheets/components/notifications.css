@@ -1,0 +1,208 @@
+/* --------------------------------------------------
+   1) Стиль для иконки «колокольчик»
+   -------------------------------------------------- */
+.IconNotifications {
+  width: 40px;   /* исходный размер иконки (подберите под свой макет) */
+  height: 40px;
+  background-image: url("notifications.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* --------------------------------------------------
+   2) Стиль для кнопки «колокольчик» (.NotificationsButton)
+   -------------------------------------------------- */
+.NavbarButton.NotificationsButton {
+  position: relative;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 16px; /* отступ слева от предыдущего элемента (по надобности) */
+}
+
+/* «красная точка» для непрочитанных */
+.NotificationDot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  background-color: #e53935;
+  border-radius: 50%;
+  display: none;
+}
+
+/* Если у кнопки есть класс has-unread, точка остаётся видимой */
+.NotificationsButton.has-unread .NotificationDot {
+  display: inline-block;
+}
+
+
+/* --------------------------------------------------
+   3) Стиль для панели уведомлений (скрыта по умолчанию)
+   -------------------------------------------------- */
+/* Сам контейнер панели */
+#notificationsPanel {
+  display: none;              /* скрываем по умолчанию */
+  position: absolute;
+  top: 60px;                  /* чуть ниже навбара — подстроить по высоте navbar */
+  right: 16px;                /* отступ справа под navbar */
+  width: 300px;               /* нужная ширина панели */
+  max-height: 400px;          /* ограниченная высота + скролл */
+  overflow-y: auto;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 0;
+  z-index: 1000;              /* чтобы панель была поверх других элементов */
+}
+
+
+/* «Шапка» панели: заголовок + счётчик */
+.notificationsCounter {
+  padding: 12px 16px;
+  font-weight: bold;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fafafa;
+}
+
+/* Список внутри панели */
+.notificationsList {
+  max-height: 340px;  /* чуть меньше, чтобы счётчик не улетел за скролл */
+  overflow-y: auto;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+/* Каждый элемент уведомления */
+.notification {
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.notification:last-child {
+  border-bottom: none;
+}
+
+.notification a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+
+.notification:hover {
+  background-color: #f9f9f9;
+}
+
+/* Подсветка только что пришедших уведомлений */
+.notification--new {
+  background-color: #fffbea; /* лёгкий жёлтый фон */
+}
+
+
+/* Скрываем панель по умолчанию */
+#notificationsPanel {
+  display: none;
+  position: absolute;
+  top: 60px;   /* подстройте под высоту вашего навбара */
+  right: 16px; /* отступ от правого края */
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+/* Когда у панели есть класс is-open — показываем её */
+#notificationsPanel.is-open {
+  display: block;
+}
+
+/* Счетчик вверху панели */
+.notificationsCounter {
+  padding: 12px 16px;
+  font-weight: bold;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fafafa;
+}
+
+/* Список уведомлений внутри */
+.notificationsList {
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+/* Один элемент уведомления */
+.notification {
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.notification a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+}
+
+.notification:hover {
+  background-color: #f9f9f9;
+}
+
+/* Подсветка только что пришедших уведомлений */
+.notification--new {
+  background-color: #fffbea;
+}
+
+/* Стили для кнопки-колокольчика */
+.NavbarButton.NotificationsButton {
+  position: relative;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 16px;
+}
+
+/* «Красная точка» у кнопки */
+.NotificationDot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  background-color: #e53935;
+  border-radius: 50%;
+  display: none;
+}
+
+/* Если есть непрочитанные, точка должна быть видимой */
+.NotificationsButton.has-unread .NotificationDot {
+  display: inline-block;
+}
+
+/* Иконка колокольчика (SVG через asset pipeline) */
+.IconNotifications {
+  width: 24px;
+  height: 24px;
+  background-image: url("notifications.svg");
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  background-position: center;
+}

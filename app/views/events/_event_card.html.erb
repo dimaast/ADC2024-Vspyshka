@@ -1,5 +1,6 @@
 <%# app/views/events/_event_card.html.erb %>
 <div id="<%= dom_id(event) %>" class="M_EventCardDetailed">
+ <%= event.user.email %>
   <%# Ссылка на полную страницу события, включает картинку, избранное, заголовок и дату %>
   <%= link_to event_path(event), class: 'M_EventCardDetailed__link' do %>
     <div class="M_EventImageWrapper">

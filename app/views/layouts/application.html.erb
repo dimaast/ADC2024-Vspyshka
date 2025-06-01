@@ -7,6 +7,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%= action_cable_meta_tag %>
+
+
     <%= yield :head %>
 
     <link rel="manifest" href="/manifest.json">
@@ -17,7 +20,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body data-controller="notifications">
   <p style="color: red"><%= alert %></p>
     <%= render "navbar" %>
     <%= yield %>

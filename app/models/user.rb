@@ -13,9 +13,11 @@ class User < ApplicationRecord
   has_many :meets
   has_many :communities
   has_many :comments
+  has_many :notifications
   has_many :favourites
   has_many :responses
   has_many :subscriptions
+  has_many :notifications, dependent: :destroy
 
   has_one :profile, dependent: :destroy
   after_create :create_profile
@@ -23,6 +25,11 @@ class User < ApplicationRecord
   def create_profile
     Profile.create!(user: self, name: "Ваше имя")
   end
+
+def unread_notifications
+  notifications.where(read: false)
+end
+
 
   acts_as_taggable_on :tags
 end

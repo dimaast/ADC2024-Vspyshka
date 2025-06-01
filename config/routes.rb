@@ -33,7 +33,17 @@ Rails.application.routes.draw do
       get "/by_tag/:tag", to: "events#by_tag", as: "tagged"
     end
   end
+   
+  #уведы !!!
+  # resources :notifications, only: [] do
+  #   collection do
+  #     post :mark_all_read
+  #   end
+  # end
 
+    # Маршрут для пометки всех уведомлений прочитанными
+  post "/notifications/mark_all_read", to: "notifications#mark_all_read"
+  
   namespace :admin do
     resources :programs
     resources :faculties
