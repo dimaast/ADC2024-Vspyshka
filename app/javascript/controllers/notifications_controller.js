@@ -1,5 +1,3 @@
-// app/javascript/controllers/notifications_controller.js
-
 import { Controller } from "@hotwired/stimulus"
 import consumer from "../channels/consumer"
 
@@ -25,7 +23,7 @@ export default class extends Controller {
       }
     )
 
-    // Закрываем панель, если клик произошёл вне её области
+    // Закрываем панель, если кликнуть мимо
     this._outsideClickHandler = this.closeIfClickedOutside.bind(this)
     window.addEventListener("click", this._outsideClickHandler)
   }

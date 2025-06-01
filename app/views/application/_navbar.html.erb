@@ -15,10 +15,38 @@
       <div class="Q_Icon MIcon IconSearch"></div>
     </button>
 
-    <!-- Добавить -->
-    <div class="A_Button NavbarButton AddButton" id="AddButton">
+    <!-- ► Блок «Добавить» с выпадающим меню -->
+    <div
+      class="A_Button NavbarButton AddButton"
+      id="AddButton"
+      data-controller="add-dropdown"
+      data-action="click->add-dropdown#toggle"
+    >
       <div class="Q_Icon MIcon IconAdd"></div>
+
+      <!-- Само выпадающее меню -->
+      <div
+        class="AddDropdownMenu"
+        data-add-dropdown-target="menu"
+        hidden
+      >
+        <ul class="AddDropdownList">
+          <li class="AddDropdownItem">
+            <%= link_to new_event_path, class: "AddDropdownLink" do %>
+              <div class="Q_Icon MIcon IconEvent"></div>
+              Новое событие
+            <% end %>
+          </li>
+          <li class="AddDropdownItem">
+            <%= link_to new_meet_path, class: "AddDropdownLink" do %>
+              <div class="Q_Icon MIcon IconMeet"></div>
+              Новая встреча
+            <% end %>
+          </li>
+        </ul>
+      </div>
     </div>
+    <!-- /AddButton -->
 
     <!-- Профиль -->
     <% if user_signed_in? %>
@@ -52,6 +80,13 @@
                         profile_path(current_user.profile),
                         class: "A_ProfileMenuLink" %>
           </li>
+          <!-- ► «Настройки» -->
+          <li class="M_ProfileMenuItem">
+            <%= link_to "Настройки",
+                        settings_path,
+                        class: "A_ProfileMenuLink" %>
+          </li>
+
           <li class="M_ProfileMenuItem">
             <%= button_to "Выйти",
                           destroy_user_session_path,
@@ -72,14 +107,13 @@
       </div>
     <% end %>
 
-    <!-- ================================================ -->
-    <!-- ► Тут начинается контейнер для уведомлений: -->
+    <!-- Контейнер для уведомлений -->
     <% if user_signed_in? %>
       <div
         class="NotificationsWrapper"
         data-controller="notifications"
       >
-        <!-- ► Кнопка-«колокольчик» -->
+        <!-- Кнопка-«колокольчик» -->
         <div
           id="NotificationsButton"
           class="NavbarButton NotificationsButton <%= 'has-unread' if current_user.unread_notifications.any? %>"
@@ -92,7 +126,7 @@
           <% end %>
         </div>
 
-        <!-- ► Панель уведомлений (скрыта атрибутом hidden) -->
+        <!-- Панель уведомлений (скрыта атрибутом hidden) -->
         <div
           id="notificationsPanel"
           class="NotificationsPanel"
@@ -123,7 +157,7 @@
         </div>
       </div>
     <% end %>
-    <!-- ================================================ -->
+    <!-- /NotificationsWrapper -->
   </div>
 </nav>
 

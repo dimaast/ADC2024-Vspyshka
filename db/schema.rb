@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_31_192010) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_01_221639) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -105,6 +105,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_31_192010) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "faculty_id"
+    t.bigint "program_id"
+    t.index ["faculty_id"], name: "index_profiles_on_faculty_id"
+    t.index ["program_id"], name: "index_profiles_on_program_id"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
@@ -132,6 +136,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_31_192010) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
+  end
+
+  create_table "support_messages", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_support_messages_on_user_id"
   end
 
   create_table "taggings", force: :cascade do |t|
@@ -186,9 +198,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_31_192010) do
   add_foreign_key "communities", "users"
   add_foreign_key "favourites", "users"
   add_foreign_key "meets", "users"
+  add_foreign_key "profiles", "faculties"
+  add_foreign_key "profiles", "programs"
   add_foreign_key "profiles", "users"
   add_foreign_key "programs", "faculties"
   add_foreign_key "responses", "users"
   add_foreign_key "subscriptions", "users"
+  add_foreign_key "support_messages", "users"
   add_foreign_key "taggings", "tags"
 end

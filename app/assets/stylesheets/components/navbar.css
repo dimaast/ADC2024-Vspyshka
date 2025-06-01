@@ -297,3 +297,121 @@
 .NotificationsButton.has-unread .NotificationDot {
   display: inline-block;
 }
+
+/* ==========================================================================
+   Стили для выпадающего меню «Добавить» (AddDropdownMenu)
+   ========================================================================== */
+
+/* Контейнер-кнопка «плюс» должен быть позиционирован относительно,
+   чтобы внутреннее меню (абсолютно позиционированное) правильно 
+   выстраивалось. */
+.AddButton {
+  position: relative; /* Чтобы .AddDropdownMenu мог позиционироваться внутри */
+  cursor: pointer;
+}
+
+/* Сама панель выпадающего меню */
+.AddDropdownMenu {
+  position: absolute;
+  top: 100%;             /* Расположить сразу под кнопкой */
+  right: 0;               /* Выровнять по правому краю .AddButton */
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 4px 0;         /* Вертикальные отступы внутри меню */
+  min-width: 180px;       /* Минимальная ширина меню */
+  z-index: 1000;          /* Поверх всего остального */
+  overflow: hidden;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  transform-origin: top right;
+  /* Скрываем меню изначально; Stimulus убирает/добавляет hidden */
+  /* (Когда убирается атрибут hidden, браузер его покажет.) */
+}
+
+/* Список в меню */
+.AddDropdownList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Отдельный пункт меню */
+.AddDropdownItem {
+  margin: 0;
+  padding: 0;
+}
+
+/* Ссылка внутри пункта меню */
+.AddDropdownLink {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #333333;
+  text-decoration: none;
+  transition: background-color 0.12s ease;
+}
+
+/* Отступ между иконкой и текстом */
+.AddDropdownLink .IconEvent,
+.AddDropdownLink .IconMeet {
+  margin-right: 8px;
+  font-size: 16px; /* Если ваши иконки задаются через font-size */
+}
+
+/* При наведении */
+.AddDropdownLink:hover {
+  background-color: #f5f5f5;
+}
+
+/* Если нужно смягчённо показывать меню (анимация появления): */
+.AddDropdownMenu:not([hidden]) {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.AddDropdownMenu[hidden] {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* ========================================================================== */
+
+/* ==========================================================================
+   Пример возможной стилизации иконок (если вы используете свои CSS-классы 
+   вроде .Q_Icon .MIcon .IconAdd, .IconEvent, .IconMeet).
+   Ниже – просто образец, подстроите под свой цвет/размер.
+   ========================================================================== */
+.Q_Icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.MIcon {
+  font-size: 20px;
+  color: #555555;
+}
+
+/* Иконка «плюс» */
+.IconAdd::before {
+  content: "+";
+  font-weight: bold;
+}
+
+/* Пример иконки для события (можно заменить на font-family, svg и т.п.) */
+.IconEvent::before {
+  content: "\f073"; /* если вы используете FontAwesome, например */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+/* Пример иконки для встречи */
+.IconMeet::before {
+  content: "\f0c0"; /* если это значок пользователя/встречи в FontAwesome */
+  font-family: "TT Commons";
+  font-weight: 900;
+}
+
+/* ========================================================================== */

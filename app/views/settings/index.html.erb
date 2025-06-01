@@ -1,0 +1,229 @@
+<!-- app/views/settings/index.html.erb -->
+
+<h1 class="PageTitle">Настройки</h1>
+
+<nav class="SettingsTabs">
+  <ul>
+    <li><a href="#settings-profile">Настройки профиля</a></li>
+    <li><a href="#settings-account">Данные об аккаунте</a></li>
+    <li><a href="#settings-privacy">Приватность</a></li>
+    <li><a href="#settings-support">Поддержка</a></li>
+  </ul>
+</nav>
+
+<!-- ====================== Раздел «Настройки профиля» ====================== -->
+<div id="settings-profile" class="SettingsSection">
+  <div class="SettingsSection__header">
+    <span class="SettingsSection__title">Настройки профиля</span>
+    <button type="button" class="SettingsSection__edit-button">
+      <div class="Q_Icon MIcon IconEdit"></div>
+    </button>
+  </div>
+
+  <div class="SettingsSection__body">
+    <%= form_with model: current_user.profile,
+                  url: profile_path(current_user.profile),
+                  method: :patch,
+                  local: true do |f| %>
+
+      <!-- ======= Поле «Фото» ======= -->
+      <div class="FormRow">
+        <%= f.label :avatar, "Фото", class: "FormRow__label" %>
+        <div class="FormRow__field">
+          <%= f.file_field :avatar, class: "FormInput" %>
+
+          <% if current_user.profile&.avatar? %>
+            <%= image_tag current_user.profile.avatar.url,
+                          alt:   "Аватар пользователя",
+                          class: "ProfileAvatar" %>
+          <% else %>
+            <div class="ProfileAvatar ProfileAvatar--placeholder">
+              <div class="Q_Icon MIcon IconProfile"></div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- ======= Поле «Фамилия» ======= -->
+      <div class="FormRow">
+        <%= f.label :last_name, "Фамилия", class: "FormRow__label" %>
+        <div class="FormRow__field">
+          <%= f.text_field :last_name,
+                           class:       "FormInput",
+                           placeholder: "Введите фамилию" %>
+        </div>
+      </div>
+
+      <!-- ======= Поле «Имя» ======= -->
+      <div class="FormRow">
+        <%= f.label :first_name, "Имя", class: "FormRow__label" %>
+        <div class="FormRow__field">
+          <%= f.text_field :first_name,
+                           class:       "FormInput",
+                           placeholder: "Введите имя" %>
+        </div>
+      </div>
+
+      <!-- ======= Поле «Отчество» ======= -->
+      <div class="FormRow">
+        <%= f.label :patronymic, "Отчество", class: "FormRow__label" %>
+        <div class="FormRow__field">
+          <%= f.text_field :patronymic,
+                           class:       "FormInput",
+                           placeholder: "Введите отчество" %>
+        </div>
+      </div>
+
+      <!-- ======= Поле «Telegram» ======= -->
+      <div class="FormRow">
+        <%= f.label :telegram_username, "Telegram", class: "FormRow__label" %>
+        <div class="FormRow__field">
+          <%= f.text_field :telegram_username,
+                           class:       "FormInput",
+                           placeholder: "Например: ananchousova" %>
+        </div>
+      </div>
+
+      <!-- ======= Выпадающий список «Факультет» ======= -->
+      <div class="FormRow">
+        <%= f.label :faculty_id, "Факультет", class: "FormRow__label" %>
+        <div class="FormRow__field">
+          <%= f.collection_select :faculty_id,
+                                  Faculty.all.order(:name),
+                                  :id,
+                                  :name,
+                                  { prompt: "— Не выбрано —" },
+                                  class: "FormInput" %>
+        </div>
+      </div>
+
+      <!-- ======= Выпадающий список «Программа» ======= -->
+      <div class="FormRow">
+        <%= f.label :program_id, "Программа", class: "FormRow__label" %>
+        <div class="FormRow__field">
+          <%= f.collection_select :program_id,
+                                  Program.all.order(:name),
+                                  :id,
+                                  :name,
+                                  { prompt: "— Не выбрано —" },
+                                  class: "FormInput" %>
+        </div>
+      </div>
+
+      <!-- ======= Кнопка «Сохранить» ======= -->
+      <div class="FormRow FormRow--actions">
+        <%= f.submit "Сохранить", class: "A_Button" %>
+      </div>
+    <% end %>
+
+    <!-- ======= Ссылка «Удалить аккаунт» ======= -->
+    <div class="FormRow FormRow--delete">
+      <%= link_to "Удалить аккаунт",
+                  user_registration_path,
+                  method: :delete,
+                  data:   { confirm: "Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить." },
+                  class:  "A_Button A_Button--danger" %>
+    </div>
+  </div>
+</div>
+
+<hr class="SectionDivider" />
+
+<!-- ==================== Раздел «Данные об аккаунте» ==================== -->
+<div id="settings-account" class="SettingsSection">
+  <div class="SettingsSection__header">
+    <span class="SettingsSection__title">Данные об аккаунте</span>
+    <button type="button" class="SettingsSection__edit-button">
+      <div class="Q_Icon MIcon IconEdit"></div>
+    </button>
+  </div>
+
+  <div class="SettingsSection__body">
+    <div class="SettingRow">
+      <span class="SettingRow__label">Почта</span>
+      <span class="SettingRow__value"><%= current_user.email %></span>
+    </div>
+    <div class="SettingRow">
+      <span class="SettingRow__label">Факультет</span>
+      <span class="SettingRow__value">
+        <%= current_user.profile&.faculty&.name.presence || "Не указано" %>
+      </span>
+    </div>
+    <div class="SettingRow">
+      <span class="SettingRow__label">Программа</span>
+      <span class="SettingRow__value">
+        <%= current_user.profile&.program&.name.presence || "Не указано" %>
+      </span>
+    </div>
+  </div>
+</div>
+
+<hr class="SectionDivider" />
+
+<!-- ==================== Раздел «Приватность» ==================== -->
+<div id="settings-privacy" class="SettingsSection">
+  <div class="SettingsSection__header">
+    <span class="SettingsSection__title">Приватность</span>
+    <button type="button" class="SettingsSection__edit-button">
+      <div class="Q_Icon MIcon IconEdit"></div>
+    </button>
+  </div>
+
+  <div class="SettingsSection__body">
+    <div class="SettingRow">
+      <span class="SettingRow__label">Кому видны события</span>
+      <span class="SettingRow__value">Не задано</span>
+    </div>
+    <div class="SettingRow">
+      <span class="SettingRow__label">Кому видны встречи</span>
+      <span class="SettingRow__value">Не задано</span>
+    </div>
+    <div class="SettingRow">
+      <span class="SettingRow__label">Кому видны сообщества</span>
+      <span class="SettingRow__value">Не задано</span>
+    </div>
+    <div class="SettingRow">
+      <span class="SettingRow__label">Пользователи, которым ограничен доступ</span>
+      <span class="SettingRow__value">0</span>
+    </div>
+  </div>
+</div>
+
+<hr class="SectionDivider" />
+
+<!-- ==================== Раздел «Поддержка» ==================== -->
+<div id="settings-support" class="SettingsSection">
+  <div class="SettingsSection__header">
+    <span class="SettingsSection__title">Поддержка</span>
+    <button type="button" class="SettingsSection__edit-button">
+      <div class="Q_Icon MIcon IconEdit"></div>
+    </button>
+  </div>
+
+  <div class="SettingsSection__body">
+    <%= form_with url: support_messages_path, method: :post, local: true do |f| %>
+      <div class="FormRow">
+        <%= f.label :message, "Сообщение", class: "FormRow__label" %>
+        <div class="FormRow__field">
+          <%= f.text_area :message,
+                          rows:        4,
+                          placeholder: "Опишите проблему или вопрос",
+                          class:       "FormInput" %>
+        </div>
+      </div>
+      <div class="FormRow FormRow--actions">
+        <%= f.submit "Отправить", class: "A_Button" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<hr class="SectionDivider" />
+
+<!-- ==================== Кнопка «Выйти» ==================== -->
+<div class="FormRow FormRow--logout">
+  <%= link_to "Выйти",
+              destroy_user_session_path,
+              method: :delete,
+              class: "A_Button" %>
+</div>

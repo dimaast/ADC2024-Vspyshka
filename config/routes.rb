@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "settings/index"
   get "subscription/toggle"
   get "response/toggle"
   get "favourite/toggle"
@@ -41,6 +42,8 @@ Rails.application.routes.draw do
   #   end
   # end
 
+  resource :support_messages, only: [:create]
+  
     # Маршрут для пометки всех уведомлений прочитанными
   post "/notifications/mark_all_read", to: "notifications#mark_all_read"
   
@@ -88,12 +91,14 @@ Rails.application.routes.draw do
   # Страница правила сервиса
   get 'rules', to: 'welcome#rules', as: 'rules'
 
-  # Страница лиценз соглашение
+  # Страница лицензиннного соглашения
   get 'license_agreement', to: 'welcome#license_agreement', as: 'license_agreement'
 
   # Страница о команде
   get 'team', to: 'welcome#team', as: 'team'
 
+  # Страница настроек
+   get "/settings", to: "settings#index", as: :settings
 
   root "welcome#index"
 end
