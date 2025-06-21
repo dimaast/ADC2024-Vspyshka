@@ -1,0 +1,11 @@
+<%# Обновление кнопки закладки на карточке встречи %>
+<%= turbo_stream.replace dom_id(@favouritable, :favourite_button) do %>
+  <%= render partial: "shared/favourite_button", locals: { favouritable: @favouritable, current_user: current_user } %>
+<% end %>
+
+<%# Если обновляем профиль пользователя — обновим список избранных встреч %>
+<% if params[:from_profile] %>
+  <%= turbo_stream.replace "profile_favourites_meets" do %>
+    <%= render partial: "profiles/favourites_meets", locals: { user: current_user } %>
+  <% end %>
+<% end %> 

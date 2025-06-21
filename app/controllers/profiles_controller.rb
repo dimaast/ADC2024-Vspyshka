@@ -10,8 +10,8 @@ class ProfilesController < ApplicationController
   def show
     @profile = Profile.find(params[:id])
     @events = @profile.user.events
-    @favourite_events = current_user.favourites.where(favouriteable_type: "Event").map(&:favouriteable)
-    @favourite_meets = current_user.favourites.where(favouriteable_type: "Meet").map(&:favouriteable)
+    @favourite_events = @profile.user.favourites.where(favouriteable_type: "Event").map(&:favouriteable)
+    @favourite_meets = @profile.user.favourites.where(favouriteable_type: "Meet").map(&:favouriteable)
   end
 
   # GET /profiles/new

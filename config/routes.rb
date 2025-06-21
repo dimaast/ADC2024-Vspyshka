@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get "settings/index"
   get "subscription/toggle"
   get "response/toggle"
-  get "favourite/toggle"
+  post "favourite/toggle"
 
   resources :profiles do
     collection do

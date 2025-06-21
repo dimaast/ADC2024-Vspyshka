@@ -5,7 +5,7 @@ export default class extends Controller {
   static targets = ["panel", "button", "counter", "list"]
 
   connect() {
-    console.log("NotificationsController: connect")
+    // Подключаемся к каналу уведомлений
     this.subscription = consumer.subscriptions.create(
       { channel: "NotificationsChannel" },
       {
@@ -22,97 +22,49 @@ export default class extends Controller {
         }
       }
     )
-
-    // Закрываем панель, если кликнуть мимо
-    this._outsideClickHandler = this.closeIfClickedOutside.bind(this)
-    window.addEventListener("click", this._outsideClickHandler)
+    document.addEventListener("click", this.closeIfClickedOutside)
   }
 
   disconnect() {
     if (this.subscription) {
-      consumer.subscriptions.remove(this.subscription)
+      this.subscription.unsubscribe()
     }
-    window.removeEventListener("click", this._outsideClickHandler)
+    document.removeEventListener("click", this.closeIfClickedOutside)
   }
 
   toggle(event) {
     event.stopPropagation()
-
-    const panel = this.panelTarget
-
-    if (panel.hasAttribute("hidden")) {
-      // Открываем панель
-      panel.removeAttribute("hidden")
-      panel.classList.add("is-open")
-      this.buttonTarget.classList.add("is-active")
-
-      // Отправляем запрос на пометку всех уведомлений как прочитанных
-      fetch("/notifications/mark_all_read", {
-        method: "POST",
-        headers: {
-          "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content,
-          "Content-Type": "application/json"
-        }
-      })
-        .then(() => {
-          // Обновляем счётчик и убираем красную точку
-          this.counterTarget.textContent = "0"
-          this.buttonTarget.classList.remove("has-unread")
-
-          // Снимаем пометку «новое» у всех свежих уведомлений
-          this.listTarget
-            .querySelectorAll(".notification--new")
-            .forEach(elem => elem.classList.remove("notification--new"))
-        })
-        .catch(err => console.error("Ошибка при mark_all_read:", err))
+    const isVisible = this.panelTarget.classList.contains('is-open')
+    
+    if (isVisible) {
+      this.panelTarget.classList.remove('is-open')
     } else {
-      // Скрываем панель
-      panel.setAttribute("hidden", "")
-      panel.classList.remove("is-open")
-      this.buttonTarget.classList.remove("is-active")
+      this.panelTarget.classList.add('is-open')
     }
+    
+    // Закрываем другие панели, если нужно
+    document.querySelectorAll('.NotificationsPanel').forEach(panel => {
+      if (panel !== this.panelTarget) panel.classList.remove('is-open');
+    });
   }
 
-  closeIfClickedOutside(event) {
-    if (
-      this.hasPanelTarget &&
-      !this.panelTarget.contains(event.target) &&
-      !this.buttonTarget.contains(event.target)
-    ) {
-      this.panelTarget.setAttribute("hidden", "")
-      this.panelTarget.classList.remove("is-open")
-      this.buttonTarget.classList.remove("is-active")
+  closeIfClickedOutside = (event) => {
+    if (!this.element.contains(event.target)) {
+      this.panelTarget.classList.remove('is-open')
     }
   }
 
   prependNotification(body, url) {
-    console.log("prependNotification вызван с:", body, url)
-
-    if (!this.hasListTarget) return
-
-    const wrapper = document.createElement("div")
-    wrapper.classList.add("notification", "notification--new")
-
-    const link = document.createElement("a")
-    link.href = url
-    link.textContent = body
-    wrapper.appendChild(link)
-
-    // Добавляем в начало списка или, если нет ни одного элемента, просто вставляем
-    const first = this.listTarget.querySelector(".notification")
-    if (first) {
-      this.listTarget.insertBefore(wrapper, first)
-    } else {
-      this.listTarget.appendChild(wrapper)
-    }
+    const notification = document.createElement("div")
+    notification.className = "notification notification--new"
+    notification.innerHTML = `<a href="${url}">${body}</a>`
+    this.listTarget.insertBefore(notification, this.listTarget.firstChild)
   }
 
   incrementCounter() {
-    if (!this.hasCounterTarget) return
-
-    const span = this.counterTarget
-    const current = parseInt(span.textContent, 10) || 0
-    span.textContent = (current + 1).toString()
+    const counter = this.counterTarget
+    const currentCount = parseInt(counter.textContent) || 0
+    counter.textContent = currentCount + 1
     this.buttonTarget.classList.add("has-unread")
   }
 }

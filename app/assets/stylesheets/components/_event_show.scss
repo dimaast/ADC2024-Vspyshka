@@ -1,0 +1,129 @@
+.EventShow {
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
+  margin: 2rem auto;
+  max-width: 1100px;
+
+  &__left {
+    width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  &__poster img {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+  &__poster--stub {
+    width: 100%;
+    height: 340px;
+    background: #eee;
+    border-radius: 16px;
+  }
+
+  &__host {
+    font-size: 1rem;
+    color: #888;
+    span { display: block; margin-bottom: 0.5rem; }
+    &-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    &-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+    }
+    &-label {
+      background: #222;
+      color: #fff;
+      border-radius: 8px;
+      padding: 0.2rem 0.7rem;
+      font-size: 0.9rem;
+      margin-left: 0.5rem;
+    }
+  }
+
+  &__going {
+    span { display: block; margin-bottom: 0.5rem; }
+    & .EventShow__avatars {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    & .EventShow__avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    &__more {
+      font-size: 0.95rem;
+      color: #888;
+      margin-left: 0.5rem;
+    }
+  }
+
+  &__report {
+    color: #888;
+    font-size: 0.95rem;
+    text-decoration: underline;
+    margin-top: 1rem;
+    &:hover { color: #e74c3c; }
+  }
+
+  &__right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  &__title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  &__info {
+    display: flex;
+    gap: 2rem;
+    font-size: 1.1rem;
+    color: #444;
+    margin-bottom: 1.5rem;
+    div {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    i { color: #888; }
+  }
+
+  &__register {
+    margin-bottom: 1.5rem;
+    background: #111;
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.7rem 2.2rem;
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    &:hover { background: #333; }
+  }
+
+  &__description {
+    font-size: 1.1rem;
+    color: #222;
+    margin-bottom: 2rem;
+  }
+
+  &__comments {
+    background: #fafafa;
+    border-radius: 16px;
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    h2 { font-size: 1.2rem; margin-bottom: 1rem; }
+  }
+} 

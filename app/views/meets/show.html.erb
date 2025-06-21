@@ -4,15 +4,19 @@
 
 <%= turbo_frame_tag dom_id(@meet) do %>
   <%= render @meet %>
+  <% if user_signed_in? && can?(:manage, @meet) %>
     <div>
-    <%= link_to "Edit this meet", edit_meet_path(@meet) %> |
-    <%= link_to "Back to meets", meets_path %>
-
-    <%= button_to "Destroy this meet", @meet, method: :delete %>
-  </div>
+      <%= link_to "Edit this meet", edit_meet_path(@meet) %> |
+      <%= link_to "Back to meets", meets_path %>
+      <%= button_to "Destroy this meet", @meet, method: :delete %>
+    </div>
+  <% end %>
 <% end %>
-<%= render "favourite/button", favouriteable: @meet %>
-<%= render "response/button", responseable: @meet %>
+
+<% if user_signed_in? %>
+  <%= render "favourite/button", favouriteable: @meet %>
+  <%= render "response/button", responseable: @meet %>
+<% end %>
 
 <%# Список лайкнувших %>
 <% if @meet.favourites.any? %>

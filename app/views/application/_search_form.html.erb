@@ -1,12 +1,20 @@
-<div id="O_SearchPopup" class="O_SearchPopup">
-  <div class="W_SearchPopupContent">
-      <form action="<%= welcome_search_path %>" data-turbo-stream="true" data-controller="search" data-search-url-value="<%= welcome_search_url %>">
-        <input class="A_SearchInput" type="text" placeholder="Введи запрос" name="query" data-search-target="query" data-action="input->search#getAutocomplete">
-        <input type="submit" value="Найти" hidden="true" data-search-target="submit">
-        <input type="submit" value="Найти" data-action="click->search#getSearch">
-      </form>
-      <button id="A_CloseButton">✖</button>
-      
-      <div class="searchFormAutocompleteResult" id="searchFormAutocompleteResult"></div>
+<div class="SearchForm" data-controller="search">
+  <div class="SearchFormContent">
+    <form action="<%= welcome_search_path %>" method="get" data-search-target="form">
+      <input 
+        class="SearchInput" 
+        type="text" 
+        placeholder="Введи запрос" 
+        name="query" 
+        data-search-target="query" 
+        data-action="input->search#getAutocomplete"
+        autocomplete="off"
+      >
+    </form>
+    <button class="CloseButton" data-action="click->search#close">
+      <i class="fas fa-times"></i>
+    </button>
+    
+    <div class="SearchAutocomplete" data-search-target="autocomplete"></div>
   </div>
 </div>

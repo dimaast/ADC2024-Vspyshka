@@ -6,10 +6,8 @@
 <h1>Встречи (<%= @meets.count %>)</h1>
 <div class="C_EventsAndMeets">
   <% @meets.each do |meet| %>
-    <div class="M_MeetCard>
-      <%= link_to meet_path(meet) do %>
-        <%= render partial: 'meets/meet_card', locals: { meet: meet } %>
-      <% end %>
+    <div class="M_MeetCard" data-url="<%= meet_path(meet) %>">
+      <%= render partial: 'meets/meet_card', locals: { meet: meet } %>
       <div class="C_Tags">
         <% meet.tags.each do |tag| %>
           <%= link_to tag.name, tagged_meets_path(tag.name), class: 'A_Tag' %>

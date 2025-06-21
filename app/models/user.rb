@@ -14,7 +14,9 @@ class User < ApplicationRecord
   has_many :communities
   has_many :comments
   has_many :notifications
-  has_many :favourites
+  has_many :favourites, dependent: :destroy
+  has_many :favourite_meets, through: :favourites, source: :favouriteable, source_type: 'Meet'
+  has_many :favourite_events, through: :favourites, source: :favouriteable, source_type: 'Event'
   has_many :responses
   has_many :subscriptions
   has_many :notifications, dependent: :destroy

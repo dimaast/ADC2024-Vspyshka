@@ -61,6 +61,12 @@
   padding: 8px 0;
   min-width: 160px;
   z-index: 100;
+  display: none; /* скрываем по умолчанию */
+}
+
+/* Показываем меню когда есть класс is-open */
+.M_ProfileDropdownMenu.is-open {
+  display: block;
 }
 
 /* Каждый пункт меню */
@@ -118,6 +124,9 @@
 /* --------------------------------------------------------------------
    Когда у панели есть класс .is-open, переключаем display: block
    -------------------------------------------------------------------- */
+.NotificationsPanel.is-open {
+  display: block;
+}
 
 /* --------------------------------------------------------------------
    Стили для счётчика «Уведомления» в шапке панели
@@ -160,13 +169,13 @@
 }
 
 /* --------------------------------------------------------------------
-   Класс “notification--new” (новое уведомление подсветим) */
+   Класс "notification--new" (новое уведомление подсветим) */
 .notification--new {
   background-color: #fffbea; /* лёгкий жёлтый фон, на ваше усмотрение */
 }
 
 /* --------------------------------------------------------------------
-   Стили для иконки-кнопки “NotificationsButton” */
+   Стили для иконки-кнопки "NotificationsButton" */
 .NavbarButton.NotificationsButton {
   position: relative;
   cursor: pointer;
@@ -189,7 +198,7 @@
   display: inline-block;
 }
 
-/* Класс “has-unread” можно дублировать поверх кнопки, если нужно добавить анимацию */
+/* Класс "has-unread" можно дублировать поверх кнопки, если нужно добавить анимацию */
 .NavbarButton.has-unread .NotificationDot {
   display: inline-block;
 }
@@ -374,6 +383,19 @@
 .AddDropdownMenu[hidden] {
   opacity: 0;
   transform: scale(0.95);
+}
+
+/* Альтернативный способ через CSS классы */
+.AddDropdownMenu.is-open {
+  opacity: 1;
+  transform: scale(1);
+  display: block;
+}
+
+.AddDropdownMenu:not(.is-open) {
+  opacity: 0;
+  transform: scale(0.95);
+  display: none;
 }
 
 /* ========================================================================== */

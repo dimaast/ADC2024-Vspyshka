@@ -14,6 +14,9 @@
 
     <h2 class="A_EventTitle"><%= event.title %></h2>
     <time class="A_EventDate"><%= event.hosted_at.strftime("%d/%m/%Y %H:%M") %></time>
+    <% if user_signed_in? %>
+      <div class="A_Tag"><%= event.placed_at %></div>
+    <% end %>
   <% end %>
 
   <%# Автор события %>

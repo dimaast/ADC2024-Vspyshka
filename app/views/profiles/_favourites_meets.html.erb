@@ -1,0 +1,8 @@
+<div id="profile_favourites_meets" class="favourites-section">
+  <h3>Интересные вам встречи</h3>
+  <div class="meets-grid">
+    <% user.favourites.where(favouriteable_type: 'Meet').each do |favourite| %>
+      <%= render partial: "meets/meet", locals: { meet: favourite.favouriteable } %>
+    <% end %>
+  </div>
+</div> 

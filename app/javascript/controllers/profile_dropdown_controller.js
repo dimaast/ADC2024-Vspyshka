@@ -1,36 +1,35 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["menu", "button"]
+  static targets = ["button", "menu"]
+
+  toggle(event) {
+    event.stopPropagation()
+    const isVisible = this.menuTarget.classList.contains('is-open')
+    
+    if (isVisible) {
+      this.menuTarget.classList.remove('is-open')
+    } else {
+      this.menuTarget.classList.add('is-open')
+    }
+    
+    // Закрываем другие меню, если нужно
+    document.querySelectorAll('.M_ProfileDropdownMenu').forEach(menu => {
+      if (menu !== this.menuTarget) menu.classList.remove('is-open');
+    });
+  }
 
   connect() {
-    // При инициализации скрываем меню
-    this.hideMenu()
-    // Навешиваем слушатель клика на кнопку
-    this.buttonTarget.addEventListener("click", this.toggleMenu.bind(this))
-    // Слушаем клик вне, чтобы прятать меню
-    document.addEventListener("click", this.clickOutside.bind(this))
+    document.addEventListener("click", this.closeIfClickedOutside)
   }
 
   disconnect() {
-    // Снимаем слушатели, когда контроллер «сбросится»
-    this.buttonTarget.removeEventListener("click", this.toggleMenu.bind(this))
-    document.removeEventListener("click", this.clickOutside.bind(this))
+    document.removeEventListener("click", this.closeIfClickedOutside)
   }
 
-  toggleMenu(event) {
-    event.preventDefault()
-    event.stopPropagation()
-    this.menuTarget.hidden = !this.menuTarget.hidden
-  }
-
-  hideMenu() {
-    this.menuTarget.hidden = true
-  }
-
-  clickOutside(event) {
+  closeIfClickedOutside = (event) => {
     if (!this.element.contains(event.target)) {
-      this.hideMenu()
+      this.menuTarget.classList.remove('is-open')
     }
   }
 }

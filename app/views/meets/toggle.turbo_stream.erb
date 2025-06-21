@@ -1,0 +1,23 @@
+<%= turbo_stream.replace dom_id(@favouriteable, "bookmark") do %>
+  <%= link_to favourite_toggle_path(type: @favouriteable.class.name, id: @favouriteable.id), 
+              class: "Q_BookmarkIconNoBg #{@favouriteable.favourites.exists?(user_id: current_user.id) ? 'active' : ''}", 
+              data: { turbo_method: :post },
+              id: dom_id(@favouriteable, "bookmark") do %>
+    <%= image_tag @favouriteable.favourites.exists?(user_id: current_user.id) ? "bookmark_filled.svg" : "bookmarknobg.svg", 
+                alt: "Закладка" %>
+  <% end %>
+<% end %>
+
+<% if @favouriteable.is_a?(Meet) %>
+  <%= turbo_stream.update "favourite_meets" do %>
+    <div class="C_EventsAndMeets">
+      <% current_user.favourites.where(favouriteable_type: "Meet").map(&:favouriteable).each do |meet| %>
+        <div class="M_MeetCard">
+          <%= link_to meet_path(meet) do %>
+            <%= render partial: 'meets/meet_card', locals: { meet: meet } %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %> 

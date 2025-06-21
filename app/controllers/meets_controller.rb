@@ -1,5 +1,5 @@
 class MeetsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:index, :show]
   before_action :set_meet, only: %i[ show edit update destroy ]
 
   # GET /meets or /meets.json

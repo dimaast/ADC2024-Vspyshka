@@ -5,55 +5,59 @@
     <%= link_to "События",    events_path,      class: "A_NavbarPageLink" %>
     <%= link_to "Встречи",    meets_path,       class: "A_NavbarPageLink" %>
     <%= link_to "Сообщества", communities_path, class: "A_NavbarPageLink" %>
+    <%= link_to "Архив", archive_events_path, class: "A_NavbarPageLink" %>
   </div>
 
   <%= link_to "", root_path, class: "A_NavbarLogoLink" %>
 
   <div class="W_NavbarButtons">
     <!-- Поиск -->
-    <button class="A_Button NavbarButton SearchButton" id="SearchButton">
-      <div class="Q_Icon MIcon IconSearch"></div>
+    <button
+      class="A_Button NavbarButton SearchButton"
+      id="SearchButton"
+      data-action="click->search#toggle"
+    >
+      <i class="fas fa-search"></i>
     </button>
 
-    <!-- ► Блок «Добавить» с выпадающим меню -->
-    <div
-      class="A_Button NavbarButton AddButton"
-      id="AddButton"
-      data-controller="add-dropdown"
-      data-action="click->add-dropdown#toggle"
-    >
-      <div class="Q_Icon MIcon IconAdd"></div>
-
-      <!-- Само выпадающее меню -->
-      <div
-        class="AddDropdownMenu"
-        data-add-dropdown-target="menu"
-        hidden
-      >
-        <ul class="AddDropdownList">
-          <li class="AddDropdownItem">
-            <%= link_to new_event_path, class: "AddDropdownLink" do %>
-              <div class="Q_Icon MIcon IconEvent"></div>
-              Новое событие
-            <% end %>
-          </li>
-          <li class="AddDropdownItem">
-            <%= link_to new_meet_path, class: "AddDropdownLink" do %>
-              <div class="Q_Icon MIcon IconMeet"></div>
-              Новая встреча
-            <% end %>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <!-- /AddButton -->
-
-    <!-- Профиль -->
     <% if user_signed_in? %>
+      <!-- ► Блок «Добавить» с выпадающим меню -->
+      <div
+        class="A_Button NavbarButton AddButton"
+        id="AddButton"
+        data-controller="add-dropdown"
+      >
+        <button type="button" class="AddButtonInner" data-action="click->add-dropdown#toggle">
+          <i class="fas fa-plus"></i>
+        </button>
+        <div
+          class="AddDropdownMenu"
+          data-add-dropdown-target="menu"
+        >
+          <ul class="AddDropdownList">
+            <li class="AddDropdownItem">
+              <%= link_to new_event_path, class: "AddDropdownLink" do %>
+                <i class="fas fa-calendar-plus"></i>
+                Новое событие
+              <% end %>
+            </li>
+            <li class="AddDropdownItem">
+              <%= link_to new_meet_path, class: "AddDropdownLink" do %>
+                <i class="fas fa-users"></i>
+                Новая встреча
+              <% end %>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- /AddButton -->
+
+      <!-- Профиль и уведомления -->
       <div class="A_NavbarProfileWrapper" data-controller="profile-dropdown">
         <button
           type="button"
           data-profile-dropdown-target="button"
+          data-action="click->profile-dropdown#toggle"
           class="A_NavbarProfileButton"
           id="ProfileButton"
         >
@@ -65,7 +69,7 @@
                 ) %>
           <% else %>
             <div class="A_NavbarAvatar">
-              <div class="Q_Icon MIcon IconProfile"></div>
+              <i class="fas fa-user"></i>
             </div>
           <% end %>
         </button>
@@ -73,20 +77,24 @@
         <ul
           class="M_ProfileDropdownMenu"
           data-profile-dropdown-target="menu"
-          hidden
         >
           <li class="M_ProfileMenuItem">
             <%= link_to "Мой профиль",
                         profile_path(current_user.profile),
                         class: "A_ProfileMenuLink" %>
           </li>
-          <!-- ► «Настройки» -->
           <li class="M_ProfileMenuItem">
             <%= link_to "Настройки",
                         settings_path,
                         class: "A_ProfileMenuLink" %>
           </li>
-
+          <% if current_user.role == "admin" %>
+            <li class="M_ProfileMenuItem_Divider"></li>
+            <li class="M_ProfileMenuItem M_ProfileMenuItem_Admin">
+              <%= link_to "Админ-панель", admin_communities_url, class: "A_ProfileMenuLink" %>
+            </li>
+          <% end %>
+          <li class="M_ProfileMenuItem_Divider"></li>
           <li class="M_ProfileMenuItem">
             <%= button_to "Выйти",
                           destroy_user_session_path,
@@ -96,42 +104,27 @@
           </li>
         </ul>
       </div>
-    <% else %>
-      <div class="A_NavbarProfileWrapper">
-        <%= link_to "Войти",
-                    new_user_session_path,
-                    class: "A_NavbarAuthLink" %>
-        <%= link_to "Зарегистрироваться",
-                    new_user_registration_path,
-                    class: "A_NavbarAuthLink" %>
-      </div>
-    <% end %>
-
-    <!-- Контейнер для уведомлений -->
-    <% if user_signed_in? %>
+      <!-- Контейнер для уведомлений -->
       <div
         class="NotificationsWrapper"
         data-controller="notifications"
       >
-        <!-- Кнопка-«колокольчик» -->
-        <div
+        <button
+          type="button"
           id="NotificationsButton"
           class="NavbarButton NotificationsButton <%= 'has-unread' if current_user.unread_notifications.any? %>"
           data-notifications-target="button"
           data-action="click->notifications#toggle"
         >
-          <div class="Q_Icon IconNotifications"></div>
+          <i class="fas fa-bell"></i>
           <% if current_user.unread_notifications.any? %>
             <span class="NotificationDot"></span>
           <% end %>
-        </div>
-
-        <!-- Панель уведомлений (скрыта атрибутом hidden) -->
+        </button>
         <div
           id="notificationsPanel"
           class="NotificationsPanel"
           data-notifications-target="panel"
-          hidden
         >
           <div class="notificationsCounter">
             Уведомления
@@ -139,7 +132,6 @@
               <%= current_user.unread_notifications.count %>
             </span>
           </div>
-
           <div
             data-notifications-target="list"
             class="notificationsList"
@@ -156,8 +148,17 @@
           </div>
         </div>
       </div>
+      <!-- /NotificationsWrapper -->
+    <% else %>
+      <div class="A_NavbarAuthBlock">
+        <%= link_to "Войти",
+                    new_user_session_path,
+                    class: "A_NavbarAuthLink" %>
+        <%= link_to "Зарегистрироваться",
+                    new_user_registration_path,
+                    class: "A_NavbarAuthLink" %>
+      </div>
     <% end %>
-    <!-- /NotificationsWrapper -->
   </div>
 </nav>
 

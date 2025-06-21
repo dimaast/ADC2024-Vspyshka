@@ -10,31 +10,33 @@
 <h2>Ваши события</h2>
 <div class="C_EventsAndMeets">
   <% @profile.user.events.each do |user_event| %>
-    <%= link_to event_path(user_event), class: 'M_EventCard' do %>
-      <%= user_event.hosted_at.strftime("%d/%m/%Y %H:%M") %>
-      <%= render partial: 'events/event_card', locals: { event: user_event } %>
-
-    <% end %>
+    <div class="M_EventCard">
+      <%= link_to event_path(user_event) do %>
+        <%= render partial: 'events/event_card', locals: { event: user_event } %>
+      <% end %>
+    </div>
   <% end %>
 </div>
 
 <h2>Интересные вам события (лайки)</h2>
 <div class="C_EventsAndMeets">
   <% @favourite_events.each do |favourite_event| %>
-    <%= link_to event_path(favourite_event), class: 'M_EventCard' do %>
-      <%= favourite_event.hosted_at.strftime("%d/%m/%Y %H:%M") %>
-      <%= render favourite_event %>
-    <% end %>
+    <div class="M_EventCard">
+      <%= link_to event_path(favourite_event) do %>
+        <%= render partial: 'events/event_card', locals: { event: favourite_event } %>
+      <% end %>
+    </div>
   <% end %>
 </div>
 
 <h2>Интересные вам встречи (лайки)</h2>
-<div class="C_EventsAndMeets">
+<div id="favourite_meets" class="C_EventsAndMeets">
   <% @favourite_meets.each do |favourite_meet| %>
-    <%= link_to meet_path(favourite_meet), class: 'M_MeetCard' do %>
-      <%= favourite_meet.hosted_at.strftime("%d/%m/%Y %H:%M") %>
-      <%= render favourite_meet %>
-    <% end %>
+    <div class="M_MeetCard">
+      <%= link_to meet_path(favourite_meet) do %>
+        <%= render partial: 'meets/meet_card', locals: { meet: favourite_meet } %>
+      <% end %>
+    </div>
   <% end %>
 </div>
 

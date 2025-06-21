@@ -1,18 +1,15 @@
 class EventsController < ApplicationController
   # before_action :authenticate_user!
   # layout "application", only: %i[ show new edit create update destroy ]
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:index, :show]
   before_action :set_event, only: %i[ show edit update destroy ]
 
   # GET /events or /events.json
   def index
     @categories = Tag.categories_list
     @tags = Tag.tags_list
-
-    if current_user
-      @user_events = current_user.events.where("hosted_at > ?", DateTime.now)
-      @events = Event.where("hosted_at > ?", DateTime.now).order(:hosted_at)
-    end
+    @events = Event.where("hosted_at > ?", DateTime.now).order(:hosted_at)
+    @user_events = current_user&.events&.where("hosted_at > ?", DateTime.now) if current_user
   end
 
   def by_tag

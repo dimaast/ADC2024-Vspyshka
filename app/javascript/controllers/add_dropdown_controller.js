@@ -3,35 +3,33 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static targets = ["menu"];
 
+  toggle(event) {
+    event.stopPropagation();
+    const isVisible = this.menuTarget.classList.contains('is-open');
+    
+    if (isVisible) {
+      this.menuTarget.classList.remove('is-open');
+    } else {
+      this.menuTarget.classList.add('is-open');
+    }
+    
+    // Закрываем другие меню, если нужно
+    document.querySelectorAll('.AddDropdownMenu').forEach(menu => {
+      if (menu !== this.menuTarget) menu.classList.remove('is-open');
+    });
+  }
+
   connect() {
-    // Закрываем меню, если кликнули где-то вне него
-    this._outsideClickHandler = this.closeIfClickedOutside.bind(this);
-    window.addEventListener("click", this._outsideClickHandler);
+    document.addEventListener("click", this.closeIfClickedOutside);
   }
 
   disconnect() {
-    window.removeEventListener("click", this._outsideClickHandler);
+    document.removeEventListener("click", this.closeIfClickedOutside);
   }
 
-  toggle(event) {
-    event.stopPropagation();
-    if (this.menuTarget.hasAttribute("hidden")) {
-      this.menuTarget.removeAttribute("hidden");
-      this.menuTarget.classList.add("is-open");
-    } else {
-      this.menuTarget.setAttribute("hidden", "");
-      this.menuTarget.classList.remove("is-open");
-    }
-  }
-
-  closeIfClickedOutside(event) {
-    if (
-      this.hasMenuTarget &&
-      !this.menuTarget.contains(event.target) &&
-      !this.element.contains(event.target)
-    ) {
-      this.menuTarget.setAttribute("hidden", "");
-      this.menuTarget.classList.remove("is-open");
+  closeIfClickedOutside = (event) => {
+    if (!this.element.contains(event.target)) {
+      this.menuTarget.classList.remove('is-open');
     }
   }
 }

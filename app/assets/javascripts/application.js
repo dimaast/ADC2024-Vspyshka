@@ -1,0 +1,1 @@
+//= require meets_clickable_cards 

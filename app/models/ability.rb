@@ -9,6 +9,9 @@ class Ability
 
     can :create, EmailSubscription
     can [ :index, :by_tag ], Event
+    can :read, Event
+    can :read, Meet
+    can :read, Community
 
     return unless user.present?
     if user.role == "admin"

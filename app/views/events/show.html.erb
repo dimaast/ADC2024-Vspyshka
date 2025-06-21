@@ -3,8 +3,69 @@
   description: @event.body, 
   keywords: "Студорги, Студенческие организации, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
 
-<%# Ивент %>
-<%= render partial: 'event_card', locals: { event: @event } %>
+<div class="EventShow">
+  <div class="EventShow__left">
+    <div class="EventShow__poster">
+      <% if @event.cover.present? %>
+        <%= image_tag @event.cover.url, alt: @event.title %>
+      <% else %>
+        <div class="EventShow__poster--stub"></div>
+      <% end %>
+    </div>
+    <div class="EventShow__host">
+      <span>Проводит</span>
+      <div class="EventShow__host-info">
+        <% if @event.user&.profile&.avatar&.attached? %>
+          <%= image_tag @event.user.profile.avatar, class: "EventShow__host-avatar" %>
+        <% end %>
+        <span>
+          <%= @event.community.present? ? @event.community.title : @event.user.profile.name %>
+        </span>
+        <span class="EventShow__host-label">Детали</span>
+      </div>
+    </div>
+    <div class="EventShow__going">
+      <span>Идут</span>
+      <div class="EventShow__avatars">
+        <% @event.going_users.limit(3).each do |user| %>
+          <% if user.avatar.attached? %>
+            <%= image_tag user.avatar, class: "EventShow__avatar" %>
+          <% end %>
+        <% end %>
+        <% if @event.going_users.count > 3 %>
+          <span class="EventShow__more">и еще <%= @event.going_users.count - 3 %></span>
+        <% end %>
+      </div>
+    </div>
+    <%= link_to "Пожаловаться на событие", report_event_path(@event), class: "EventShow__report" %>
+  </div>
+
+  <div class="EventShow__right">
+    <h1 class="EventShow__title"><%= @event.title %></h1>
+    <div class="EventShow__info">
+      <div>
+        <i class="fas fa-calendar"></i>
+        <%= l @event.start_time, format: :long %>
+      </div>
+      <div>
+        <i class="fas fa-map-marker-alt"></i>
+        <%= @event.location %>
+      </div>
+      <div>
+        <i class="fas fa-money-bill"></i>
+        <%= @event.price.present? ? @event.price : "бесплатно" %>
+      </div>
+    </div>
+    <%= button_to "Зарегистрироваться", register_event_path(@event), method: :post, class: "EventShow__register" %>
+    <div class="EventShow__description">
+      <%= simple_format @event.description %>
+    </div>
+    <div class="EventShow__comments">
+      <h2>Обсуждение</h2>
+      <%= render "comments/comments", comments: @event.comments %>
+    </div>
+  </div>
+</div>
 
 <%# Кнопка лайка %>
 <%= render "favourite/button", favouriteable: @event %>

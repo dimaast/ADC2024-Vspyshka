@@ -1,5 +1,5 @@
 class CommunitiesController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:index, :show]
   before_action :set_community, only: %i[ show edit update ]
 
   # GET /communities or /communities.json

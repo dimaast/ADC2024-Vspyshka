@@ -1,0 +1,41 @@
+.favourite-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  transition: all 0.3s ease;
+  
+  i {
+    font-size: 1.2rem;
+    color: #ccc;
+    transition: all 0.3s ease;
+  }
+  
+  &:hover {
+    i {
+      color: #ffd700;
+    }
+  }
+  
+  &.active {
+    i {
+      color: #ffd700;
+    }
+  }
+}
+
+.favourites-section {
+  margin-top: 2rem;
+  
+  h3 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .meets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+} 
