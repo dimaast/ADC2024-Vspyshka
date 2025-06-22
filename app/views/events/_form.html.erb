@@ -35,26 +35,22 @@
     <%= form.text_area :body %>
   </div>
 
-  <%# Тип события %>
+  <%# Цена %>
   <div>
-    <label for="tags">Тип события</label>
-    <% Tag.categories_list.each do |tag| %>
-      <div class="form-check">
-        <%= check_box_tag "event[category_list][]", tag.name, false, class: 'form-check-input', id: "event_category_list_#{tag.name}" %>
-        <%= label_tag "event_category_list_#{tag.name}", tag.name, class: 'form-check-label', for: "event_category_list_#{tag.name}" %>
-      </div>
-    <% end %>
+    <%= form.label :price, style: "display: block" %>
+    <%= form.text_field :price, placeholder: "Например: 150 руб. или 'бесплатно'" %>
   </div>
 
-  <%# Теги %>
+  <%# Тип события %>
   <div>
-    <label for="tags">Теги</label>
-    <% Tag.tags_list.each do |tag| %>
-      <div class="form-check">
-        <%= check_box_tag "event[tag_list][]", tag.name, false, class: 'form-check-input', id: "event_tag_list_#{tag.name}" %>
-        <%= label_tag "event_tag_list_#{tag.name}", tag.name, class: 'form-check-label', for: "event_tag_list_#{tag.name}" %>
-      </div>
-    <% end %>
+    <label for="event_category">Тип события</label>
+    <%= select_tag "event[category_list]", options_for_select(Tag.categories_list, @event.category_list&.first), include_blank: "Выберите тип", class: 'form-select' %>
+  </div>
+
+  <%# Тема (тег) %>
+  <div>
+    <label for="event_tag">Тема</label>
+    <%= select_tag "event[tag_list]", options_for_select(Tag.tags_list, @event.tag_list&.first), include_blank: "Выберите тему", class: 'form-select' %>
   </div>
 
   <%# Сообщество %>

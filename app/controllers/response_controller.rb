@@ -12,5 +12,15 @@ class ResponseController < ApplicationController
     else
       current_user.responses.create!(responseable_type: params[:type], responseable_id: params[:id])
     end
+
+    respond_to do |format|
+      format.turbo_stream {
+        render turbo_stream: turbo_stream.replace(
+          "response_button_#{responseable.class.name.downcase}_#{responseable.id}",
+          partial: "response/button",
+          locals: { responseable: responseable }
+        )
+      }
+    end
   end
 end

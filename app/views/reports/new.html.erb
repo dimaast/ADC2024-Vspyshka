@@ -1,0 +1,39 @@
+<div class="ReportForm">
+  <div class="ReportForm__header">
+    <h1>Пожаловаться на событие</h1>
+    <p>Расскажите, почему вы считаете это событие неприемлемым</p>
+  </div>
+
+  <div class="ReportForm__event-info">
+    <h3>Событие: <%= @event.title %></h3>
+    <p><%= @event.body %></p>
+  </div>
+
+  <%= form_with model: [@event, @report], local: true, class: "ReportForm__form" do |f| %>
+    <% if @report.errors.any? %>
+      <div class="ReportForm__errors">
+        <h2>Найдены ошибки:</h2>
+        <ul>
+          <% @report.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="FormRow">
+      <%= f.label :reason, "Причина жалобы", class: "FormRow__label" %>
+      <div class="FormRow__field">
+        <%= f.text_area :reason, 
+                        class: "FormInput FormInput--textarea", 
+                        placeholder: "Опишите подробно причину вашей жалобы (минимум 10 символов)",
+                        rows: 6 %>
+      </div>
+    </div>
+
+    <div class="ReportForm__actions">
+      <%= f.submit "Отправить жалобу", class: "Button Button--primary" %>
+      <%= link_to "Отмена", @event, class: "Button Button--secondary" %>
+    </div>
+  <% end %>
+</div>

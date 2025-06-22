@@ -43,6 +43,13 @@ class ProfilesController < ApplicationController
   def update
     respond_to do |format|
       if @profile.update(profile_params)
+        # Синхронизируем данные с пользователем
+        @profile.user.update_columns(
+          first_name: @profile.first_name,
+          last_name: @profile.last_name,
+          middle_name: @profile.middle_name
+        )
+        
         format.html { redirect_to @profile, notice: "Profile was successfully updated." }
         format.json { render :show, status: :ok, location: @profile }
       else
@@ -70,6 +77,6 @@ class ProfilesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def profile_params
-      params.require(:profile).permit(:name, :body, :contact, :avatar, :user_id, tag_list: [])
+      params.require(:profile).permit(:name, :body, :contact, :avatar, :user_id, :first_name, :last_name, :middle_name, tag_list: [])
     end
 end

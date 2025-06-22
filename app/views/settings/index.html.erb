@@ -37,8 +37,8 @@
                           alt:   "Аватар пользователя",
                           class: "ProfileAvatar" %>
           <% else %>
-            <div class="ProfileAvatar ProfileAvatar--placeholder">
-              <div class="Q_Icon MIcon IconProfile"></div>
+            <div class="ProfileAvatar ProfileAvatar--placeholder" style="<%= avatar_placeholder_style(current_user) %>; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #fff;">
+              <%= current_user.username.first.upcase %>
             </div>
           <% end %>
         </div>

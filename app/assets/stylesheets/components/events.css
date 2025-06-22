@@ -103,3 +103,82 @@
   margin-top: 12px;
 }
 
+/* Карточка события с детальной информацией */
+.M_EventCardDetailed {
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  padding: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.M_EventCardDetailed:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.M_EventCardDetailed__link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  margin-bottom: 12px;
+}
+
+.M_EventImageWrapper {
+  position: relative;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.A_EventCover {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.M_EventCardDetailed:hover .A_EventCover {
+  transform: scale(1.05);
+}
+
+.A_EventTitle {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--black);
+  line-height: 1.3;
+}
+
+.M_EventAuthor {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.A_EventAuthorName {
+  font-weight: 500;
+}
+
+.A_EventDate {
+  font-size: 16px;
+  color: var(--violet);
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.M_EventMetaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 8px 0;
+  flex-wrap: wrap;
+}
+.A_Tag--category {
+  background-color: #e0f7fa;
+  color: #00796b;
+}
+

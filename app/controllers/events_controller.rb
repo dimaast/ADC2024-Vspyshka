@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   # before_action :authenticate_user!
-  # layout "application", only: %i[ show new edit create update destroy ]
-  load_and_authorize_resource except: [:index, :show]
+  layout "application", only: %i[ show new edit create update destroy ]
+  load_and_authorize_resource except: [:index]
   before_action :set_event, only: %i[ show edit update destroy ]
 
   # GET /events or /events.json
@@ -99,6 +99,6 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:title, :body, :hosted_at, :cover, :user_id, :community_id, :placed_at, :placed_additional, tag_list: [], category_list: [])
+      params.require(:event).permit(:title, :body, :hosted_at, :cover, :user_id, :community_id, :placed_at, :placed_additional, :price, tag_list: [], category_list: [])
     end
 end

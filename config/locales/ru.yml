@@ -5,3 +5,8 @@ ru:
   time:
     formats:
       myformat: "%a, %d %B %H:%M"
+  reports:
+    status:
+      pending: "Ожидает рассмотрения"
+      approved: "Одобрено"
+      rejected: "Отклонено"

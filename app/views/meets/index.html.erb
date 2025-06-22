@@ -6,29 +6,34 @@
 <h1>Встречи (<%= @meets.count %>)</h1>
 <div class="C_EventsAndMeets">
   <% @meets.each do |meet| %>
-    <div class="M_MeetCard" data-url="<%= meet_path(meet) %>">
-      <%= render partial: 'meets/meet_card', locals: { meet: meet } %>
-      <div class="C_Tags">
-        <% meet.tags.each do |tag| %>
-          <%= link_to tag.name, tagged_meets_path(tag.name), class: 'A_Tag' %>
-        <% end %>
-      </div>
-      <%# Список последних 3 откликнувшихся %>
-      <% if meet.responses.any? %>
-        <h3>Отклики от:</h3>
-        <div class="C_Avatars">
-          <% meet.responses.includes(user: :profile).last(3).each do |response| %>
-            <%= link_to profile_path(response.user.profile) do %>
-              <%= image_tag response.user.profile.avatar.url, class: "A_Avatar" if response.user.profile.avatar.present? %>
-            <% end %>
-          <% end %>
-          <% if meet.responses.count > 3 %>
-            <%= "+#{ meet.responses.count-meet.responses.includes(user: :profile).last(3).count }" %>
+    <%= link_to meet_path(meet), class: "M_MeetCardLink" do %>
+      <div class="M_MeetCard">
+        <%= render partial: 'meets/meet_card', locals: { meet: meet } %>
+        <div class="C_Tags">
+          <% meet.tags.each do |tag| %>
+            <%= link_to tag.name, tagged_meets_path(tag.name), class: 'A_Tag' %>
           <% end %>
         </div>
-      <% end %>
-    </div>
+        <% if meet.responses.any? %>
+          <h3>Отклики от:</h3>
+          <div class="C_Avatars">
+            <% meet.responses.includes(user: :profile).last(3).each do |response| %>
+              <%= link_to profile_path(response.user.profile) do %>
+                <% if response.user.profile.avatar.present? %>
+                  <%= image_tag response.user.profile.avatar.url, class: "A_Avatar" %>
+                <% else %>
+                  <div class="A_Avatar" style="<%= avatar_placeholder_style(response.user) %>; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff;">
+                    <%= response.user.username.first.upcase %>
+                  </div>
+                <% end %>
+              <% end %>
+            <% end %>
+            <% if meet.responses.count > 3 %>
+              <%= "+#{ meet.responses.count-meet.responses.includes(user: :profile).last(3).count }" %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 </div>
-
-<%= link_to "New meet", new_meet_path %>

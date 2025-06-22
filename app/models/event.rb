@@ -9,6 +9,7 @@ class Event < ApplicationRecord
   has_many :favourites, as: :favouriteable, dependent: :destroy
   has_many :favourited_by, through: :favourites, source: :user
   has_many :responses, as: :responseable
+  has_many :reports, dependent: :destroy
   mount_uploader :cover, CoverUploader
 
   acts_as_taggable_on :tags

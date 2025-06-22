@@ -1,11 +1,15 @@
-<%= turbo_stream.replace dom_id(@favouriteable, "bookmark") do %>
-  <%= link_to favourite_toggle_path(type: @favouriteable.class.name, id: @favouriteable.id), 
-              class: "Q_BookmarkIconNoBg #{@favouriteable.favourites.exists?(user_id: current_user.id) ? 'active' : ''}", 
-              data: { turbo_method: :post },
-              id: dom_id(@favouriteable, "bookmark") do %>
-    <%= image_tag @favouriteable.favourites.exists?(user_id: current_user.id) ? "bookmark_filled.svg" : "bookmarknobg.svg", 
-                alt: "Закладка" %>
+<% if @favouriteable.present? %>
+  <%= turbo_stream.replace dom_id(@favouriteable, "bookmark") do %>
+    <%= link_to favourite_toggle_path(type: @favouriteable.class.name, id: @favouriteable.id), 
+                class: "Q_BookmarkIconNoBg #{@favouriteable.favourites.exists?(user_id: current_user.id) ? 'active' : ''}", 
+                data: { turbo_method: :post },
+                id: dom_id(@favouriteable, "bookmark") do %>
+      <%= image_tag @favouriteable.favourites.exists?(user_id: current_user.id) ? "bookmark_filled.svg" : "bookmarknobg.svg", 
+                  alt: "Закладка" %>
+    <% end %>
   <% end %>
+<% else %>
+  <%= turbo_stream.prepend "flash", partial: "shared/flash", locals: { message: "Ошибка: объект не найден" } %>
 <% end %>
 
 <% if @favouriteable.is_a?(Meet) %>

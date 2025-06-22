@@ -1,14 +1,12 @@
 Rails.application.routes.draw do
+  get "reports/new"
+  get "reports/create"
   get "settings/index"
   get "subscription/toggle"
   get "response/toggle"
   post "favourite/toggle"
 
-  resources :profiles do
-    collection do
-      get "/by_tag/:tag", to: "events#by_tag", as: "tagged"
-    end
-  end
+  resources :profiles
   resources :email_subscriptions, only: [ :create ]
 
   devise_for :users
@@ -19,6 +17,7 @@ Rails.application.routes.draw do
 
   resources :events do
     resources :comments
+    resources :reports, only: [:new, :create]
 
     collection do
       get "archive"
@@ -31,7 +30,7 @@ Rails.application.routes.draw do
     resources :comments
 
     collection do
-      get "/by_tag/:tag", to: "events#by_tag", as: "tagged"
+      get "/by_tag/:tag", to: "meets#by_tag", as: "tagged"
     end
   end
    
@@ -48,10 +47,15 @@ Rails.application.routes.draw do
   post "/notifications/mark_all_read", to: "notifications#mark_all_read"
   
   namespace :admin do
+    get "reports/index"
+    get "reports/show"
+    get "reports/update"
     resources :programs
     resources :faculties
     resources :communities, except: [ :show, :edit ]
     resources :email_subscriptions, only: [ :index, :show, :destroy ]
+    resources :reports, only: [ :index, :show, :update ]
+    resources :users, only: [:index]
   end
 
   namespace :api, format: "json" do

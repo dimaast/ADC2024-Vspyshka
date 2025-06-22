@@ -1,0 +1,55 @@
+<h1>Пользователи сервиса</h1>
+
+<table class="admin-users-table" style="width:100%; border-collapse:collapse;">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Аватар</th>
+      <th>Никнейм</th>
+      <th>ФИО</th>
+      <th>Email</th>
+      <th>Роль</th>
+      <th>Профиль</th>
+      <th>Создан</th>
+      <th>Обновлён</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr style="border-bottom:1px solid #eee;">
+        <td><%= user.id %></td>
+        <td>
+          <% if user.profile&.avatar&.present? %>
+            <%= image_tag user.profile.avatar.url, style: 'width:48px; height:48px; border-radius:50%; object-fit:cover;' %>
+          <% else %>
+            <div style="width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; color:#fff; <%= avatar_placeholder_style(user) %>">
+              <%= user.username.to_s.first&.upcase || '?' %>
+            </div>
+          <% end %>
+        </td>
+        <td><%= user.username %></td>
+        <td><%= user.full_name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.role %></td>
+        <td>
+          <% if user.profile %>
+            <ul style="margin:0; padding-left:16px; font-size:13px;">
+              <li><b>ID профиля:</b> <%= user.profile.id %></li>
+              <li><b>Имя:</b> <%= user.profile.first_name %></li>
+              <li><b>Фамилия:</b> <%= user.profile.last_name %></li>
+              <li><b>Отчество:</b> <%= user.profile.middle_name %></li>
+              <li><b>Контакты:</b> <%= user.profile.contact %></li>
+              <li><b>О себе:</b> <%= user.profile.body %></li>
+              <li><b>Создан:</b> <%= user.profile.created_at&.strftime('%d.%m.%Y %H:%M') %></li>
+              <li><b>Обновлён:</b> <%= user.profile.updated_at&.strftime('%d.%m.%Y %H:%M') %></li>
+            </ul>
+          <% else %>
+            —
+          <% end %>
+        </td>
+        <td><%= user.created_at&.strftime('%d.%m.%Y %H:%M') %></td>
+        <td><%= user.updated_at&.strftime('%d.%m.%Y %H:%M') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table> 

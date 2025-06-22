@@ -1,21 +1,25 @@
-<div class="C_Filters" id="C_EventFilters" data-by-tag-url="<%= by_tag_events_path %>">
-  <div>
-    <label for="category_select">Тип события:</label><br>
-    <select id="category_select" class="M_SelectBox">
-      <option value="">Все</option>
-      <% @categories.each do |category| %>
-        <option value="<%= category.name %>" <%= params[:category] == category.name ? 'selected' : '' %>><%= category.name %></option>
-      <% end %>
-    </select>
-  </div>
+<turbo-frame id="filters">
+  <form id="filters_form" action="<%= by_tag_events_path %>" method="get" data-turbo-frame="events_list">
+    <div class="C_Filters" id="C_EventFilters">
+      <div>
+        <label for="category_select">Тип события:</label><br>
+        <select id="category_select" name="category" class="M_SelectBox">
+          <option value="">Все</option>
+          <% @categories.each do |category| %>
+            <option value="<%= category.name %>" <%= params[:category] == category.name ? 'selected' : '' %>><%= category.name %></option>
+          <% end %>
+        </select>
+      </div>
 
-  <div>
-    <label for="tag_select">Теги:</label><br>
-    <select id="tag_select" class="M_SelectBox">
-      <option value="">Все</option>
-      <% @tags.each do |tag| %>
-        <option value="<%= tag.name %>" <%= params[:tag] == tag.name ? 'selected' : '' %>><%= tag.name %></option>
-      <% end %>
-    </select>
-  </div>
-</div>
+      <div>
+        <label for="tag_select">Теги:</label><br>
+        <select id="tag_select" name="tag" class="M_SelectBox">
+          <option value="">Все</option>
+          <% @tags.each do |tag| %>
+            <option value="<%= tag.name %>" <%= params[:tag] == tag.name ? 'selected' : '' %>><%= tag.name %></option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+  </form>
+</turbo-frame>

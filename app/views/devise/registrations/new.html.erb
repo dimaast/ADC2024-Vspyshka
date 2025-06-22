@@ -1,39 +1,60 @@
-<h2>Регистрация</h2>
+<div class="auth-container">
+  <div class="auth-form">
+    <h2>Регистрация</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email, "Почта" %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+      <div class="field">
+        <%= f.label :last_name, "Фамилия" %>
+        <%= f.text_field :last_name, autofocus: true, autocomplete: "family-name", placeholder: "Введите вашу фамилию" %>
+      </div>
 
-  <div class="field">
-    <%= f.label :username, "Username" %><br />
-    <% if resource.errors[:username].any? %>
-      <div class="error-message">
-        <%= resource.errors[:username].join(", ") %>
+      <div class="field">
+        <%= f.label :first_name, "Имя" %>
+        <%= f.text_field :first_name, autocomplete: "given-name", placeholder: "Введите ваше имя" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :middle_name, "Отчество" %>
+        <%= f.text_field :middle_name, autocomplete: "additional-name", placeholder: "Введите ваше отчество" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :email, "Почта" %>
+        <%= f.email_field :email, autocomplete: "email", placeholder: "Введите вашу почту" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :username, "Никнейм" %>
+        <% if resource.errors[:username].any? %>
+          <div class="error-message">
+            <%= resource.errors[:username].join(", ") %>
+          </div>
+        <% end %>
+        <%= f.text_field :username, autocomplete: "username", placeholder: "Введите ваш никнейм" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password, "Пароль" %>
+        <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> символов минимум)</em>
+        <% end %>
+        <%= f.password_field :password, autocomplete: "new-password", placeholder: "Введите пароль" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password_confirmation, "Подтвердить пароль" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Повторите пароль" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Зарегистрироваться" %>
       </div>
     <% end %>
-    <%= f.text_field :username, autofocus: true, autocomplete: "username" %>
-  </div>
 
-  <div class="field">
-    <%= f.label :password, "Новый пароль" %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
+    <div class="auth-links">
+      <%= render "devise/shared/links" %>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation, "Подтвердить пароль" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Зарегистрироваться" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

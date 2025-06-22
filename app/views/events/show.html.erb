@@ -15,11 +15,13 @@
     <div class="EventShow__host">
       <span>Проводит</span>
       <div class="EventShow__host-info">
-        <% if @event.user&.profile&.avatar&.attached? %>
-          <%= image_tag @event.user.profile.avatar, class: "EventShow__host-avatar" %>
+        <% if @event.community.present? %>
+          <span class="EventShow__host-avatar--stub"></span>
+        <% elsif @event.user&.profile&.avatar&.present? %>
+          <%= image_tag @event.user.profile.avatar.url, class: "EventShow__host-avatar" %>
         <% end %>
         <span>
-          <%= @event.community.present? ? @event.community.title : @event.user.profile.name %>
+          <%= @event.community.present? ? @event.community.title : (@event.user&.profile&.name || @event.user&.username || '—') %>
         </span>
         <span class="EventShow__host-label">Детали</span>
       </div>
@@ -27,17 +29,17 @@
     <div class="EventShow__going">
       <span>Идут</span>
       <div class="EventShow__avatars">
-        <% @event.going_users.limit(3).each do |user| %>
-          <% if user.avatar.attached? %>
-            <%= image_tag user.avatar, class: "EventShow__avatar" %>
+        <% @event.responses.includes(:user).limit(3).each do |response| %>
+          <% if response.user&.profile&.avatar&.present? %>
+            <%= image_tag response.user.profile.avatar.url, class: "EventShow__avatar" %>
           <% end %>
         <% end %>
-        <% if @event.going_users.count > 3 %>
-          <span class="EventShow__more">и еще <%= @event.going_users.count - 3 %></span>
+        <% if @event.responses.count > 3 %>
+          <span class="EventShow__more">и еще <%= @event.responses.count - 3 %></span>
         <% end %>
       </div>
     </div>
-    <%= link_to "Пожаловаться на событие", report_event_path(@event), class: "EventShow__report" %>
+    <%= link_to "Пожаловаться на событие", new_event_report_path(@event), class: "EventShow__report" %>
   </div>
 
   <div class="EventShow__right">
@@ -45,64 +47,73 @@
     <div class="EventShow__info">
       <div>
         <i class="fas fa-calendar"></i>
-        <%= l @event.start_time, format: :long %>
+        <%= l @event.hosted_at, format: :long %>
       </div>
       <div>
         <i class="fas fa-map-marker-alt"></i>
-        <%= @event.location %>
+        <%= [@event.placed_at, @event.placed_additional].compact.join(', ') %>
       </div>
       <div>
         <i class="fas fa-money-bill"></i>
         <%= @event.price.present? ? @event.price : "бесплатно" %>
       </div>
     </div>
-    <%= button_to "Зарегистрироваться", register_event_path(@event), method: :post, class: "EventShow__register" %>
+    
+    <%# Кнопки действий %>
+    <div class="EventShow__actions">
+      <%# Кнопка лайка %>
+      <%= render "favourite/button", favouriteable: @event %>
+      
+      <%# Кнопка отклика %>
+      <%= render "response/button", responseable: @event %>
+    </div>
+    
     <div class="EventShow__description">
-      <%= simple_format @event.description %>
+      <%= simple_format @event.body %>
     </div>
     <div class="EventShow__comments">
       <h2>Обсуждение</h2>
       <%= render "comments/comments", comments: @event.comments %>
+      
+      <%# Оставить комментарий %>
+      <h3>Добавить комментарий:</h3>
+      <%= render "comments/form", comment: Comment.new, commentable: @event %>
     </div>
   </div>
 </div>
 
-<%# Кнопка лайка %>
-<%= render "favourite/button", favouriteable: @event %>
-
-<%# Кнопка отклика %>
-<%= render "response/button", responseable: @event %>
-
-<%# Количество откликов %>
-<p>Откликнулось: <%= @event.responses.count %></p>
-
-<%# Количество лайков %>
-<p>Поставлено лайков: <%= @event.favourites.count %></p>
+<%# Статистика %>
+<div class="EventShow__stats">
+  <p>Откликнулось: <%= @event.responses.count %></p>
+  <p>Поставлено лайков: <%= @event.favourites.count %></p>
+</div>
 
 <%# Список лайкнувших %>
 <% if @event.favourites.any? %>
-  <%# Лайкнувшие %>
-  <h3>Лайки от:</h3>
+  <div class="EventShow__favourites">
+    <h3>Лайки от:</h3>
     <% @event.favourites.includes(:user).each do |favourite| %>
-      <%= favourite.user.profile.name %>
+      <%= favourite.user&.profile&.name || favourite.user&.username || '—' %>
     <% end %>
+  </div>
 <% else %>
   <p>Никто не лайкнул</p>
 <% end %>
 
-<%# Список откликнувшихя %>
+<%# Список откликнувшихся %>
 <% if @event.responses.any? %>
-  <%# Лайкнувшие %>
-  <h3>Отклики от:</h3>
+  <div class="EventShow__responses">
+    <h3>Отклики от:</h3>
     <% @event.responses.includes(:user).each do |response| %>
-      <%= response.user.profile.name %>
+      <%= response.user&.profile&.name || response.user&.username || '—' %>
     <% end %>
+  </div>
 <% else %>
   <p>Никто не откликнулся</p>
 <% end %>
 
 <%# Редактировать и удалять ивент %>
-<div>
+<div class="EventShow__admin">
   <%= link_to "Back to events", events_path %>
   <% if can? [:manage], @event %>
     <%= link_to "Edit this event", edit_event_path(@event) %>
@@ -110,20 +121,4 @@
   <% end %>
 </div>
 
-<%# Оставить комментарий %>
-<% if user_signed_in? %>
-  <h2>Добавить комментарий:</h2>
-  <%= render "comments/form", comment: Comment.new, commentable: @event %>
-<% end %>
-
 <%= turbo_stream_from @event, :comments %>
-
-<%# Список комментариев %>
-<h2>Комментарии:</h2>
-<div id="C_Comments">
-  <% @event.comments.no_replies.each do |comment| %>
-    <div class="M_Comment">
-      <%= render "comments/comment", comment: comment, commentable: @event %>
-    </div>
-  <% end %>
-</div>

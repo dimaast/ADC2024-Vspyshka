@@ -12,22 +12,37 @@
   <% end %>
 
   <div>
-    <%= form.label :name, style: "display: block" %>
+    <%= form.label :last_name, "Фамилия", style: "display: block" %>
+    <%= form.text_field :last_name %>
+  </div>
+
+  <div>
+    <%= form.label :first_name, "Имя", style: "display: block" %>
+    <%= form.text_field :first_name %>
+  </div>
+
+  <div>
+    <%= form.label :middle_name, "Отчество", style: "display: block" %>
+    <%= form.text_field :middle_name %>
+  </div>
+
+  <div>
+    <%= form.label :name, "Отображаемое имя", style: "display: block" %>
     <%= form.text_field :name %>
   </div>
 
   <div>
-    <%= form.label :body, style: "display: block" %>
+    <%= form.label :body, "О себе", style: "display: block" %>
     <%= form.text_area :body %>
   </div>
 
   <div>
-    <%= form.label :contact, style: "display: block" %>
+    <%= form.label :contact, "Контакты", style: "display: block" %>
     <%= form.text_field :contact %>
   </div>
 
   <div>
-    <%= form.label :avatar, style: "display: block" %>
+    <%= form.label :avatar, "Аватар", style: "display: block" %>
     <%= form.file_field :avatar %>
   </div>
 

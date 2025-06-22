@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_01_221639) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_22_164322) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,6 +53,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_01_221639) do
     t.integer "community_id"
     t.string "placed_at"
     t.string "placed_additional"
+    t.string "price"
   end
 
   create_table "faculties", force: :cascade do |t|
@@ -76,6 +77,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_01_221639) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "placed_at"
     t.index ["user_id"], name: "index_meets_on_user_id"
   end
 
@@ -107,6 +109,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_01_221639) do
     t.datetime "updated_at", null: false
     t.bigint "faculty_id"
     t.bigint "program_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "middle_name"
     t.index ["faculty_id"], name: "index_profiles_on_faculty_id"
     t.index ["program_id"], name: "index_profiles_on_program_id"
     t.index ["user_id"], name: "index_profiles_on_user_id"
@@ -118,6 +123,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_01_221639) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["faculty_id"], name: "index_programs_on_faculty_id"
+  end
+
+  create_table "reports", force: :cascade do |t|
+    t.text "reason"
+    t.bigint "event_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_reports_on_event_id"
+    t.index ["user_id"], name: "index_reports_on_user_id"
   end
 
   create_table "responses", force: :cascade do |t|
@@ -189,6 +205,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_01_221639) do
     t.string "username", null: false
     t.string "role", default: "user"
     t.string "jti", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "middle_name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -202,6 +221,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_01_221639) do
   add_foreign_key "profiles", "programs"
   add_foreign_key "profiles", "users"
   add_foreign_key "programs", "faculties"
+  add_foreign_key "reports", "events"
+  add_foreign_key "reports", "users"
   add_foreign_key "responses", "users"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "support_messages", "users"

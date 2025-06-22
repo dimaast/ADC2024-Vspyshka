@@ -35,7 +35,19 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [ :email, :password, :username ])
-    devise_parameter_sanitizer.permit(:account_update, keys: [ :username ])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :email, :password, :username, :first_name, :last_name, :middle_name ])
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :username, :first_name, :last_name, :middle_name ])
+  end
+
+  def after_update_path_for(resource)
+    # Синхронизируем данные с профилем после обновления пользователя
+    if resource.profile.present?
+      resource.profile.update_columns(
+        first_name: resource.first_name,
+        last_name: resource.last_name,
+        middle_name: resource.middle_name
+      )
+    end
+    super
   end
 end

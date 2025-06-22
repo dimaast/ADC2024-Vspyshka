@@ -6,6 +6,17 @@
 <%= render @community %>
 <%= render "subscription/button", subscriptionable: @community %>
 
+<% if @community.events.any? %>
+  <h2>События этого сообщества</h2>
+  <div class="C_EventsAndMeets">
+    <% @community.events.each do |event| %>
+      <%= render partial: 'events/event_card', locals: { event: event } %>
+    <% end %>
+  </div>
+<% else %>
+  <p>У этого сообщества пока нет событий.</p>
+<% end %>
+
 <div>
   <%= link_to "Back to communities", communities_path %> | 
   <% if can? :edit, @community %>

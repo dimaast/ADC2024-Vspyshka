@@ -68,8 +68,8 @@
                   class: "A_NavbarAvatar"
                 ) %>
           <% else %>
-            <div class="A_NavbarAvatar">
-              <i class="fas fa-user"></i>
+            <div class="A_NavbarAvatar" style="<%= avatar_placeholder_style(current_user) %>">
+              <i class="fas fa-user" style="color: #fff; opacity: 0.7;"></i>
             </div>
           <% end %>
         </button>
@@ -92,6 +92,12 @@
             <li class="M_ProfileMenuItem_Divider"></li>
             <li class="M_ProfileMenuItem M_ProfileMenuItem_Admin">
               <%= link_to "Админ-панель", admin_communities_url, class: "A_ProfileMenuLink" %>
+            </li>
+            <li class="M_ProfileMenuItem M_ProfileMenuItem_Admin">
+              <%= link_to "Модерация жалоб", admin_reports_path, class: "A_ProfileMenuLink" %>
+            </li>
+            <li class="M_ProfileMenuItem M_ProfileMenuItem_Admin">
+              <%= link_to "Пользователи", admin_users_path, class: "A_ProfileMenuLink" %>
             </li>
           <% end %>
           <li class="M_ProfileMenuItem_Divider"></li>

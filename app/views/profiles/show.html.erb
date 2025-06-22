@@ -11,7 +11,7 @@
 <div class="C_EventsAndMeets">
   <% @profile.user.events.each do |user_event| %>
     <div class="M_EventCard">
-      <%= link_to event_path(user_event) do %>
+      <%= link_to event_path(user_event), data: { turbo: false } do %>
         <%= render partial: 'events/event_card', locals: { event: user_event } %>
       <% end %>
     </div>
@@ -22,7 +22,7 @@
 <div class="C_EventsAndMeets">
   <% @favourite_events.each do |favourite_event| %>
     <div class="M_EventCard">
-      <%= link_to event_path(favourite_event) do %>
+      <%= link_to event_path(favourite_event), data: { turbo: false } do %>
         <%= render partial: 'events/event_card', locals: { event: favourite_event } %>
       <% end %>
     </div>

@@ -1,7 +1,15 @@
 <% if user_signed_in? %>
   <%
     response = responseable.responses.where(user_id: current_user.id)
-    button_text = response && response.count > 0 ? "Unresponse" : "Response"
+    button_text = response && response.count > 0 ? "Отменить участие" : "Участвовать"
   %>
-  <div><%= link_to button_text, response_toggle_path(type: responseable.class, id: responseable.id), data: { turbo_stream: true } %></div>
+  <% unless content_for?(:events_list) %>
+    <turbo-frame id="response_button_<%= responseable.class.name.downcase %>_<%= responseable.id %>">
+  <% end %>
+    <div class="response-button <%= 'active' if response && response.count > 0 %>">
+      <%= link_to button_text, response_toggle_path(type: responseable.class, id: responseable.id), data: { turbo_stream: true }, class: "response-link" %>
+    </div>
+  <% unless content_for?(:events_list) %>
+    </turbo-frame>
+  <% end %>
 <% end %>

@@ -8,6 +8,7 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: self
 
   validates :username, presence: { message: "Необходимо указать имя пользователя" }
+  validates :email, presence: { message: "Необходимо указать почту" }
 
   has_many :events
   has_many :meets
@@ -25,7 +26,15 @@ class User < ApplicationRecord
   after_create :create_profile
 
   def create_profile
-    Profile.create!(user: self, name: "Ваше имя")
+    Profile.create!(user: self, 
+                   first_name: "Имя",
+                   last_name: "Фамилия",
+                   middle_name: "Отчество",
+                   name: "Фамилия Имя")
+  end
+
+  def full_name
+    profile&.full_name || username
   end
 
 def unread_notifications

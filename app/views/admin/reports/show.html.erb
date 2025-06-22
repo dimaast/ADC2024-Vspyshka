@@ -1,0 +1,73 @@
+<div class="AdminReportShow">
+  <div class="AdminReportShow__header">
+    <h1>Просмотр жалобы</h1>
+    <%= link_to "← Назад к списку", admin_reports_path, class: "Button Button--secondary" %>
+  </div>
+
+  <div class="AdminReportShow__content">
+    <div class="ReportDetails">
+      <div class="ReportDetails__section">
+        <h3>Информация о жалобе</h3>
+        <div class="ReportDetails__field">
+          <strong>Статус:</strong>
+          <span class="ReportDetails__status ReportDetails__status--<%= @report.status %>">
+            <%= t("reports.status.#{@report.status}") %>
+          </span>
+        </div>
+        <div class="ReportDetails__field">
+          <strong>Дата создания:</strong>
+          <span><%= l(@report.created_at, format: :long) %></span>
+        </div>
+        <div class="ReportDetails__field">
+          <strong>Автор жалобы:</strong>
+          <span><%= @report.user.username %> (<%= @report.user.email %>)</span>
+        </div>
+      </div>
+
+      <div class="ReportDetails__section">
+        <h3>Событие</h3>
+        <div class="ReportDetails__field">
+          <strong>Название:</strong>
+          <span><%= @report.event.title %></span>
+        </div>
+        <div class="ReportDetails__field">
+          <strong>Описание:</strong>
+          <p><%= @report.event.body %></p>
+        </div>
+        <div class="ReportDetails__field">
+          <strong>Автор события:</strong>
+          <span><%= @report.event.user&.username || "Не указан" %></span>
+        </div>
+        <%= link_to "Просмотреть событие", event_path(@report.event), class: "Button Button--small", target: "_blank" %>
+      </div>
+
+      <div class="ReportDetails__section">
+        <h3>Причина жалобы</h3>
+        <div class="ReportDetails__reason">
+          <%= simple_format(@report.reason) %>
+        </div>
+      </div>
+
+      <% if @report.status == "pending" %>
+        <div class="ReportDetails__section">
+          <h3>Действия</h3>
+          <%= form_with model: [:admin, @report], method: :patch, local: true do |f| %>
+            <div class="ReportDetails__actions">
+              <%= f.submit "Одобрить жалобу", 
+                          name: "report[status]", 
+                          value: "approved", 
+                          class: "Button Button--danger",
+                          data: { confirm: "Вы уверены? Событие может быть удалено." } %>
+              
+              <%= f.submit "Отклонить жалобу", 
+                          name: "report[status]", 
+                          value: "rejected", 
+                          class: "Button Button--secondary",
+                          data: { confirm: "Отклонить жалобу?" } %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

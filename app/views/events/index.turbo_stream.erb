@@ -1,0 +1,7 @@
+<turbo-frame id="events_list">
+  <div class="C_EventsAndMeets">
+    <% @events.each do |event| %>
+      <%= render partial: 'event_card', locals: { event: event } %>
+    <% end %>
+  </div>
+</turbo-frame> 

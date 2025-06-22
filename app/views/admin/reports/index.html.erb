@@ -1,0 +1,54 @@
+<div class="AdminReports">
+  <div class="AdminReports__header">
+    <h1>Модерация жалоб</h1>
+    <p>Управление жалобами на события</p>
+  </div>
+
+  <div class="AdminReports__stats">
+    <div class="StatCard">
+      <h3>Всего жалоб</h3>
+      <span class="StatCard__number"><%= @reports.count %></span>
+    </div>
+    <div class="StatCard">
+      <h3>Ожидают рассмотрения</h3>
+      <span class="StatCard__number"><%= @reports.pending.count %></span>
+    </div>
+    <div class="StatCard">
+      <h3>Одобрено</h3>
+      <span class="StatCard__number"><%= @reports.approved.count %></span>
+    </div>
+    <div class="StatCard">
+      <h3>Отклонено</h3>
+      <span class="StatCard__number"><%= @reports.rejected.count %></span>
+    </div>
+  </div>
+
+  <div class="AdminReports__list">
+    <% if @reports.any? %>
+      <% @reports.each do |report| %>
+        <div class="ReportCard ReportCard--<%= report.status %>">
+          <div class="ReportCard__header">
+            <div class="ReportCard__info">
+              <h4>Жалоба на событие: <%= report.event.title %></h4>
+              <p>От: <%= report.user.username %> | <%= l(report.created_at, format: :long) %></p>
+              <span class="ReportCard__status ReportCard__status--<%= report.status %>">
+                <%= t("reports.status.#{report.status}") %>
+              </span>
+            </div>
+            <div class="ReportCard__actions">
+              <%= link_to "Просмотреть", admin_report_path(report), class: "Button Button--small" %>
+            </div>
+          </div>
+          <div class="ReportCard__reason">
+            <strong>Причина:</strong>
+            <p><%= truncate(report.reason, length: 150) %></p>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="EmptyState">
+        <p>Жалоб пока нет</p>
+      </div>
+    <% end %>
+  </div>
+</div>

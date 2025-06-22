@@ -427,17 +427,49 @@ end
 
 # Функции загрузки случайных обложек (CarrierWave или аналог)
 def upload_event_cover_image
-  uploader = CoverUploader.new(Event.new, :cover)
-  random_file = Dir.glob(File.join(Rails.root, "public/autoupload/events", "*.{jpg,jpeg,png}")).sample
-  uploader.cache!(File.open(random_file)) if random_file
-  uploader
+  begin
+    uploader = CoverUploader.new(Event.new, :cover)
+    upload_path = File.join(Rails.root, "public/autoupload/events")
+    
+    # Проверяем, существует ли папка
+    if Dir.exist?(upload_path)
+      random_file = Dir.glob(File.join(upload_path, "*.{jpg,jpeg,png,gif}")).sample
+      if random_file
+        uploader.cache!(File.open(random_file))
+        return uploader
+      end
+    end
+    
+    # Если папка не существует или файлы не найдены, возвращаем nil
+    puts "Warning: No event cover images found in #{upload_path}"
+    return nil
+  rescue => e
+    puts "Error uploading event cover image: #{e.message}"
+    return nil
+  end
 end
 
 def upload_community_cover_image
-  uploader = CommunityCoverUploader.new(Community.new, :cover)
-  random_file = Dir.glob(File.join(Rails.root, "public/autoupload/communities", "*.{jpg,jpeg,png}")).sample
-  uploader.cache!(File.open(random_file)) if random_file
-  uploader
+  begin
+    uploader = CommunityCoverUploader.new(Community.new, :cover)
+    upload_path = File.join(Rails.root, "public/autoupload/communities")
+    
+    # Проверяем, существует ли папка
+    if Dir.exist?(upload_path)
+      random_file = Dir.glob(File.join(upload_path, "*.{jpg,jpeg,png}")).sample
+      if random_file
+        uploader.cache!(File.open(random_file))
+        return uploader
+      end
+    end
+    
+    # Если папка не существует или файлы не найдены, возвращаем nil
+    puts "Warning: No community cover images found in #{upload_path}"
+    return nil
+  rescue => e
+    puts "Error uploading community cover image: #{e.message}"
+    return nil
+  end
 end
 
 # Места для ивентов
@@ -549,125 +581,218 @@ end
   }
 ]
 
+# Массивы для генерации случайных данных пользователей
+@first_names = [
+  "Александр", "Алексей", "Андрей", "Артём", "Владимир", "Дмитрий", "Евгений", "Иван", "Максим", "Михаил",
+  "Николай", "Павел", "Пётр", "Сергей", "Степан", "Тимофей", "Фёдор", "Юрий", "Ярослав", "Антон",
+  "Анна", "Елена", "Екатерина", "Ирина", "Мария", "Наталья", "Ольга", "Светлана", "Татьяна", "Юлия",
+  "Алиса", "Анастасия", "Валентина", "Вера", "Галина", "Дарья", "Елизавета", "Зинаида", "Инна", "Кристина"
+]
+
+@last_names = [
+  "Иванов", "Смирнов", "Кузнецов", "Попов", "Васильев", "Петров", "Соколов", "Михайлов", "Новиков", "Фёдоров",
+  "Морозов", "Волков", "Алексеев", "Лебедев", "Семёнов", "Егоров", "Павлов", "Козлов", "Степанов", "Николаев",
+  "Орлов", "Андреев", "Макаров", "Никитин", "Захаров", "Зайцев", "Соловьёв", "Борисов", "Яковлев", "Григорьев",
+  "Романов", "Воробьёв", "Сергеев", "Кузьмин", "Фролов", "Александров", "Дмитриев", "Королёв", "Гусев", "Киселёв"
+]
+
+@middle_names = [
+  "Александрович", "Алексеевич", "Андреевич", "Артёмович", "Владимирович", "Дмитриевич", "Евгеньевич", "Иванович", "Максимович", "Михайлович",
+  "Николаевич", "Павлович", "Петрович", "Сергеевич", "Степанович", "Тимофеевич", "Фёдорович", "Юрьевич", "Ярославович", "Антонович",
+  "Александровна", "Алексеевна", "Андреевна", "Артёмовна", "Владимировна", "Дмитриевна", "Евгеньевна", "Ивановна", "Максимовна", "Михайловна",
+  "Николаевна", "Павловна", "Петровна", "Сергеевна", "Степановна", "Тимофеевна", "Фёдоровна", "Юрьевна", "Ярославовна", "Антоновна"
+]
+
+@usernames = [
+  "alex_dev", "coder_max", "web_master", "tech_guru", "code_ninja", "digital_wizard", "byte_buddy", "script_kid", "debug_master", "git_hacker",
+  "ruby_rover", "rails_runner", "js_jumper", "css_crafter", "html_hero", "sql_sage", "api_ace", "cloud_captain", "data_dragon", "frontend_fox",
+  "backend_bear", "fullstack_falcon", "devops_dolphin", "qa_queen", "ui_unicorn", "ux_wizard", "mobile_monkey", "desktop_dog", "server_shark", "client_cat",
+  "programmer_panda", "developer_deer", "engineer_eagle", "architect_ant", "designer_duck", "analyst_antelope", "tester_tiger", "scrum_squirrel", "agile_ape", "lean_lion"
+]
+
 # Основная функция seed
 def seed
   reset_db
-  create_users(10)
+  ActsAsTaggableOn::Tag.reset_column_information
+  # Создаём тестовых пользователей
+  begin
+    admin = User.create!(
+      username: 'admin',
+      email: 'admin@edu.hse.ru',
+      password: 'password',
+      password_confirmation: 'password',
+      role: 'admin',
+      first_name: 'Админ',
+      last_name: 'Администраторов',
+      middle_name: 'Админович'
+    )
+    puts "Admin создан"
+  rescue ActiveRecord::RecordInvalid => e
+    puts "Ошибка при создании admin: #{e.record.errors.full_messages.join(', ')}"
+  end
+  9.times do |i|
+    begin
+      User.create!(
+        username: "user#{i+1}",
+        email: "user#{i+1}@edu.hse.ru",
+        password: 'password',
+        password_confirmation: 'password',
+        role: 'user',
+        first_name: "Имя#{i+1}",
+        last_name: "Фамилия#{i+1}",
+        middle_name: "Отчествович#{i+1}"
+      )
+      puts "User user#{i+1} создан"
+    rescue ActiveRecord::RecordInvalid => e
+      puts "Ошибка при создании user#{i+1}: #{e.record.errors.full_messages.join(', ')}"
+    end
+  end
   create_tags
   create_faculties
-  create_programs
   create_communities
-  create_events(20)
+  create_events(10)
   create_meets(10)
+
+  # Проверка связей тегов и категорий
+  puts "\nПроверка тегов и категорий у событий:"
+  Event.all.each do |event|
+    puts "Событие: #{event.title}"
+    puts "  Теги: #{event.tag_list.join(', ')}"
+    puts "  Категории: #{event.category_list.join(', ')}"
+  end
+  puts "\nВсе теги в системе: #{ActsAsTaggableOn::Tag.all.map(&:name).join(', ')}"
+  puts "Всего связей (taggings): #{ActsAsTaggableOn::Tagging.count}"
 end
 
 # Сбрасываем и создаём базу заново
 def reset_db
-  Rake::Task["db:drop"].invoke
-  Rake::Task["db:create"].invoke
-  Rake::Task["db:migrate"].invoke
+  puts 'Очищаю базу данных...'
+  # Удаляем все связанные данные в правильном порядке
+  Favourite.delete_all
+  Response.delete_all
+  Report.delete_all
+  Comment.delete_all
+  Event.delete_all
+  Meet.delete_all
+  Community.delete_all
+  Program.delete_all
+  Faculty.delete_all
+  Profile.delete_all
+  User.delete_all
+  ActsAsTaggableOn::Tagging.delete_all   # СНАЧАЛА taggings!
+  ActsAsTaggableOn::Tag.delete_all       # ПОТОМ tags!
+  EmailSubscription.delete_all
+  puts 'База данных очищена.'
 end
 
-# Создание пользователей
-def create_users(quantity)
-  quantity.times do |i|
-    attrs = {
-      email:    "user_#{i}@email.com",
-      password: "testtest",
-      username: (i.zero? ? "admin" : "user#{i}")
-    }
-    attrs[:role] = "admin" if i.zero?
-    user = User.create!(attrs)
-    puts "User ##{user.id} (#{user.username}) created."
-  end
-end
-
-# Создание тегов
 def create_tags
-  tag_list = [
-    { name: "музыка",        tag_type: "tag"      },
-    { name: "кино",          tag_type: "tag"      },
-    { name: "волонтерство",  tag_type: "tag"      },
-    { name: "спорт",         tag_type: "tag"      },
-    { name: "культура",      tag_type: "tag"      },
-    { name: "бизнес",        tag_type: "tag"      },
-    { name: "концерт",       tag_type: "category" },
-    { name: "квест",         tag_type: "category" },
-    { name: "разговорный клуб", tag_type: "category" },
-    { name: "презентация",   tag_type: "category" },
-    { name: "лекция",        tag_type: "category" },
-    { name: "фестиваль",     tag_type: "category" }
-  ]
+  tag_names = %w[музыка спорт дизайн кино волонтёрство технологии еда игры]
+  category_names = %w[концерт лекция фестиваль мастер-класс турнир]
 
-  tag_list.each do |t|
-    tag = Tag.create!(t)
-    puts "Tag '#{tag.name}' created."
+  # Удаляем все теги с этими именами (любого типа)
+  ActsAsTaggableOn::Tag.where(name: tag_names + category_names).delete_all
+
+  tag_names.each do |tag|
+    ActsAsTaggableOn::Tag.find_or_create_by!(name: tag, tag_type: "tag")
+  end
+  category_names.each do |cat|
+    ActsAsTaggableOn::Tag.find_or_create_by!(name: cat, tag_type: "category")
   end
 end
 
-# Создание факультетов
 def create_faculties
-  @faculties.each do |faculty_hash|
-    faculty = Faculty.create!(name: faculty_hash[:name])
-    puts "Faculty '#{faculty.name}' created."
-  end
-end
-
-# Создание программ
-def create_programs
-  @faculties.each_with_index do |faculty_hash, index|
-    # index+1 соответствует faculty_id
-    faculty_hash[:programs].each do |prog_hash|
-      program = Program.create!(prog_hash)
-      puts "Program '#{program.name}' created (faculty_id=#{program.faculty_id})."
+  @faculties.each_with_index do |faculty_data, idx|
+    faculty = Faculty.create!(name: faculty_data[:name])
+    # Создаём программы для факультета
+    if faculty_data[:programs]
+      faculty_data[:programs].each do |program_data|
+        Program.create!(name: program_data[:name], faculty: faculty)
+      end
     end
   end
 end
 
-# Создание сообществ
 def create_communities
-  @communities.each do |comm_hash|
-    comm = Community.create!(comm_hash)
-    puts "Community '#{comm.title}' created (id=#{comm.id})."
-  end
-end
-
-# Создание событий
-def create_events(quantity)
-  quantity.times do |i|
-    author = User.all.sample
-    # Генерируем случайную дату в будущем (от 1 до 30 дней)
-    future_date = Time.current + rand(1..30).days + rand(0..23).hours + rand(0..59).minutes
-    
-    event = Event.create!(
-      title:        "Ивент №#{i + 1}",
-      body:         create_sentence,
-      user:         author,
-      cover:        upload_event_cover_image,
-      hosted_at:    future_date,
-      community_id: Community.pluck(:id).sample || 1,
-      placed_at:    @places.sample
+  user = User.first
+  @communities.each do |community_data|
+    Community.create!(
+      title: community_data[:title],
+      user: user,
+      cover: community_data[:cover],
+      contact: community_data[:contact],
+      body: community_data[:body]
     )
-    puts "Event ##{event.id} created by User ##{author.id} for #{future_date}."
   end
 end
 
-# Создание встреч
-def create_meets(quantity)
-  quantity.times do |_i|
-    author = User.all.sample
-    # Генерируем случайную дату в будущем (от 1 до 30 дней)
-    future_date = Time.current + rand(1..30).days + rand(0..23).hours + rand(0..59).minutes
-    
-    meet = Meet.create!(
-      body:      create_sentence,
-      user:      author,
-      hosted_at: future_date
+def create_events(_count)
+  puts "User count before events: #{User.count}"
+  puts "Users: #{User.all.map(&:email).join(", ")}"
+  covers = [
+    "img1.jpg", "img2.jpg", "img4.jpg", "img5.jpg", "img7.jpg"
+  ]
+  tag_list = %w[музыка спорт дизайн кино волонтёрство технологии еда игры]
+  category_list = %w[концерт лекция фестиваль мастер-класс турнир]
+  communities = Community.all.to_a
+  events = [
+    { title: 'Концерт современной музыки', body: 'Приглашаем на вечер живой музыки с участием молодых исполнителей. В программе — авторские композиции и каверы на известные хиты.', place: 'Покровский бульвар', price: '500', date: Date.today + 3.days },
+    { title: 'Конференция по дизайну', body: 'Ведущие дизайнеры расскажут о трендах в графическом и промышленном дизайне. Мастер-классы и нетворкинг.', place: 'Онлайн', price: 'Бесплатно', date: Date.today + 7.days },
+    { title: 'Киноночь: Классика мирового кино', body: 'Просмотр и обсуждение культовых фильмов XX века. Вход свободный, попкорн за наш счёт!', place: 'Малая Пионерская', price: 'Бесплатно', date: Date.today + 1.day },
+    { title: 'Благотворительный забег', body: 'Спортивное мероприятие для всех желающих. Все собранные средства пойдут на поддержку детских домов.', place: 'Покровский бульвар', price: '300', date: Date.today + 10.days },
+    { title: 'Лекция: Искусственный интеллект', body: 'Эксперт по ИИ расскажет о современных достижениях и перспективах развития искусственного интеллекта.', place: 'Онлайн', price: 'Бесплатно', date: Date.today + 5.days },
+    { title: 'Фестиваль уличной еды', body: 'Лучшие фудтраки города, дегустации, мастер-классы от шеф-поваров и живая музыка.', place: 'Другое', price: 'Вход свободный', date: Date.today + 14.days },
+    { title: 'Турнир по настольным играм', body: 'Соревнования по самым популярным настольным играм. Призы победителям!', place: 'Покровский бульвар', price: '200', date: Date.today + 2.days },
+    { title: 'Мастер-класс по фотографии', body: 'Профессиональный фотограф поделится секретами удачных снимков. Практика на свежем воздухе.', place: 'Малая Пионерская', price: '400', date: Date.today + 4.days },
+    { title: 'Воркшоп: Публичные выступления', body: 'Научитесь уверенно выступать перед аудиторией. Практические упражнения и обратная связь.', place: 'Онлайн', price: 'Бесплатно', date: Date.today + 6.days },
+    { title: 'Квиз по истории', body: 'Интеллектуальная игра для команд. Проверьте свои знания и выиграйте призы!', place: 'Другое', price: '100', date: Date.today + 8.days }
+  ]
+  events.each_with_index do |attrs, idx|
+    event = Event.new(
+      title: attrs[:title],
+      body: attrs[:body],
+      placed_at: attrs[:place],
+      price: attrs[:price],
+      hosted_at: attrs[:date],
+      user: User.all.sample
     )
-    puts "Meet ##{meet.id} created by User ##{author.id} for #{future_date}."
+    # Примерно половина событий будет с community
+    if communities.any? && idx.even?
+      event.community = communities.sample
+    end
+    # Обложка
+    cover_file = covers[idx % covers.length]
+    event.cover = File.open(Rails.root.join('app/assets/images', cover_file))
+    # Теги и категории
+    event.tag_list = tag_list.sample(2)
+    event.category_list = category_list.sample(1)
+    event.save!
   end
 end
 
-# Запускаем seed
+def create_meets(_count)
+  puts "User count before meets: #{User.count}"
+  puts "Users: #{User.all.map(&:email).join(", ")}"
+  meets = [
+    { body: 'Дружеская встреча для всех, кто любит настолки. Приносите свои любимые игры и делитесь опытом! Это отличная возможность познакомиться с новыми людьми и попробовать что-то новое.', placed_at: 'Покровский бульвар', date: Date.today + 2.days },
+    { body: 'Практика английского языка в неформальной обстановке. Для любого уровня. Общение, игры, обсуждение фильмов и книг на английском языке. Приходите и совершенствуйте свой английский вместе с нами!', placed_at: 'Онлайн', date: Date.today + 3.days },
+    { body: 'Принесите книги, которые хотите обменять, и найдите для себя что-то новое. Здесь вы сможете познакомиться с интересными людьми, обсудить любимые произведения и расширить свою библиотеку.', placed_at: 'Малая Пионерская', date: Date.today + 5.days },
+    { body: 'Совместная поездка по живописным маршрутам города. Не забудьте шлем! Вас ждёт отличная компания, свежий воздух и новые впечатления. Присоединяйтесь к нашему велосообществу!', placed_at: 'Другое', date: Date.today + 7.days },
+    { body: 'Смотрим и обсуждаем новинки и классику кино. Чай и печенье прилагаются. После просмотра делимся впечатлениями, обсуждаем режиссуру и актёрскую игру.', placed_at: 'Покровский бульвар', date: Date.today + 1.day },
+    { body: 'Встреча для всех, кто любит рисовать, лепить или заниматься рукоделием. Приносите свои материалы и делитесь творческими идеями. Здесь вы найдёте единомышленников и вдохновение.', placed_at: 'Онлайн', date: Date.today + 4.days },
+    { body: 'Утренняя зарядка на свежем воздухе для бодрого начала дня. Простые упражнения, хорошее настроение и поддержка друг друга гарантированы!', placed_at: 'Другое', date: Date.today + 6.days },
+    { body: 'Обсуждаем актуальные темы и учимся аргументировать свою точку зрения. Встреча для тех, кто любит дискуссии, новые знания и интересные знакомства.', placed_at: 'Малая Пионерская', date: Date.today + 8.days },
+    { body: 'Групповая прогулка с фотоаппаратами по интересным местам города. Обмениваемся советами, делаем красивые снимки и просто хорошо проводим время.', placed_at: 'Покровский бульвар', date: Date.today + 9.days },
+    { body: 'Тёплая встреча для всех, кто когда-либо учился в нашем университете. Вспоминаем лучшие моменты, делимся новостями и строим планы на будущее.', placed_at: 'Онлайн', date: Date.today + 10.days }
+  ]
+  meets.each do |attrs|
+    Meet.create!(
+      body: attrs[:body],
+      placed_at: attrs[:placed_at],
+      hosted_at: attrs[:date],
+      user: User.all.sample
+    )
+  end
+end
+
 seed
 
