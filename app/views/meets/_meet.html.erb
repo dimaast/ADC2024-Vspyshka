@@ -5,11 +5,32 @@
       <%= link_to favourite_toggle_path(type: meet.class.name, id: meet.id), 
                   class: "Q_BookmarkIconNoBg #{meet.favourites.exists?(user_id: current_user.id) ? 'active' : ''}", 
                   data: { turbo_method: :post } do %>
-        <%= image_tag meet.favourites.exists?(user_id: current_user.id) ? "bookmark_filled.svg" : "bookmarknobg.svg", 
-                    alt: "Закладка" %>
+        <%= render 'shared/icon_save', active: meet.favourites.exists?(user_id: current_user.id) %>
       <% end %>
     <% end %>
   </div>
   <p class="A_MeetText"><%= meet.body %></p>
+
+  <% if meet.responses.any? %>
+    <%= link_to participants_meet_path(meet), class: "M_MeetGoing", style: "cursor:pointer; text-decoration:none; color:inherit;" do %>
+      <span>Идут</span>
+      <div class="M_MeetParticipants">
+        <div class="M_MeetAvatars">
+          <% latest_responses = meet.responses.includes(user: :profile).order(created_at: :desc).limit(3) %>
+          <% latest_responses.each do |response| %>
+            <%= user_avatar(response.user, class_name: "M_MeetAvatar") %>
+          <% end %>
+        </div>
+        <div class="M_MeetNames">
+          <% names = latest_responses.map { |r| r.user&.username || '?' } %>
+          <%= names.join(', ') %>
+        </div>
+      </div>
+      <% if meet.responses.count > 3 %>
+        <span class="M_MeetMore">+ еще <%= meet.responses.count - 3 %> участника</span>
+      <% end %>
+    <% end %>
+  <% end %>
+  
   <time class="A_MeetDate"><%= meet.hosted_at.strftime("%d/%m/%Y %H:%M") %></time>
-</div> 
+</div>

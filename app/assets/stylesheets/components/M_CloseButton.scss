@@ -1,0 +1,17 @@
+.M_CloseButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s ease;
+}
+.M_CloseButton:hover {
+  color: #333;
+}
+.M_CloseButton i {
+  font-size: 1.2rem;
+}

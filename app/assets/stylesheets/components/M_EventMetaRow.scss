@@ -1,0 +1,9 @@
+.M_EventMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  align-items: center;
+  font-size: 14px;
+  color: var(--666);
+  margin: 0 0 4px 0;
+}

@@ -1,0 +1,41 @@
+<turbo-frame id="filters">
+  <div class="O_CommunitiesTagsFilter" id="firstRow">
+    <% @tags.first(6).each do |tag| %>
+      <%= link_to by_tag_communities_path(tag: tag.name), class: "O_CommunitiesTagsFilterLink #{(params[:tag] == tag.name ? 'active' : '')}", data: { turbo_frame: 'communities_list' } do %>
+        <i class="fas fa-<%= tag_icon(tag.name) %>"></i>
+        <span><%= tag.name %></span>
+      <% end %>
+    <% end %>
+    
+    <button class="more-tags-btn" onclick="toggleMoreCommunitiesTags()">
+      <i class="fas fa-plus"></i>
+      <span>Больше тегов</span>
+    </button>
+  </div>
+  
+  <div class="more-tags-container" id="moreCommunitiesTags" style="display: none;">
+    <div class="O_CommunitiesTagsFilter" id="secondRow">
+      <% @tags.offset(6).each do |tag| %>
+        <%= link_to by_tag_communities_path(tag: tag.name), class: "O_CommunitiesTagsFilterLink #{(params[:tag] == tag.name ? 'active' : '')}", data: { turbo_frame: 'communities_list' } do %>
+          <i class="fas fa-<%= tag_icon(tag.name) %>"></i>
+          <span><%= tag.name %></span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</turbo-frame>
+
+<script>
+function toggleMoreCommunitiesTags() {
+  const moreTags = document.getElementById('moreCommunitiesTags');
+  const moreBtn = document.querySelector('.more-tags-btn');
+  
+  if (moreTags.style.display === 'none') {
+    moreTags.style.display = 'block';
+    moreBtn.innerHTML = '<i class="fas fa-minus"></i><span>Меньше тегов</span>';
+  } else {
+    moreTags.style.display = 'none';
+    moreBtn.innerHTML = '<i class="fas fa-plus"></i><span>Больше тегов</span>';
+  }
+}
+</script>

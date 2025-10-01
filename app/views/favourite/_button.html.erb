@@ -1,11 +1,8 @@
-<% if current_user
-    favourite = favouriteable.favourites.where(user_id: current_user.id)
-    button_text = favourite && favourite.count > 0 ? "Убрать из избранного" : "Добавить в избранное" 
-  end
-
-  counter = favouriteable.favourites.count %> 
-
-<div class="favourite-button <%= 'active' if current_user && favouriteable.favourites.where(user_id: current_user.id).exists? %>">
-  <span class="favourite-count"><%= counter %></span>
-  <%= link_to button_text, favourite_toggle_path(type: favouriteable.class, id: favouriteable.id), data: { turbo_stream: true }, class: "favourite-link" %>
-</div>
+<% if user_signed_in? %>
+  <%= link_to favourite_toggle_path(type: favouriteable.class.name, id: favouriteable.id),
+              class: "Q_BookmarkIconNoBg #{favouriteable.favourites.exists?(user_id: current_user.id) ? 'active' : ''}",
+              data: { turbo_method: :post },
+              id: dom_id(favouriteable, "bookmark") do %>
+    <%= render 'shared/icon_save', active: favouriteable.favourites.exists?(user_id: current_user.id) %>
+  <% end %>
+<% end %>

@@ -1,0 +1,34 @@
+.O_ProfileInfoBlock {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 40px 60px;
+  margin: 20px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 50%; // 6 колонок из 12 (50%)
+  width: 50%; // 6 колонок из 12 (50%)
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .O_ProfileInfoBlock {
+    padding: 30px 40px;
+    margin: 15px 0;
+    max-width: 80%;
+    width: 80%;
+  }
+}
+
+@media (max-width: 480px) {
+  .O_ProfileInfoBlock {
+    padding: 20px 30px;
+    margin: 10px 0;
+    max-width: 90%;
+    width: 90%;
+  }
+}

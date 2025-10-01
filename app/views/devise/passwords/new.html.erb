@@ -1,22 +1,21 @@
-<div class="auth-container">
-  <div class="auth-form">
-    <h2>Забыли пароль?</h2>
+<div class="O_AuthContainer">
+  <div class="M_AuthForm">
+    <h2>ЗАБЫЛИ ПАРОЛЬ?</h2>
 
     <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
-      <div class="field">
-        <%= f.label :email, "Почта" %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Введите вашу почту" %>
+      <div class="M_AuthField">
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Корпоративная почта" %>
       </div>
 
-      <div class="actions">
+      <div class="M_AuthActions">
         <%= f.submit "Сбросить пароль" %>
       </div>
     <% end %>
 
-    <div class="auth-links">
-      <%= render "devise/shared/links" %>
+    <div class="C_AuthLinks">
+      <p>Вспомнили пароль? <%= link_to "Войти", new_session_path(resource_name) %></p>
     </div>
   </div>
 </div>

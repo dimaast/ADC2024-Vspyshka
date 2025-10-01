@@ -1,6 +1,6 @@
 class Meet < ApplicationRecord
   include PgSearch::Model
-  multisearchable against: [:body]
+  multisearchable against: [ :body ], using: { trigram: { threshold: 0.2 } }
 
   belongs_to :user
   has_many :comments, as: :commentable, dependent: :destroy

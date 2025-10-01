@@ -1,0 +1,13 @@
+.M_FavouritesSection {
+  margin-top: 2rem;
+}
+.M_FavouritesSection h3 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+.M_FavouritesSection .meets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}

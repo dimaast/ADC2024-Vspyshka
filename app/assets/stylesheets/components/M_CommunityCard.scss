@@ -1,0 +1,33 @@
+.communities-rating-section {
+  .rating-tabs {
+    display: flex;
+    gap: var(--space-s);
+  }
+
+  .rating-tab {
+    background: none;
+    border: none;
+    padding: var(--space-xs) var(--space-m);
+    font-size: 0.9rem;
+    color: var(--offwhite-33);
+    cursor: pointer;
+    transition: color 0.2s;
+    border-bottom: 2px solid transparent;
+
+    &.active {
+      color: var(--black);
+      border-bottom-color: var(--black);
+      font-weight: 600;
+    }
+
+    &:hover {
+      color: var(--black);
+    }
+  }
+
+  .communities-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+}

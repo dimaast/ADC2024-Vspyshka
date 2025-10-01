@@ -1,10 +1,12 @@
 <% if user_signed_in? %>
-  <%# Не показываем кнопку подписки, если пользователь просматривает свой профиль %>
+  
   <% unless subscriptionable.is_a?(Profile) && subscriptionable.user == current_user %>
     <%
       subscription = subscriptionable.subscriptions.where(user_id: current_user.id)
-      button_text = subscription && subscription.count > 0 ? "Unsubscribe" : "Subscribe"
+      button_text = subscription && subscription.count > 0 ? "Отписаться" : "Подписаться"
     %>
-    <div><%= link_to button_text, subscription_toggle_path(type: subscriptionable.class, id: subscriptionable.id), data: { turbo_stream: true } %></div>
+    <%= turbo_frame_tag "subscription_button_#{subscriptionable.class}_#{subscriptionable.id}" do %>
+      <%= link_to button_text, subscription_toggle_path(type: subscriptionable.class, id: subscriptionable.id), data: { turbo_stream: true }, class: "A_EventShowFollowBtn" %>
+    <% end %>
   <% end %>
 <% end %>

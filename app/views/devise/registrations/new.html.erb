@@ -1,31 +1,31 @@
-<div class="auth-container">
-  <div class="auth-form">
+<div class="O_AuthContainer">
+  <div class="M_AuthForm">
     <h2>Регистрация</h2>
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { data: { turbo: false } }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
-      <div class="field">
+      <div class="M_AuthField">
         <%= f.label :last_name, "Фамилия" %>
         <%= f.text_field :last_name, autofocus: true, autocomplete: "family-name", placeholder: "Введите вашу фамилию" %>
       </div>
 
-      <div class="field">
+      <div class="M_AuthField">
         <%= f.label :first_name, "Имя" %>
         <%= f.text_field :first_name, autocomplete: "given-name", placeholder: "Введите ваше имя" %>
       </div>
 
-      <div class="field">
+      <div class="M_AuthField">
         <%= f.label :middle_name, "Отчество" %>
         <%= f.text_field :middle_name, autocomplete: "additional-name", placeholder: "Введите ваше отчество" %>
       </div>
 
-      <div class="field">
+      <div class="M_AuthField">
         <%= f.label :email, "Почта" %>
         <%= f.email_field :email, autocomplete: "email", placeholder: "Введите вашу почту" %>
       </div>
 
-      <div class="field">
+      <div class="M_AuthField">
         <%= f.label :username, "Никнейм" %>
         <% if resource.errors[:username].any? %>
           <div class="error-message">
@@ -35,7 +35,7 @@
         <%= f.text_field :username, autocomplete: "username", placeholder: "Введите ваш никнейм" %>
       </div>
 
-      <div class="field">
+      <div class="M_AuthField">
         <%= f.label :password, "Пароль" %>
         <% if @minimum_password_length %>
         <em>(<%= @minimum_password_length %> символов минимум)</em>
@@ -43,17 +43,17 @@
         <%= f.password_field :password, autocomplete: "new-password", placeholder: "Введите пароль" %>
       </div>
 
-      <div class="field">
+      <div class="M_AuthField">
         <%= f.label :password_confirmation, "Подтвердить пароль" %>
         <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Повторите пароль" %>
       </div>
 
-      <div class="actions">
+      <div class="M_AuthActions">
         <%= f.submit "Зарегистрироваться" %>
       </div>
     <% end %>
 
-    <div class="auth-links">
+    <div class="C_AuthLinks">
       <%= render "devise/shared/links" %>
     </div>
   </div>

@@ -1,0 +1,78 @@
+.O_NotificationsPanel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  display: none;
+  margin-top: 8px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  
+  &.is-open {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .O_NotificationsCounter {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    span {
+      background: #007bff;
+      color: white;
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+  
+  .O_NotificationsList {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .O_Notification {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    &:hover {
+      background-color: #f8f9fa;
+    }
+    
+    a, .notification-link {
+      color: #333;
+      text-decoration: none;
+      display: block;
+      
+      &:hover {
+        color: #007bff;
+      }
+    }
+    
+    span {
+      color: #666;
+      display: block;
+    }
+  }
+}

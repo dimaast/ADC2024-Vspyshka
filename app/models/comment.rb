@@ -3,6 +3,7 @@ class Comment < ApplicationRecord
   has_many :notifications
   belongs_to :user
   has_many :favourites, as: :favouriteable
+  has_many :likes, as: :likeable, dependent: :destroy
 
   validates :user_id, presence: true
 
@@ -13,5 +14,5 @@ class Comment < ApplicationRecord
   scope :no_replies, -> { where(comment_id: nil) }
 
   after_update_commit { current_user ? broadcast_append_to("comments") : nil }
-  # after_create_commit { broadcast_prepend_to [ commentable, :comments ] }
+
 end

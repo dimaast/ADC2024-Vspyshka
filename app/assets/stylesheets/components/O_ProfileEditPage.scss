@@ -1,0 +1,303 @@
+.O_ProfileEditPage {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #ffffff;
+  min-height: 100vh;
+}
+
+.A_ProfileEditTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 2rem 0;
+  text-align: left;
+}
+
+.O_ProfileEditContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.O_ProfileAvatarSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.O_ProfileAvatarWrapper {
+  position: relative;
+}
+
+.O_ProfileEditAvatar {
+  width: 194px;
+  height: 194px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.O_ProfileEditAvatarPlaceholder {
+  width: 194px;
+  height: 194px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.A_ProfileEditAvatarBtn {
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'TT Interphases Educational', sans-serif;
+  display: inline-block;
+  text-decoration: none;
+  
+  &:hover {
+    background: #1a1a1a;
+    color: #ffffff;
+    text-decoration: none;
+  }
+}
+
+.A_ProfileEditAvatarInput {
+  display: none;
+}
+
+.O_ProfileEditSection {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
+  margin-bottom: 1.5rem;
+}
+
+.A_ProfileEditSectionTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 1.5rem 0;
+  text-align: left;
+}
+
+.O_ProfileEditFields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.M_ProfileEditField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.A_ProfileEditLabel {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333333;
+  margin: 0;
+}
+
+.A_ProfileEditInput,
+.A_ProfileEditSelect {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: #f5f5f5;
+  color: #333333;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  
+  &:focus {
+    outline: none;
+    border-color: #007AFF;
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
+  }
+  
+  &::placeholder {
+    color: #999999;
+  }
+}
+
+.A_ProfileEditSelect {
+  background: #f5f5f5;
+  cursor: pointer;
+  
+  &:focus {
+    background: #ffffff;
+  }
+}
+
+.M_ProfileEditFieldToggle {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.A_ProfileEditToggleLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  margin: 0;
+}
+
+.A_ProfileEditToggleText {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333333;
+}
+
+.A_ProfileEditToggle {
+  position: relative;
+  width: 50px;
+  height: 24px;
+}
+
+.A_ProfileEditToggleInput {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  
+  &:checked + .A_ProfileEditToggleSlider {
+    background-color: #007AFF;
+    
+    &:before {
+      transform: translateX(26px);
+    }
+  }
+}
+
+.A_ProfileEditToggleSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 24px;
+  
+  &:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+  }
+}
+
+.O_ProfileEditActions {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.A_ProfileEditSaveBtn {
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'TT Interphases Educational', sans-serif;
+  
+  &:hover {
+    background: #1a1a1a;
+  }
+}
+
+.A_ProfileEditDeleteBtn {
+  background: #dc3545;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  font-family: 'TT Interphases Educational', sans-serif;
+  
+  &:hover {
+    background: #c82333;
+    text-decoration: none;
+    color: #ffffff;
+  }
+}
+
+@media (max-width: 768px) {
+  .O_ProfileEditPage {
+    padding: 1rem;
+  }
+  
+  .A_ProfileEditTitle {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .O_ProfileEditSection {
+    padding: 1.5rem;
+  }
+  
+  .O_ProfileEditActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .A_ProfileEditSaveBtn,
+  .A_ProfileEditDeleteBtn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .O_ProfileEditPage {
+    padding: 0.5rem;
+  }
+  
+  .A_ProfileEditTitle {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .O_ProfileEditSection {
+    padding: 1rem;
+  }
+  
+  .O_ProfileEditFields {
+    gap: 1rem;
+  }
+}

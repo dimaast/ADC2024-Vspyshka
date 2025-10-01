@@ -1,5 +1,8 @@
-// .C_Tags {
-//     display: flex;
-//     flex-direction: row;
-//     column-gap: 6px;
-// }
+.C_Tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 12px 0 0 0;
+  margin-top: 8px;
+}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_22_164322) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_24_001823) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,6 +54,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_22_164322) do
     t.string "placed_at"
     t.string "placed_additional"
     t.string "price"
+    t.string "ticket_link"
   end
 
   create_table "faculties", force: :cascade do |t|
@@ -69,6 +70,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_22_164322) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_favourites_on_user_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "likeable_type", null: false
+    t.bigint "likeable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "meets", force: :cascade do |t|
@@ -88,6 +99,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_22_164322) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "read"
+    t.string "url"
+    t.string "notificationable_type"
+    t.bigint "notificationable_id"
+    t.index ["notificationable_type", "notificationable_id"], name: "index_notifications_on_notificationable"
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
@@ -216,6 +231,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_22_164322) do
   add_foreign_key "comments", "users"
   add_foreign_key "communities", "users"
   add_foreign_key "favourites", "users"
+  add_foreign_key "likes", "users"
   add_foreign_key "meets", "users"
   add_foreign_key "profiles", "faculties"
   add_foreign_key "profiles", "programs"

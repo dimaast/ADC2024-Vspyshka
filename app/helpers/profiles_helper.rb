@@ -1,10 +1,23 @@
 module ProfilesHelper
-  # Генерирует CSS-градиент на основе id пользователя
+
   def avatar_placeholder_style(user)
-    id = user.id || 0
-    # Простейший хэш: два цвета из id
-    color1 = "##{Digest::MD5.hexdigest((id * 31).to_s)[0..5]}"
-    color2 = "##{Digest::MD5.hexdigest((id * 97 + 123).to_s)[6..11]}"
-    "background: radial-gradient(circle at 60% 40%, #{color1}, #{color2});"
+
+    if user.nil? || user.id.nil? || user.id == 0
+      return "background-color: #CCCCCC;"
+    end
+
+    avatars_dir = Rails.root.join('app', 'assets', 'images', 'avatars')
+    avatar_files = Dir.glob(File.join(avatars_dir, '*.{jpg,jpeg,png,webp}'))
+
+    if avatar_files.empty?
+      return "background-color: #CCCCCC;"
+    end
+
+    random_seed = user.id * 31 + 123
+    random_index = random_seed % avatar_files.length
+    selected_avatar = File.basename(avatar_files[random_index])
+    avatar_path = "avatars/#{selected_avatar}"
+    
+    "background-image: url('#{asset_path(avatar_path)}'); background-size: cover; background-position: center;"
   end
 end

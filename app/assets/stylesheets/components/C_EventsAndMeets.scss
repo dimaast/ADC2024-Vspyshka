@@ -1,6 +1,89 @@
 .C_EventsAndMeets {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    grid-column-gap: 20px;
-    grid-row-gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 36px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.event-card-wrapper {
+    width: 100%;
+}
+
+.event-card-link {
+    display: contents; // Позволяет дочерним элементам использовать сетку родителя
+    text-decoration: none;
+    color: inherit;
+}
+
+.event-card {
+    width: 100%;
+}
+
+.C_EventsAndMeets > .M_MeetCardLink {
+    width: 100%;
+    display: block;
+}
+
+// Стили для тегов в карточках встреч
+.C_Tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  
+  .A_Tag {
+    @extend .A_Tag !optional;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: #e0e0e0;
+      color: #333;
+      text-decoration: none;
+    }
+  }
+}
+
+@media (max-width: 1400px) {
+  .C_EventsAndMeets {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .C_EventsAndMeets {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .C_EventsAndMeets {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .C_EventsAndMeets {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .C_EventsAndMeets {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .C_EventsAndMeets {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
 }

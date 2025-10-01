@@ -1,0 +1,13 @@
+.communities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .communities-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}

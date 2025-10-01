@@ -1,30 +1,9 @@
-<div class="CommentForm">
-  <div class="CommentForm__header">
-    <% if user_signed_in? %>
-      <% if current_user.profile&.avatar&.present? %>
-        <%= image_tag current_user.profile.avatar.url, class: "CommentForm__avatar", alt: current_user.username %>
-      <% else %>
-        <div class="CommentForm__avatar-placeholder" style="<%= avatar_placeholder_style(current_user) %>">
-          <%= current_user.username.first.upcase %>
-        </div>
-      <% end %>
-      <h3 class="CommentForm__title">
-        <%= defined?(parent_comment_id) ? "Ответить на комментарий" : "Добавить комментарий" %>
-      </h3>
-    <% else %>
-      <div class="CommentForm__avatar-placeholder">
-        ?
-      </div>
-      <h3 class="CommentForm__title">
-        Войдите, чтобы оставить комментарий
-      </h3>
-    <% end %>
-  </div>
+<div class="M_CommentForm">
 
   <% if user_signed_in? %>
     <%= form_with(model: [commentable, comment], data: { turbo_stream: true }) do |form| %>
       <% if comment.errors.any? %>
-        <div class="CommentForm__errors">
+        <div class="M_CommentForm__errors">
           <h4>Найдены ошибки:</h4>
           <ul>
             <% comment.errors.each do |error| %>
@@ -34,25 +13,39 @@
         </div>
       <% end %>
 
-      <div>
+      <div class="M_CommentForm__input-group">
         <%= form.text_area :body, 
-                          class: "CommentForm__textarea",
-                          placeholder: "Напишите ваш комментарий...",
-                          rows: 4 %>
+                          class: "M_CommentForm__textarea",
+                          placeholder: "Написать комментарий",
+                          rows: 1 %>
+        <button type="submit" class="M_CommentForm__submit-icon" title="Отправить комментарий">
+          <%= image_tag "icons/IconSend.svg", alt: "Отправить", class: "M_CommentForm__send-icon" %>
+        </button>
       </div>
 
       <% if defined? parent_comment_id %>
         <%= form.hidden_field :comment_id, value: parent_comment_id %>
       <% end %>
-
-      <div class="CommentForm__actions">
-        <%= link_to "Отмена", "#", class: "CommentForm__cancel", onclick: "this.closest('.CommentForm').style.display='none'; return false;" %>
-        <%= form.submit "Отправить", class: "CommentForm__submit" %>
-      </div>
     <% end %>
   <% else %>
-    <div class="CommentForm__login-prompt">
+    <div class="M_CommentForm__login-prompt">
       <p>Чтобы оставить комментарий, пожалуйста, <a href="<%= new_user_session_path %>">войдите в систему</a> или <a href="<%= new_user_registration_path %>">зарегистрируйтесь</a>.</p>
     </div>
   <% end %>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  document.addEventListener('turbo:submit-end', function(event) {
+    if (event.detail.success) {
+      const form = event.target;
+      const textarea = form.querySelector('.M_CommentForm__textarea');
+      if (textarea) {
+        textarea.value = '';
+        textarea.style.height = 'auto';
+      }
+    }
+  });
+});
+</script>

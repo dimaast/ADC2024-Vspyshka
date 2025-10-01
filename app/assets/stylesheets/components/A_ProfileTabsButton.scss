@@ -1,0 +1,17 @@
+.A_ProfileTabsButton {
+  padding: 8px 18px;
+  border-radius: 8px 8px 0 0;
+  background: var(--color-bg-light);
+  border: 1px solid var(--gray);
+  border-bottom: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-bottom: -1px;
+}
+.A_ProfileTabsButton.active {
+  background: var(--white);
+  border-bottom: 1px solid var(--white);
+  font-weight: 700;
+}

@@ -1,0 +1,141 @@
+<% set_meta_tags(title: "Подписчики профиля @#{@profile.user.username}") %>
+
+<div class="profile-subscribers-page">
+  <h1 class="profile-subscribers-title">Связи @<%= @profile.user.username %></h1>
+
+  <% tab = params[:tab] || 'subscribers' %>
+  <div class="profile-subscribers-tabs">
+    <div class="M_ProfileTabsNav profile-subscribers-nav">
+      <button class="A_ProfileTabsButton<%= ' active' if tab == 'subscribers' %>" data-tab="subscribers" type="button">Подписчики</button>
+      <button class="A_ProfileTabsButton<%= ' active' if tab == 'subscriptions' %>" data-tab="subscriptions" type="button">Подписки</button>
+      <button class="A_ProfileTabsButton<%= ' active' if tab == 'communities' %>" data-tab="communities" type="button">Сообщества</button>
+    </div>
+  <div id="tab-content-subscribers" class="C_ProfileTabsContent profile-subscribers-content<%= ' active' if tab == 'subscribers' %> <%= tab == 'subscribers' ? 'is-visible' : 'is-hidden' %>" style="margin-top: 24px;">
+    <% if @subscribers.any? %>
+      <% @subscribers.each do |subscriber| %>
+        <%= link_to profile_path(subscriber.profile), class: 'profile-subscribers-row' do %>
+          <% if subscriber.profile.avatar.present? %>
+            <%= image_tag subscriber.profile.avatar.url, class: 'profile-avatar-large' %>
+          <% else %>
+            <div class="A_Avatar profile-avatar-large profile-avatar-placeholder" style="<%= avatar_placeholder_style(subscriber) %>"> </div>
+          <% end %>
+          <div>
+            <div class="profile-subscribers-name">
+              @<%= subscriber.username %>
+            </div>
+            <div class="profile-subscribers-fullname">
+              <%= subscriber.profile.full_name %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% else %>
+      <p>У этого профиля пока нет подписчиков.</p>
+    <% end %>
+  </div>
+  <div id="tab-content-subscriptions" class="C_ProfileTabsContent profile-subscribers-content<%= ' active' if tab == 'subscriptions' %> <%= tab == 'subscriptions' ? 'is-visible' : 'is-hidden' %>" style="margin-top: 24px;">
+    <% if @subscriptions.any? %>
+      <% @subscriptions.each do |profile| %>
+        <div class="profile-subscribers-row">
+          <%= link_to profile_path(profile), class: 'profile-subscribers-row-link' do %>
+            <% if profile.avatar.present? %>
+              <%= image_tag profile.avatar.url, class: 'profile-avatar-large' %>
+            <% else %>
+              <div class="A_Avatar profile-avatar-large profile-avatar-placeholder" style="<%= avatar_placeholder_style(profile.user) %>"> </div>
+            <% end %>
+            <div>
+            <div class="profile-subscribers-name">
+              @<%= profile.user.username %>
+            </div>
+              <div class="profile-subscribers-fullname">
+                <%= profile.full_name %>
+              </div>
+            </div>
+          <% end %>
+          <div class="profile-subscribers-actions">
+            <button class="A_SubscriptionActionBtn report-btn" type="button">Пожаловаться</button>
+            <%= link_to subscription_toggle_path(type: 'Profile', id: profile.id), 
+                        class: 'A_SubscriptionActionBtn unsubscribe-btn', 
+                        data: { turbo_method: :post } do %>
+              Отписаться
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p>Нет подписок на профили.</p>
+    <% end %>
+  </div>
+  <div id="tab-content-communities" class="C_ProfileTabsContent profile-subscribers-content<%= ' active' if tab == 'communities' %> <%= tab == 'communities' ? 'is-visible' : 'is-hidden' %>" style="margin-top: 24px;">
+    <% if @communities.any? %>
+      <% @communities.each do |community| %>
+        <div class="profile-subscribers-row">
+          <%= link_to community_path(community), class: 'profile-subscribers-row-link' do %>
+            <% if community.cover.present? %>
+              <%= image_tag community.cover.url, class: 'profile-avatar-large' %>
+            <% else %>
+              <div class="A_Avatar profile-avatar-large profile-avatar-placeholder" style="<%= avatar_placeholder_style(community) %>"> </div>
+            <% end %>
+            <div>
+              <div class="profile-subscribers-community-title">
+                <%= community.title %>
+              </div>
+            </div>
+          <% end %>
+          <div class="profile-subscribers-actions">
+            <button class="A_SubscriptionActionBtn report-btn" type="button">Пожаловаться</button>
+            <%= link_to subscription_toggle_path(type: 'Community', id: community.id), 
+                        class: 'A_SubscriptionActionBtn unsubscribe-btn', 
+                        data: { turbo_method: :post } do %>
+              Отписаться
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p>Нет подписок на сообщества.</p>
+    <% end %>
+  </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function showTab(tab) {
+
+    document.querySelectorAll('.A_ProfileTabsButton').forEach(function(btn) {
+      btn.classList.remove('active');
+    });
+    document.querySelectorAll('.C_ProfileTabsContent').forEach(function(content) {
+      content.classList.remove('active');
+    });
+
+    var btn = document.querySelector('.A_ProfileTabsButton[data-tab="' + tab + '"]');
+    var content = document.getElementById('tab-content-' + tab);
+    if (btn) btn.classList.add('active');
+    if (content) content.classList.add('active');
+  }
+
+  function getTabFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('tab') || 'subscribers';
+  }
+
+  function setTabInUrl(tab) {
+    const params = new URLSearchParams(window.location.search);
+    params.set('tab', tab);
+    const newUrl = window.location.pathname + '?' + params.toString();
+    window.history.replaceState({}, '', newUrl);
+  }
+
+  let currentTab = getTabFromUrl();
+  showTab(currentTab);
+  document.querySelectorAll('.A_ProfileTabsButton').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const tab = btn.dataset.tab;
+      showTab(tab);
+      setTabInUrl(tab);
+    });
+  });
+});
+</script>

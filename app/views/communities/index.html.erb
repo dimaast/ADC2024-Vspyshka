@@ -3,16 +3,20 @@
   description: "Все студенческие организации Вышки от студентов и работников университета", 
   keywords: "Студорги, Студенческие организации, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
 
-<h1>Сообщества</h1>
-
-<div id="communities">
-  <% @communities.each do |community| %>
-    <%= link_to community do %>
-      <%= render community %>
-    <% end %>
-  <% end %>
+<div class="communities-title-container">
+  <h1 class="communities-title">Сообщества</h1>
 </div>
 
-<% if current_user && current_user.role == "admin" %>
-  <%= link_to "New community", new_admin_community_path %>
-<% end %>
+<div class="communities-filters-container">
+  <div class="tags-filter-section">
+    <%= render 'communities/tags_filter' %>
+  </div>
+</div>
+
+<turbo-frame id="communities_list">
+  <div class="communities-grid">
+    <% @communities.each do |community| %>
+      <%= render partial: 'community', locals: { community: community } %>
+    <% end %>
+  </div>
+</turbo-frame>

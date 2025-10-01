@@ -1,99 +1,105 @@
 <div class="M_Comment <%= "M_Comment--reply" if comment.comment_id != nil %>" id="<%= dom_id comment %>">
-  <%= turbo_frame_tag dom_id(comment) do %>
-    <div class="M_Comment__header">
-      <%# Аватар пользователя %>
+    <div class="M_Comment__main">
+      
       <% if comment.user.profile&.avatar&.present? %>
-        <%= image_tag comment.user.profile.avatar.url, class: "M_Comment__avatar", alt: comment.user.username %>
+        <%= link_to profile_path(comment.user.profile) do %>
+          <%= image_tag comment.user.profile.avatar.url, class: "M_Comment__avatar", alt: "@#{comment.user.username}" %>
+        <% end %>
       <% else %>
-        <div class="M_Comment__avatar-placeholder" style="<%= avatar_placeholder_style(comment.user) %>">
-          <%= comment.user.username.first.upcase %>
-        </div>
+        <%= link_to profile_path(comment.user.profile) do %>
+          <div class="M_Comment__avatar-placeholder comment-avatar-placeholder" style="<%= avatar_placeholder_style(comment.user) %>">
+          </div>
+        <% end %>
       <% end %>
       
-      <div class="M_Comment__user-info">
-        <%# Никнейм пользователя %>
-        <div class="M_Comment__username">
-          <%= link_to comment.user.username, 
-                      profile_path(comment.user.profile), 
-                      style: "color: inherit; text-decoration: none;" %>
-        </div>
-        
-        <%# Дата создания %>
-        <div class="M_Comment__timestamp">
-          <%= l(comment.created_at, format: :long) %>
-          <% if comment.comment_id.present? %>
-            • ответ <%= Comment.find(comment.comment_id).user.username %>
+      <div class="M_Comment__content-wrapper">
+        <div class="M_Comment__header">
+          <div class="M_Comment__user-info">
+            
+            <div class="A_CommentUsername">
+              <%= link_to "@#{comment.user.username}", 
+                          profile_path(comment.user.profile), 
+                          style: "color: inherit; text-decoration: none;" %>
+            </div>
+
+            <% if comment.comment_id.present? %>
+              <div class="A_CommentReplyInfo">
+                ответ @<%= Comment.find(comment.comment_id).user.username %>
+              </div>
+            <% end %>
+          </div>
+
+          <% if can? :manage, comment %>
+            <div class="M_Comment__actions-top">
+              <%= link_to edit_event_comment_path(comment.commentable, comment), 
+                          class: "M_Comment__edit-btn", 
+                          title: "Редактировать" do %>
+                <%= image_tag "icons/IconEditComment.svg", alt: "Редактировать", class: "M_Comment__edit-icon" %>
+              <% end %>
+              
+              <%= button_to [comment.commentable, comment], 
+                          method: :delete, 
+                          data: { turbo_confirm: "Вы уверены?" },
+                          class: "M_Comment__delete-btn",
+                          title: "Удалить",
+                          form: { data: { turbo_stream: true } } do %>
+                <%= image_tag "icons/IconDeleteComment.svg", alt: "Удалить", class: "M_Comment__delete-icon" %>
+              <% end %>
+            </div>
           <% end %>
+        </div>
+
+        <div class="A_CommentContent">
+          <%= simple_format(comment.body) %>
         </div>
       </div>
     </div>
 
-    <%# Текст комментария %>
-    <div class="M_Comment__content">
-      <%= simple_format(comment.body) %>
-    </div>
-
-    <%# Действия с комментарием %>
-    <div class="M_Comment__actions">
-      <%# Кнопка "Нравится" %>
-      <%= render partial: "favourite/button", locals: { favouriteable: comment } %>
+    <div class="M_CommentActions">
       
-      <%# Кнопка "Ответить" %>
+      <%= render partial: "comments/like_button", locals: { comment: comment } %>
+
       <% if user_signed_in? %>
-        <button class="ReplyButton" onclick="toggleReplyForm('<%= dom_id comment %>')">
-          <i class="fas fa-reply"></i>
+        <button class="A_CommentAction ReplyButton" onclick="toggleReplyForm('<%= dom_id comment %>')">
           Ответить
         </button>
       <% end %>
-      
-      <%# Редактировать (если может) %>
-      <% if can? :manage, comment %>
-        <%= link_to edit_event_comment_path(comment.commentable, comment), 
-                    class: "M_Comment__action" do %>
-          <i class="fas fa-edit"></i>
-          Редактировать
-        <% end %>
-        
-        <%= link_to [comment.commentable, comment], 
-                    method: :delete, 
-                    data: { turbo_confirm: "Вы уверены?" },
-                    class: "M_Comment__action" do %>
-          <i class="fas fa-trash"></i>
-          Удалить
-        <% end %>
-      <% end %>
+
+      <div class="A_CommentTimestamp A_CommentTimestamp--bottom">
+        <%= time_ago_in_words(comment.created_at) %>
+      </div>
     </div>
 
-    <%# Форма ответа (скрыта по умолчанию) %>
     <% if user_signed_in? %>
-      <div id="reply-form-<%= dom_id comment %>" class="ReplyForm" style="display: none;">
+      <div id="reply-form-<%= dom_id comment %>" class="ReplyForm reply-form-hidden">
         <%= render partial: "comments/form", 
                    locals: { comment: Comment.new, 
                             commentable: comment.commentable, 
                             parent_comment_id: comment.id } %>
       </div>
     <% end %>
-  <% end %>
-</div>
 
-<%# Ответы на комментарий %>
-<% if comment.replies.any? %>
-  <div class="M_Comment__replies">
-    <% comment.replies.each do |reply| %>
-      <div class="M_Comment__reply">
-        <%= render "comments/comment", comment: reply %>
+    <div class="M_Comment__divider"></div>
+
+    <% if comment.replies.any? %>
+      <div class="M_CommentReplies">
+        <% comment.replies.each do |reply| %>
+          <div class="M_CommentReply">
+            <%= render "comments/comment", comment: reply %>
+          </div>
+        <% end %>
       </div>
     <% end %>
   </div>
-<% end %>
 
-<script>
-function toggleReplyForm(commentId) {
-  const form = document.getElementById('reply-form-' + commentId);
-  if (form.style.display === 'none') {
-    form.style.display = 'block';
-  } else {
-    form.style.display = 'none';
+  <script>
+  function toggleReplyForm(commentId) {
+    const form = document.getElementById('reply-form-' + commentId);
+    if (form.style.display === 'none') {
+      form.style.display = 'block';
+    } else {
+      form.style.display = 'none';
+    }
   }
-}
-</script>
+  </script>
+</div>

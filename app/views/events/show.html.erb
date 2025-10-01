@@ -3,122 +3,275 @@
   description: @event.body, 
   keywords: "Студорги, Студенческие организации, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
 
-<div class="EventShow">
-  <div class="EventShow__left">
-    <div class="EventShow__poster">
-      <% if @event.cover.present? %>
-        <%= image_tag @event.cover.url, alt: @event.title %>
-      <% else %>
-        <div class="EventShow__poster--stub"></div>
-      <% end %>
-    </div>
-    <div class="EventShow__host">
-      <span>Проводит</span>
-      <div class="EventShow__host-info">
-        <% if @event.community.present? %>
-          <span class="EventShow__host-avatar--stub"></span>
-        <% elsif @event.user&.profile&.avatar&.present? %>
-          <%= image_tag @event.user.profile.avatar.url, class: "EventShow__host-avatar" %>
+<div class="O_EventShowPage">
+  <!-- Основная карточка события -->
+  <div class="M_EventShowCard">
+    <!-- Левая колонка - постер события -->
+    <div class="M_EventShowCard__left">
+      <div class="M_EventShowCard__poster">
+        <% if @event.cover.present? %>
+          <div class="A_EventShowPosterImage">
+            <%= image_tag @event.cover.url, alt: @event.title %>
+          </div>
+        <% else %>
+          <div class="A_EventShowPoster">
+            <div class="A_EventShowPosterContent">
+              <div class="A_EventShowPosterTitle"><%= @event.title.upcase %></div>
+              <div class="A_EventShowPosterSubtitle">Студенческое событие</div>
+            </div>
+          </div>
         <% end %>
-        <span>
-          <%= @event.community.present? ? @event.community.title : (@event.user&.profile&.name || @event.user&.username || '—') %>
-        </span>
-        <span class="EventShow__host-label">Детали</span>
       </div>
-    </div>
-    <div class="EventShow__going">
-      <span>Идут</span>
-      <div class="EventShow__avatars">
-        <% @event.responses.includes(:user).limit(3).each do |response| %>
-          <% if response.user&.profile&.avatar&.present? %>
-            <%= image_tag response.user.profile.avatar.url, class: "EventShow__avatar" %>
+      
+      <div class="M_EventShowCard__organizer">
+        <div class="M_EventShowOrganizerInfo">
+          <div class="A_EventShowOrganizerAvatar">
+            <% if @event.community.present? %>
+              <div class="A_EventShowOrganizerAvatarPlaceholder" style="<%= avatar_placeholder_style(@event.community) %>">
+              </div>
+            <% elsif @event.user&.profile&.avatar&.present? %>
+              <%= image_tag @event.user.profile.avatar.url, alt: @event.user.username %>
+            <% else %>
+              <div class="A_EventShowOrganizerAvatarPlaceholder" style="<%= avatar_placeholder_style(@event.user) %>">
+              </div>
+            <% end %>
+          </div>
+          <div class="A_EventShowOrganizerText">
+            <div class="A_EventShowOrganizerLabel">Проводит</div>
+            <div class="A_EventShowOrganizerName">
+              <% if @event.community.present? %>
+                <%= @event.community.title %>
+              <% else %>
+                <%= @event.user&.profile&.name || @event.user&.username || '—' %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <% if user_signed_in? %>
+          <% if @event.community.present? %>
+            <%= render "subscription/button", subscriptionable: @event.community %>
+          <% end %>
+        <% else %>
+          <%= link_to new_user_session_path, class: "A_EventShowFollowBtn" do %>
+            Следить
           <% end %>
         <% end %>
-        <% if @event.responses.count > 3 %>
-          <span class="EventShow__more">и еще <%= @event.responses.count - 3 %></span>
+      </div>
+      
+      <div class="M_EventShowCard__attendees">
+        <div class="A_EventShowAttendeesLabel">Идут</div>
+        <div class="M_EventShowAttendeesInfo">
+          <div class="M_EventShowAttendeesAvatars" id="event-participants-avatars" data-event-id="<%= @event.id %>">
+            <% if @event.responses.any? %>
+              <% latest_responses = @event.responses.includes(user: :profile).order(created_at: :desc).limit(3) %>
+              <% latest_responses.each do |response| %>
+                <%= user_avatar(response.user, class_name: "A_EventShowAttendeeAvatar") %>
+              <% end %>
+              <% if @event.responses.count > 3 %>
+                <div class="A_EventShowMoreAttendees">+<%= @event.responses.count - 3 %></div>
+              <% end %>
+            <% end %>
+          </div>
+          <div class="A_EventShowAttendeesText">
+            <% if @event.responses.any? %>
+              <% names = latest_responses.map { |r| r.user&.username || '?' } %>
+              <%= names.join(', ') %>
+              <% if @event.responses.count > 3 %>
+                и еще <%= @event.responses.count - 3 %>
+              <% end %>
+            <% else %>
+              Пока никто не идет
+            <% end %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="M_EventShowCard__tags">
+        <% @event.tags.each do |tag| %>
+          <div class="A_EventShowTag">
+            <%= tag.name %>
+          </div>
         <% end %>
       </div>
     </div>
-    <%= link_to "Пожаловаться на событие", new_event_report_path(@event), class: "EventShow__report" %>
+    
+    <!-- Правая колонка - детали события -->
+    <div class="M_EventShowCard__right">
+      <div class="M_EventShowCard__header">
+        <h1 class="A_EventShowTitle"><%= @event.title %></h1>
+        <div class="M_EventShowCard__menu">
+          <button class="M_EventShowCard__menu-btn" type="button" aria-label="Меню">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+          <div class="M_EventShowCard__menu-dropdown">
+            <% if can? [:manage], @event %>
+              <%= link_to "Редактировать событие", edit_event_path(@event), class: "M_EventShowCard__menu-item" %>
+              <%= button_to "Удалить событие", @event, method: :delete, class: "M_EventShowCard__menu-item M_EventShowCard__menu-item--danger", data: { confirm: 'Вы уверены?', turbo: false } %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="M_EventShowCard__info">
+        <div class="A_EventShowInfoItem">
+          <i class="fas fa-calendar-alt"></i>
+          <div class="A_EventShowInfoContent">
+            <div class="A_EventShowInfoLabel">Дата и время</div>
+            <div class="A_EventShowInfoValue"><%= l @event.hosted_at, format: :long %></div>
+          </div>
+        </div>
+        
+        <div class="A_EventShowInfoItem">
+          <i class="fas fa-map-marker-alt"></i>
+          <div class="A_EventShowInfoContent">
+            <div class="A_EventShowInfoLabel">Место</div>
+            <div class="A_EventShowInfoValue"><%= [@event.placed_at, @event.placed_additional].compact.join(', ') %></div>
+          </div>
+        </div>
+        
+        <div class="A_EventShowInfoItem">
+          <i class="fas fa-ruble-sign"></i>
+          <div class="A_EventShowInfoContent">
+            <div class="A_EventShowInfoLabel">Стоимость</div>
+            <div class="A_EventShowInfoValue">
+              <% if @event.price.present? && @event.price.to_i > 0 %>
+                <%= @event.price %>
+              <% else %>
+                бесплатно
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="M_EventShowCard__actions">
+        <% if user_signed_in? %>
+          <%= render "response/button", responseable: @event %>
+        <% end %>
+        <% if user_signed_in? %>
+          <%= link_to favourite_toggle_path(type: @event.class.name, id: @event.id), 
+                      class: "Q_BookmarkIconNoBg #{@event.favourites.exists?(user_id: current_user.id) ? 'active' : ''}", 
+                      data: { turbo_method: :post } do %>
+            <%= render 'shared/icon_save', active: @event.favourites.exists?(user_id: current_user.id) %>
+          <% end %>
+        <% end %>
+      </div>
+      
+      <div class="M_EventShowCard__about">
+        <h3 class="A_EventShowAboutTitle">О событии</h3>
+        <p class="A_EventShowAboutText"><%= @event.body %></p>
+      </div>
+    </div>
   </div>
+</div>
 
-  <div class="EventShow__right">
-    <h1 class="EventShow__title"><%= @event.title %></h1>
-    <div class="EventShow__info">
-      <div>
-        <i class="fas fa-calendar"></i>
-        <%= l @event.hosted_at, format: :long %>
-      </div>
-      <div>
-        <i class="fas fa-map-marker-alt"></i>
-        <%= [@event.placed_at, @event.placed_additional].compact.join(', ') %>
-      </div>
-      <div>
-        <i class="fas fa-money-bill"></i>
-        <%= @event.price.present? ? @event.price : "бесплатно" %>
-      </div>
+<!-- Секция обсуждения вне карточки -->
+<div class="M_EventShowDiscussion">
+  <h2 class="A_EventShowDiscussionTitle">Обсуждение</h2>
+  
+  <div class="M_MeetShowComments">
+    <%= turbo_stream_from @event, :comments %>
+    <div id="C_Comments">
+      <% if @event.comments.no_replies.any? %>
+        <% visible_comments = @event.comments.no_replies.limit(6) %>
+        <% hidden_comments = @event.comments.no_replies.offset(6) %>
+        
+        <% visible_comments.each do |comment| %>
+          <%= render "comments/comment", comment: comment, commentable: @event %>
+        <% end %>
+        
+        <% if hidden_comments.any? %>
+          <div id="hidden-comments" style="display: none;">
+            <% hidden_comments.each do |comment| %>
+              <%= render "comments/comment", comment: comment, commentable: @event %>
+            <% end %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="M_MeetShowEmptyComments">
+          <div class="A_MeetShowEmptyIcon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <div class="A_MeetShowEmptyText">Здесь пока ничего нет</div>
+        </div>
+      <% end %>
     </div>
     
-    <%# Кнопки действий %>
-    <div class="EventShow__actions">
-      <%# Кнопка лайка %>
-      <%= render "favourite/button", favouriteable: @event %>
-      
-      <%# Кнопка отклика %>
-      <%= render "response/button", responseable: @event %>
-    </div>
-    
-    <div class="EventShow__description">
-      <%= simple_format @event.body %>
-    </div>
-    <div class="EventShow__comments">
-      <h2>Обсуждение</h2>
-      <%= render "comments/comments", comments: @event.comments %>
-      
-      <%# Оставить комментарий %>
-      <h3>Добавить комментарий:</h3>
+    <% if @event.comments.count > 6 %>
+      <div class="A_MeetShowShowMore">
+        <button id="show-more-comments" class="A_MeetShowShowMoreLink">Показать больше комментариев</button>
+      </div>
+    <% end %>
+  </div>
+  
+  <!-- Форма добавления комментария -->
+  <% if user_signed_in? %>
+    <div class="M_MeetShowCommentForm">
       <%= render "comments/form", comment: Comment.new, commentable: @event %>
     </div>
-  </div>
-</div>
-
-<%# Статистика %>
-<div class="EventShow__stats">
-  <p>Откликнулось: <%= @event.responses.count %></p>
-  <p>Поставлено лайков: <%= @event.favourites.count %></p>
-</div>
-
-<%# Список лайкнувших %>
-<% if @event.favourites.any? %>
-  <div class="EventShow__favourites">
-    <h3>Лайки от:</h3>
-    <% @event.favourites.includes(:user).each do |favourite| %>
-      <%= favourite.user&.profile&.name || favourite.user&.username || '—' %>
-    <% end %>
-  </div>
-<% else %>
-  <p>Никто не лайкнул</p>
-<% end %>
-
-<%# Список откликнувшихся %>
-<% if @event.responses.any? %>
-  <div class="EventShow__responses">
-    <h3>Отклики от:</h3>
-    <% @event.responses.includes(:user).each do |response| %>
-      <%= response.user&.profile&.name || response.user&.username || '—' %>
-    <% end %>
-  </div>
-<% else %>
-  <p>Никто не откликнулся</p>
-<% end %>
-
-<%# Редактировать и удалять ивент %>
-<div class="EventShow__admin">
-  <%= link_to "Back to events", events_path %>
-  <% if can? [:manage], @event %>
-    <%= link_to "Edit this event", edit_event_path(@event) %>
-    <%= button_to "Destroy this event", @event, method: :delete %>
   <% end %>
+  
+  <!-- Кнопка "Пожаловаться" -->
+  <div class="M_EventShowReport">
+    <%= link_to "Пожаловаться", new_report_path(reportable_type: 'Event', reportable_id: @event.id), class: "A_EventShowReportLink", data: { turbo: false } %>
+  </div>
 </div>
 
-<%= turbo_stream_from @event, :comments %>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function closeAllMenus() {
+    document.querySelectorAll('.M_EventShowCard__menu-dropdown.open').forEach(function(menu) {
+      menu.classList.remove('open');
+    });
+  }
+  document.addEventListener('click', function(e) {
+    closeAllMenus();
+  });
+  document.querySelectorAll('.M_EventShowCard__menu-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      closeAllMenus();
+      btn.nextElementSibling.classList.toggle('open');
+    });
+  });
+  document.querySelectorAll('.M_EventShowCard__menu-dropdown .M_EventShowCard__menu-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      closeAllMenus();
+    });
+  });
+  
+  // Обработка кнопки показа комментариев
+  const showMoreButton = document.getElementById('show-more-comments');
+  const hiddenComments = document.getElementById('hidden-comments');
+  
+  if (showMoreButton && hiddenComments) {
+    showMoreButton.addEventListener('click', function() {
+      if (hiddenComments.style.display === 'none') {
+        hiddenComments.style.display = 'block';
+        showMoreButton.textContent = 'Скрыть комментарии';
+      } else {
+        hiddenComments.style.display = 'none';
+        showMoreButton.textContent = 'Показать больше комментариев';
+      }
+    });
+  }
+});
+
+// Открытие списка участников по клику на аватарки
+document.addEventListener('DOMContentLoaded', function() {
+  const participantsAvatars = document.getElementById('event-participants-avatars');
+  
+  if (participantsAvatars) {
+    const eventId = participantsAvatars.getAttribute('data-event-id');
+    
+    participantsAvatars.addEventListener('click', function() {
+      if (eventId) {
+        window.location.href = '/events/' + eventId + '/participants';
+      }
+    });
+    
+    // Добавляем курсор pointer для индикации кликабельности
+    participantsAvatars.style.cursor = 'pointer';
+  }
+});
+</script>

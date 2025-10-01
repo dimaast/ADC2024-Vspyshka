@@ -16,7 +16,7 @@ class AddJtiToUsers < ActiveRecord::Migration[6.1]
     end
 
     # 3) Сделать NOT NULL и добавить уникальный индекс
-    change_column_null    :users, :jti, false
+    change_column_null :users, :jti, false
     add_index            :users, :jti, unique: true
   end
 

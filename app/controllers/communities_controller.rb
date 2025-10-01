@@ -1,21 +1,25 @@
 class CommunitiesController < ApplicationController
-  load_and_authorize_resource except: [:index, :show]
+  load_and_authorize_resource except: [ :index, :show, :by_tag ]
   before_action :set_community, only: %i[ show edit update ]
 
-  # GET /communities or /communities.json
   def index
     @communities = Community.all
+    @tags = Tag.tags_list
   end
 
-  # GET /communities/1 or /communities/1.json
   def show
+    @events_filter = params[:events_filter] || 'current'
+    
+    if @events_filter == 'archive'
+      @events = @community.events.where('hosted_at < ?', Date.current)
+    else
+      @events = @community.events.where('hosted_at >= ?', Date.current)
+    end
   end
 
-  # GET /communities/1/edit
   def edit
   end
 
-  # PATCH/PUT /communities/1 or /communities/1.json
   def update
     respond_to do |format|
       if @community.update(community_params)
@@ -28,13 +32,28 @@ class CommunitiesController < ApplicationController
     end
   end
 
+  def by_tag
+    @tag = params[:tag]
+    @communities = Community.tagged_with(@tag)
+    @tags = Tag.tags_list
+    
+    respond_to do |format|
+      format.html { render :index }
+      format.turbo_stream
+    end
+  end
+
+  def subscribers
+    @community = Community.find(params[:id])
+    @subscribers = User.joins(:subscriptions).where(subscriptions: { subscriptionable_type: 'Community', subscriptionable_id: @community.id })
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_community
       @community = Community.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def community_params
       params.require(:community).permit(:body, :cover, :link)
     end

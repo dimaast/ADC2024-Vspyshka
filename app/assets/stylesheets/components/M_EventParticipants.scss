@@ -1,0 +1,46 @@
+.M_EventParticipantsWrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: var(--space-xl) 0;
+}
+.M_EventParticipantsBack {
+  display: inline-block;
+  margin-bottom: var(--space-l);
+  text-decoration: none;
+  color: #555;
+  font-size: 1.1rem;
+}
+.M_EventParticipantsTitle {
+  margin-bottom: var(--space-xl);
+}
+.M_EventParticipantsCount {
+  margin-bottom: var(--space-l);
+  color: #666;
+  font-size: 1.1rem;
+}
+.M_EventParticipantsRow, .M_EventParticipantsLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-m);
+  padding: 18px 0;
+  border-bottom: 1px solid #eee;
+  justify-content: space-between;
+}
+.M_EventParticipantsLink {
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s;
+}
+.M_EventParticipantsName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.M_EventParticipantsFullname {
+  font-size: 1.1rem;
+  color: #555;
+}
+.M_EventParticipantsPagination {
+  margin-top: var(--space-xl);
+  text-align: center;
+}

@@ -1,99 +1,398 @@
-<%= form_with(model: event) do |form| %>
-  <% if event.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(event.errors.count, "error") %> prohibited this event from being saved:</h2>
+<div class="EventForm">
+  <%= form_with(model: event, class: "EventForm__form") do |form| %>
+    <% if event.errors.any? %>
+      <div class="EventForm__errors">
+        <h3>Ошибки при сохранении события:</h3>
+        <ul>
+          <% event.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-      <ul>
-        <% event.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+    <div class="EventForm__layout">
+      
+      <div class="EventForm__left">
+        
+        <div class="EventForm__image-upload">
+          <%= form.file_field :cover, class: "EventForm__file-input", accept: "image/*", id: "event_cover" %>
+          <label for="event_cover" class="EventForm__image-label">
+            <div class="EventForm__image-preview">
+              <% if event.cover.present? %>
+                <%= image_tag event.cover.url, class: "EventForm__preview-image" %>
+              <% else %>
+                <div class="EventForm__upload-icon">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+              <% end %>
+            </div>
+          </label>
+        </div>
+
+        <div class="EventForm__community-section">
+          <div class="EventForm__community-checkbox-wrapper">
+            <%= form.check_box :use_community, class: "EventForm__community-checkbox", id: "event_use_community" %>
+            <label for="event_use_community" class="EventForm__community-checkbox-label">От лица сообщества</label>
+          </div>
+          <% if current_user.present? && current_user.communities.any? %>
+            <%= form.select :community_id, options_from_collection_for_select(current_user.communities.order(:title), :id, :title, event.community_id), {include_blank: "Выберите сообщество"}, class: "EventForm__community-select", disabled: true %>
+          <% else %>
+            <select class="EventForm__community-select" disabled>
+              <option>Выберите сообщество</option>
+            </select>
+          <% end %>
+        </div>
+
+        <div class="EventForm__tags-section">
+          <button type="button" class="EventForm__tags-button" id="add-tags-btn" onclick="document.getElementById('tags-modal').style.display='flex'">
+            <i class="fas fa-plus"></i>
+            Добавить теги
+          </button>
+
+          <div class="EventForm__selected-tags" id="selected-tags-container" style="display: none;">
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="EventForm__right">
+        
+        <%= form.text_field :title, class: "EventForm__title-input EventForm__title-input--large", placeholder: "ВВЕДИТЕ НАЗВАНИЕ" %>
+
+        <div class="EventForm__fields">
+          
+          <div class="EventForm__field">
+            <div class="EventForm__input-group">
+              <i class="fas fa-calendar-alt EventForm__input-icon"></i>
+              <%= form.datetime_field :hosted_at, min: DateTime.now.change(sec: 0), class: "EventForm__input", placeholder: "Дата и время" %>
+            </div>
+          </div>
+
+          <div class="EventForm__field">
+            <div class="EventForm__input-group">
+              <i class="fas fa-map-marker-alt EventForm__input-icon"></i>
+              <%= form.collection_select :placed_at, ['Онлайн', 'Корпус 1', 'Корпус 2', 'Корпус 3', 'Корпус 4', 'Другое'], :to_s, :to_s, { include_blank: "Место проведения" }, class: "EventForm__input" %>
+              <i class="fas fa-chevron-down EventForm__input-arrow"></i>
+            </div>
+          </div>
+
+          <div class="EventForm__field <%= @event.placed_at.present? ? 'is-visible' : 'is-hidden' %>" id="placed_additional_field">
+            <div class="EventForm__input-group">
+              <%= form.text_field :placed_additional, class: "EventForm__input", placeholder: "Подробности о месте" %>
+              <i class="fas fa-info-circle EventForm__input-info"></i>
+            </div>
+          </div>
+
+          <div class="EventForm__field">
+            <div class="EventForm__input-group">
+              <i class="fas fa-tag EventForm__input-icon"></i>
+              <%= form.text_field :price, class: "EventForm__input", placeholder: "Стоимость события" %>
+            </div>
+          </div>
+
+          <div class="EventForm__field">
+            <div class="EventForm__input-group">
+              <i class="fas fa-link EventForm__input-icon"></i>
+              <%= form.text_field :ticket_link, class: "EventForm__input", placeholder: "Ссылка на покупку билета" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="EventForm__description-section">
+          <label class="EventForm__description-label">О событии</label>
+          <%= form.text_area :body, class: "EventForm__textarea", placeholder: "Введите краткое описание события" %>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="EventForm__actions">
+      <%= form.submit 'Опубликовать', class: "EventForm__submit" %>
     </div>
   <% end %>
+</div>
 
-  <%# Дата %>
-  <div>
-    <%= form.label :hosted_at, style: "display: block" %>
-    <%= form.datetime_field :hosted_at, min: DateTime.now.change(sec: 0) %>
-  </div>
-
-  <%# Изображение %>
-  <div>
-    <%= form.label :cover, style: "display: block" %>
-    <%= form.file_field :cover %>
-  </div>
-
-  <%# Название %>
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
-  </div>
-
-  <%# Описание %>
-  <div>
-    <%= form.label :body, style: "display: block" %>
-    <%= form.text_area :body %>
-  </div>
-
-  <%# Цена %>
-  <div>
-    <%= form.label :price, style: "display: block" %>
-    <%= form.text_field :price, placeholder: "Например: 150 руб. или 'бесплатно'" %>
-  </div>
-
-  <%# Тип события %>
-  <div>
-    <label for="event_category">Тип события</label>
-    <%= select_tag "event[category_list]", options_for_select(Tag.categories_list, @event.category_list&.first), include_blank: "Выберите тип", class: 'form-select' %>
-  </div>
-
-  <%# Тема (тег) %>
-  <div>
-    <label for="event_tag">Тема</label>
-    <%= select_tag "event[tag_list]", options_for_select(Tag.tags_list, @event.tag_list&.first), include_blank: "Выберите тему", class: 'form-select' %>
-  </div>
-
-  <%# Сообщество %>
-  <% if current_user.present? && current_user.id == 1 %>
-    <div>
-      <%= form.label :community_id, style: "display: block" %>
-      <%= form.collection_select :community_id, current_user.communities.order(:title), :id, :title, {include_blank: "Индивидуальное событие"} %>
+<div class="EventForm__tags-modal" id="tags-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 10000;">
+  <div class="EventForm__tags-modal-content">
+    <div class="EventForm__tags-modal-header">
+      <h3>Выберите теги</h3>
+      <button type="button" class="EventForm__tags-modal-close" id="close-tags-modal" onclick="document.getElementById('tags-modal').style.display='none'">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
-  <% end %>
+    
+    <div class="EventForm__tags-modal-body">
+      <div class="EventForm__tags-categories">
+        <div class="EventForm__tags-category">
+          <h4>Теги</h4>
+          <div class="EventForm__tags-list" data-category="tags">
+            <button type="button" class="EventForm__tag-option" data-tag="музыка" data-icon="music">
+              <i class="fas fa-music"></i>
+              музыка
+            </button>
+            <button type="button" class="EventForm__tag-option" data-tag="спорт" data-icon="dumbbell">
+              <i class="fas fa-dumbbell"></i>
+              спорт
+            </button>
+            <button type="button" class="EventForm__tag-option" data-tag="дизайн" data-icon="paint-brush">
+              <i class="fas fa-paint-brush"></i>
+              дизайн
+            </button>
+            <button type="button" class="EventForm__tag-option" data-tag="кино" data-icon="film">
+              <i class="fas fa-film"></i>
+              кино
+            </button>
+            <button type="button" class="EventForm__tag-option" data-tag="волонтёрство" data-icon="hands-helping">
+              <i class="fas fa-hands-helping"></i>
+              волонтёрство
+            </button>
+            <button type="button" class="EventForm__tag-option" data-tag="технологии" data-icon="laptop">
+              <i class="fas fa-laptop"></i>
+              технологии
+            </button>
+            <button type="button" class="EventForm__tag-option" data-tag="еда" data-icon="utensils">
+              <i class="fas fa-utensils"></i>
+              еда
+            </button>
+            <button type="button" class="EventForm__tag-option" data-tag="игры" data-icon="gamepad">
+              <i class="fas fa-gamepad"></i>
+              игры
+            </button>
+          </div>
+        </div>
+        
+        <div class="EventForm__tags-category">
+          <h4>Категории</h4>
+          <div class="EventForm__tags-list" data-category="categories">
+            <button type="button" class="EventForm__tag-option" data-tag="концерт" data-icon="microphone">
+              <i class="fas fa-microphone"></i>
+              концерт
+            </button>
+            <button type="button" class="EventForm__tag-option" data-tag="лекция" data-icon="chalkboard-teacher">
+              <i class="fas fa-chalkboard-teacher"></i>
+              лекция
+            </button>
+            <button type="button" class="EventForm__tag-option" data-tag="фестиваль" data-icon="calendar-alt">
+              <i class="fas fa-calendar-alt"></i>
+              фестиваль
+            </button>
+            <button type="button" class="EventForm__tag-option" data-tag="мастер-класс" data-icon="tools">
+              <i class="fas fa-tools"></i>
+              мастер-класс
+            </button>
+            <button type="button" class="EventForm__tag-option" data-tag="турнир" data-icon="trophy">
+              <i class="fas fa-trophy"></i>
+              турнир
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="EventForm__tags-modal-footer">
+      <button type="button" class="EventForm__tags-modal-cancel" id="cancel-tags" onclick="document.getElementById('tags-modal').style.display='none'">Отмена</button>
+      <button type="button" class="EventForm__tags-modal-save" id="save-tags" onclick="document.getElementById('tags-modal').style.display='none'">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('turbo:load', () => {
+
+  const placedAtSelect = document.getElementById('event_placed_at');
+  const placedAdditionalField = document.getElementById('placed_additional_field');
+
+  if (placedAtSelect && placedAdditionalField) {
+    placedAtSelect.addEventListener('change', (event) => {
+      if (event.currentTarget.value) {
+        placedAdditionalField.style.display = 'block';
+      } else {
+        placedAdditionalField.style.display = 'none';
+      }
+    });
+  }
+
+  const communityCheckbox = document.getElementById('event_use_community');
+  const communitySelect = document.querySelector('select[name="event[community_id]"]');
+
+  if (communityCheckbox && communitySelect) {
+
+    if (communityCheckbox.checked) {
+      communitySelect.disabled = false;
+      communitySelect.classList.remove('disabled');
+    } else {
+      communitySelect.disabled = true;
+      communitySelect.classList.add('disabled');
+    }
+
+    communityCheckbox.addEventListener('change', (event) => {
+      if (event.currentTarget.checked) {
+        communitySelect.disabled = false;
+        communitySelect.classList.remove('disabled');
+      } else {
+        communitySelect.disabled = true;
+        communitySelect.classList.add('disabled');
+        communitySelect.value = '';
+      }
+    });
+  }
+
+  let selectedTags = [];
+  let selectedCategories = [];
   
-  <%# Место проведения %>
-  <div>
-    <%= form.label :placed_at, "Место проведения" %>
-    <%= form.collection_select :placed_at, ['Онлайн', 'Корпус 1', 'Корпус 2', 'Корпус 3', 'Корпус 4', 'Другое'], :to_s, :to_s, { include_blank: "Выберите корпус" } %>
-  </div>
+  const tagOptions = document.querySelectorAll('.EventForm__tag-option');
+  const selectedTagsContainer = document.getElementById('selected-tags-container');
+  const tagsButton = document.getElementById('add-tags-btn');
+  const saveTagsBtn = document.getElementById('save-tags');
+  const cancelTagsBtn = document.getElementById('cancel-tags');
 
-  <%# Место проведения, если ранее выбрано другое %>
-  <% if @event.placed_at == "Другое" %>
-    <div>
-      <%= form.label :placed_at, "Введите место проведения" %>
-      <%= form.text_field :placed_at %>
-    </div>
-  <% end %>
+  console.log('Инициализация тегов:', tagOptions.length);
 
-  <%# Дополнительные данные (ссылка, аудитория, уточнения) %>
-  <% if @event.placed_at == "Онлайн" %>
-    <div>
-      <%= form.label :placed_additional, "Ссылка" %>
-      <%= form.text_field :placed_additional %>
-    </div>
-  <% elsif @event.placed_at == "Другое" %>
-    <div>
-      <%= form.label :placed_additional, "Дополнительные данные" %>
-      <%= form.text_field :placed_additional %>
-    </div>
-  <% elsif @event.placed_at.present? %>
-    <div>
-      <%= form.label :placed_additional, "Аудитория" %>
-      <%= form.text_field :placed_additional %>
-    </div>
-  <% end %>
+  tagOptions.forEach(option => {
+    option.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const tagName = this.dataset.tag;
+      const isSelected = this.classList.contains('selected');
+      
+      if (isSelected) {
 
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+        this.classList.remove('selected');
+        removeTagFromSelection(tagName);
+      } else {
+
+        this.classList.add('selected');
+        addTagToSelection(tagName, this.dataset.icon);
+      }
+    });
+  });
+
+  function addTagToSelection(tagName, iconName) {
+    const isCategory = ['концерт', 'лекция', 'фестиваль', 'мастер-класс', 'турнир'].includes(tagName);
+    
+    if (isCategory) {
+      if (!selectedCategories.includes(tagName)) {
+        selectedCategories.push(tagName);
+      }
+    } else {
+      if (!selectedTags.includes(tagName)) {
+        selectedTags.push(tagName);
+      }
+    }
+    
+    updateSelectedTagsDisplay();
+  }
+
+  function removeTagFromSelection(tagName) {
+    const isCategory = ['концерт', 'лекция', 'фестиваль', 'мастер-класс', 'турнир'].includes(tagName);
+    
+    if (isCategory) {
+      selectedCategories = selectedCategories.filter(tag => tag !== tagName);
+    } else {
+      selectedTags = selectedTags.filter(tag => tag !== tagName);
+    }
+    
+    updateSelectedTagsDisplay();
+  }
+
+  function updateSelectedTagsDisplay() {
+    const allSelected = [...selectedTags, ...selectedCategories];
+    
+    if (allSelected.length > 0) {
+      selectedTagsContainer.style.display = 'block';
+      selectedTagsContainer.innerHTML = allSelected.map(tagName => {
+        const iconName = getTagIcon(tagName);
+        return `
+          <div class="EventForm__selected-tag" data-tag="${tagName}">
+            <i class="fas fa-${iconName}"></i>
+            <span>${tagName}</span>
+            <button type="button" class="EventForm__remove-tag" onclick="removeSelectedTag('${tagName}')">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
+      
+      tagsButton.innerHTML = `
+        <i class="fas fa-edit"></i>
+        Редактировать теги (${allSelected.length})
+      `;
+    } else {
+      selectedTagsContainer.style.display = 'none';
+      tagsButton.innerHTML = `
+        <i class="fas fa-plus"></i>
+        Добавить теги
+      `;
+    }
+  }
+
+  window.removeSelectedTag = function(tagName) {
+
+    removeTagFromSelection(tagName);
+
+    const option = document.querySelector(`[data-tag="${tagName}"]`);
+    if (option) {
+      option.classList.remove('selected');
+    }
+  };
+
+  if (saveTagsBtn) {
+    saveTagsBtn.addEventListener('click', () => {
+
+      document.getElementById('tags-modal').style.display = 'none';
+
+      updateFormFields();
+    });
+  }
+
+  if (cancelTagsBtn) {
+    cancelTagsBtn.addEventListener('click', () => {
+
+      document.getElementById('tags-modal').style.display = 'none';
+    });
+  }
+
+  function updateFormFields() {
+
+    document.querySelectorAll('input[name="event[tag_list][]"]').forEach(field => field.remove());
+    document.querySelectorAll('input[name="event[category_list][]"]').forEach(field => field.remove());
+
+    selectedTags.forEach(tag => {
+      const field = document.createElement('input');
+      field.type = 'hidden';
+      field.name = 'event[tag_list][]';
+      field.value = tag;
+      document.querySelector('.EventForm__form').appendChild(field);
+    });
+
+    selectedCategories.forEach(category => {
+      const field = document.createElement('input');
+      field.type = 'hidden';
+      field.name = 'event[category_list][]';
+      field.value = category;
+      document.querySelector('.EventForm__form').appendChild(field);
+    });
+  }
+
+  function getTagIcon(tagName) {
+    const iconMap = {
+      'музыка': 'music',
+      'спорт': 'dumbbell',
+      'дизайн': 'paint-brush',
+      'кино': 'film',
+      'волонтёрство': 'hands-helping',
+      'технологии': 'laptop',
+      'еда': 'utensils',
+      'игры': 'gamepad',
+      'концерт': 'microphone',
+      'лекция': 'chalkboard-teacher',
+      'фестиваль': 'calendar-alt',
+      'мастер-класс': 'tools',
+      'турнир': 'trophy'
+    };
+    return iconMap[tagName] || 'tag';
+  }
+});
+</script>

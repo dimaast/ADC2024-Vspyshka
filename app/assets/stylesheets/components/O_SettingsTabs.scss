@@ -1,0 +1,24 @@
+.O_SettingsTabs {
+  margin-bottom: 2rem;
+}
+.O_SettingsTabs ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  border-bottom: none;
+}
+.O_SettingsTabs li {
+  margin-right: 0;
+}
+.O_SettingsTabs li a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 400;
+  padding: 0.75rem 1rem;
+  display: inline-block;
+  position: relative;
+  transition: all 0.2s ease;
+}
+.O_SettingsTabs li a:hover {
+  color: #666;
+}

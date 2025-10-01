@@ -1,22 +1,37 @@
 class ApplicationController < ActionController::Base
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
+
   before_action :configure_permitted_parameters, if: :devise_controller?
   allow_browser versions: :modern
 
+  before_action :set_locale
   before_action :authenticate_user
   before_action :authenticate_guest
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
       format.json { head :forbidden }
-      format.html { redirect_to root_path, alert: exception.message }
+      format.html do
+        message = 'У вас нет прав для доступа к этой странице.'
+        unless user_signed_in?
+          message += ' <a href="' + view_context.new_user_registration_path + '">Зарегистрируйтесь</a>, чтобы получить доступ.'
+        end
+        redirect_to root_path, alert: message.html_safe
+      end
+    end
+  end
+
+  rescue_from ActiveRecord::RecordNotFound, ActionController::RoutingError do |exception|
+    respond_to do |format|
+      format.html { render template: 'errors/not_found', status: 404 }
+      format.json { render json: { error: 'Not Found' }, status: 404 }
+      format.all { render plain: '404 Not Found', status: 404 }
     end
   end
 
   def authenticate_user
-    # cookies.delete(:user_id)
+
     if current_user
-      unless cookies[:user_id]
+      unless cookies.encrypted[:user_id]
         cookies.encrypted[:user_id] = current_user.id
       end
     end
@@ -25,7 +40,6 @@ class ApplicationController < ActionController::Base
   def authenticate_guest
     if current_user
       if cookies[:guest_token]
-        puts cookies[:guest_token] == current_user.jti
       else
         cookies[:guest_token] = current_user.jti
       end
@@ -40,7 +54,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_update_path_for(resource)
-    # Синхронизируем данные с профилем после обновления пользователя
+
     if resource.profile.present?
       resource.profile.update_columns(
         first_name: resource.first_name,
@@ -50,4 +64,32 @@ class ApplicationController < ActionController::Base
     end
     super
   end
+
+  def after_sign_up_path_for(resource)
+    puts "[DEBUG] after_sign_up_path_for вызван для пользователя: \\#{resource.id} (\\#{resource.email})"
+    choose_interests_path
+  end
+
+  def after_sign_in_path_for(resource)
+    if resource.role == 'admin'
+      root_path
+    else
+      super
+    end
+  end
+
+  private
+
+  def set_locale
+    I18n.locale = :ru
+  end
+
+  def not_found
+    respond_to do |format|
+      format.html { render template: 'errors/not_found', status: 404 }
+      format.json { render json: { error: 'Not Found' }, status: 404 }
+      format.all { render plain: '404 Not Found', status: 404 }
+    end
+  end
+
 end

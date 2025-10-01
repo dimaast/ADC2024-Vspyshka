@@ -1,0 +1,11 @@
+<turbo-stream action="replace" target="communities_list">
+  <template>
+    <div id="communities" class="communities-grid">
+      <% @communities.each do |community| %>
+        <%= link_to community do %>
+          <%= render partial: 'community', locals: { community: community } %>
+        <% end %>
+      <% end %>
+    </div>
+  </template>
+</turbo-stream>

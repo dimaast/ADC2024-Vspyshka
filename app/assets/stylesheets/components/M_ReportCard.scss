@@ -1,0 +1,36 @@
+.M_ReportCard {
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: var(--shadow-blue-7);
+  overflow: hidden;
+}
+.M_ReportCard--pending { border-left: 4px solid var(--ffc107); }
+.M_ReportCard--approved { border-left: 4px solid var(--dc3545); }
+.M_ReportCard--rejected { border-left: 4px solid var(--6c757d); }
+.M_ReportCard__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--eee);
+}
+.M_ReportCard__info { flex: 1; }
+.M_ReportCard__info h4 { margin-bottom: 0.5rem; color: var(--333); }
+.M_ReportCard__info p { color: var(--666); margin-bottom: 0.5rem; }
+.M_ReportCard__status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.M_ReportCard__status--pending { background: var(--fff3cd); color: var(--856404); }
+.M_ReportCard__status--approved { background: var(--f8d7da); color: var(--721c24); }
+.M_ReportCard__status--rejected { background: var(--d1ecf1); color: var(--0c5460); }
+.M_ReportCard__actions { margin-left: 1rem; }
+.M_ReportCard__reason {
+  padding: 1.5rem;
+  background: var(--offwhite);
+}
+.M_ReportCard__reason strong { display: block; margin-bottom: 0.5rem; color: var(--333); }
+.M_ReportCard__reason p { color: var(--666); margin: 0; }

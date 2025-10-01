@@ -2,25 +2,20 @@ class Admin::FacultiesController < ApplicationController
   load_and_authorize_resource
   before_action :set_faculty, only: %i[ show edit update destroy ]
 
-  # GET /faculties or /faculties.json
   def index
     @faculties = Faculty.all
   end
 
-  # GET /faculties/1 or /faculties/1.json
   def show
   end
 
-  # GET /faculties/new
   def new
     @faculty = Faculty.new
   end
 
-  # GET /faculties/1/edit
   def edit
   end
 
-  # POST /faculties or /faculties.json
   def create
     @faculty = Faculty.new(faculty_params)
 
@@ -35,7 +30,6 @@ class Admin::FacultiesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /faculties/1 or /faculties/1.json
   def update
     respond_to do |format|
       if @faculty.update(faculty_params)
@@ -48,7 +42,6 @@ class Admin::FacultiesController < ApplicationController
     end
   end
 
-  # DELETE /faculties/1 or /faculties/1.json
   def destroy
     @faculty.destroy!
 
@@ -59,12 +52,11 @@ class Admin::FacultiesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_faculty
       @faculty = Faculty.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def faculty_params
       params.require(:faculty).permit(:name)
     end

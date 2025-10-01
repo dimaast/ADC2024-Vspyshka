@@ -1,0 +1,232 @@
+// Карточки событий на главной странице - теперь используют C_EventsAndMeets
+
+.event-card {
+  width: 100%;
+  max-width: 100%;
+  background: transparent;
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; // Позволяет карточке сжиматься
+}
+
+.event-card-link {
+  display: contents;
+  text-decoration: none;
+  color: inherit;
+}
+
+.event-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-m);
+}
+
+.event-logo {
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.event-image {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  border: 1px solid #EBEBEB;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+
+.heatwave-logo {
+  background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+  color: var(--white);
+  padding: var(--space-s) var(--space-m);
+  border-radius: 12px;
+  text-align: center;
+  min-width: 120px;
+
+  .heatwave-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: var(--space-xs);
+  }
+
+  .heatwave-artists {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    line-height: 1.3;
+  }
+}
+
+.disco-logo {
+  background: linear-gradient(135deg, #FF69B4, #FF1493);
+  color: var(--white);
+  padding: var(--space-s) var(--space-m);
+  border-radius: 12px;
+  text-align: center;
+  min-width: 120px;
+  position: relative;
+
+  .disco-cat {
+    font-size: 2rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .disco-text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: var(--space-xs);
+  }
+
+  .disco-time {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    line-height: 1.2;
+  }
+}
+
+.icons-logo {
+  background: linear-gradient(135deg, #DDA0DD, #DA70D6);
+  color: var(--white);
+  padding: var(--space-s) var(--space-m);
+  border-radius: 12px;
+  text-align: center;
+  min-width: 120px;
+
+  .icons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-xs);
+
+    .icon {
+      font-size: 1.2rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      padding: var(--space-xs);
+      text-align: center;
+    }
+  }
+}
+
+.default-logo {
+  background: linear-gradient(135deg, #87CEEB, #4682B4);
+  color: var(--white);
+  padding: var(--space-s) var(--space-m);
+  border-radius: 12px;
+  text-align: center;
+  min-width: 120px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.event-content {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0; // Позволяет контенту сжиматься
+  overflow: hidden;
+  
+  .event-title {
+    @extend .A_Title !optional;
+    @extend .A_Title--sm !optional;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .event-date {
+    @extend .A_Meta !optional;
+    @extend .A_Meta--lg !optional;
+  }
+  
+  .event-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+  }
+  
+  .event-organizer {
+    @extend .A_Meta !optional;
+    @extend .A_Meta--lg !optional;
+  }
+  
+  .event-tag {
+    @extend .A_Tag !optional;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 100%;
+  }
+}
+
+
+.event-image .Q_BookmarkIconNoBg {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 50px;
+  height: 50px;
+  background: #000000;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 2;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background: #333333;
+  }
+}
+
+// Адаптивность
+@media (max-width: 1200px) {
+  .upcoming-events-section {
+    .events-cards-container {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .upcoming-events-section {
+    .events-cards-container {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .upcoming-events-section {
+    .events-cards-container {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+}

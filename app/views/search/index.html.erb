@@ -1,0 +1,111 @@
+<% set_meta_tags(
+  title: "Поиск",
+  description: "Поиск событий, встреч и сообществ",
+  keywords: "Поиск, События, Встречи, Сообщества"
+) %>
+
+<div class="search-page">
+  <div class="search-header">
+    <h1 class="search-title">Поиск</h1>
+    
+    <div class="search-form-container">
+      <form action="<%= search_path %>" method="get" class="search-form" data-controller="search-page">
+        <div class="search-input-wrapper">
+          <input 
+            type="text" 
+            name="query" 
+            value="<%= @query %>"
+            placeholder="Введите запрос для поиска..."
+            class="search-input"
+            data-search-page-target="input"
+            data-action="input->search-page#autocomplete"
+            autocomplete="off"
+          >
+          <button type="submit" class="search-submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+      
+      <div class="search-autocomplete" data-search-page-target="autocomplete"></div>
+    </div>
+  </div>
+
+  <% if @query.present? %>
+    <div class="search-results">
+      <% if @items.any? %>
+        <div class="search-results-header">
+          <h2>Результаты поиска для "<%= @query %>"</h2>
+          <p class="search-results-count">Найдено: <%= @items.count %> результатов</p>
+        </div>
+
+        <div class="search-results-content">
+          <% if @events.any? %>
+            <div class="search-section">
+              <h3 class="search-section-title">
+                <i class="fas fa-calendar-alt"></i>
+                События (<%= @events.count %>)
+              </h3>
+              <div class="search-results-grid">
+                <% @events.each do |item| %>
+                  <div class="search-result-card">
+                    <%= render partial: 'events/event_card', locals: { event: item.searchable } %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <% if @meets.any? %>
+            <div class="search-section">
+              <h3 class="search-section-title">
+                <i class="fas fa-users"></i>
+                Встречи (<%= @meets.count %>)
+              </h3>
+              <div class="search-results-grid">
+                <% @meets.each do |item| %>
+                  <div class="search-result-card">
+                    <%= render partial: 'meets/meet_card', locals: { meet: item.searchable } %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <% if @communities.any? %>
+            <div class="search-section">
+              <h3 class="search-section-title">
+                <i class="fas fa-building"></i>
+                Сообщества (<%= @communities.count %>)
+              </h3>
+              <div class="search-results-grid">
+                <% @communities.each do |item| %>
+                  <div class="search-result-card">
+                    <%= render partial: 'communities/community', locals: { community: item.searchable } %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+        </div>
+      <% else %>
+        <div class="search-no-results">
+          <div class="search-no-results-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3>Ничего не найдено</h3>
+          <p>Попробуйте изменить запрос или использовать другие ключевые слова</p>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="search-empty">
+      <div class="search-empty-icon">
+        <i class="fas fa-search"></i>
+      </div>
+      <h3>Начните поиск</h3>
+      <p>Введите запрос в поле выше, чтобы найти события, встречи и сообщества</p>
+    </div>
+  <% end %>
+</div>

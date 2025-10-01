@@ -11,6 +11,32 @@ class ResponseController < ApplicationController
       end
     else
       current_user.responses.create!(responseable_type: params[:type], responseable_id: params[:id])
+
+      if ["Event", "Meet"].include?(params[:type])
+        responseable_user = responseable.user
+
+        unless responseable_user == current_user
+          title = params[:type] == "Event" ? responseable.title : responseable.body.truncate(30)
+          body = "Пользователь #{current_user.username} зарегистрировался на ваше " + (params[:type] == "Event" ? "событие" : "встречу") + ": '#{title}'"
+          url = params[:type] == "Event" ? Rails.application.routes.url_helpers.event_path(responseable) : Rails.application.routes.url_helpers.meet_path(responseable)
+          
+          notification = responseable_user.notifications.create!(
+            body: body,
+            comment: nil,
+            read: false,
+            url: url,
+            notificationable: responseable
+          )
+          
+          ActionCable.server.broadcast(
+            "notifications_#{responseable_user.id}",
+            {
+              body: body,
+              url: url
+            }
+          )
+        end
+      end
     end
 
     respond_to do |format|

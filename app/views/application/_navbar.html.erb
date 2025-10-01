@@ -1,40 +1,33 @@
-<!-- app/views/layouts/_navbar.html.erb -->
-
 <nav class="O_Navbar">
   <div class="W_NavbarPageLinks">
-    <%= link_to "События",    events_path,      class: "A_NavbarPageLink" %>
-    <%= link_to "Встречи",    meets_path,       class: "A_NavbarPageLink" %>
-    <%= link_to "Сообщества", communities_path, class: "A_NavbarPageLink" %>
-    <%= link_to "Архив", archive_events_path, class: "A_NavbarPageLink" %>
+    <%= link_to "События",    events_path,      class: "A_NavbarItem" %>
+    <%= link_to "Встречи",    meets_path,       class: "A_NavbarItem" %>
+    <%= link_to "Сообщества", communities_path, class: "A_NavbarItem" %>
+
+    <% if user_signed_in? && current_user.role == "admin" %>
+      <%= link_to admin_root_path, class: "A_NavbarItem" do %>
+        Панель администратора
+      <% end %>
+    <% end %>
   </div>
 
   <%= link_to "", root_path, class: "A_NavbarLogoLink" %>
 
   <div class="W_NavbarButtons">
-    <!-- Поиск -->
-    <button
-      class="A_Button NavbarButton SearchButton"
-      id="SearchButton"
-      data-action="click->search#toggle"
-    >
-      <i class="fas fa-search"></i>
-    </button>
-
-    <% if user_signed_in? %>
-      <!-- ► Блок «Добавить» с выпадающим меню -->
-      <div
-        class="A_Button NavbarButton AddButton"
-        id="AddButton"
-        data-controller="add-dropdown"
-      >
-        <button type="button" class="AddButtonInner" data-action="click->add-dropdown#toggle">
-          <i class="fas fa-plus"></i>
+    
+    <div class="A_NavbarItem A_Button NavbarButton AddButton" id="AddButton" data-controller="dropdown" data-dropdown-menu-class-value=".M_AddDropdownMenu">
+      <% if user_signed_in? %>
+        <button type="button" data-action="click->dropdown#toggle" onclick="testDropdown();">
+          <%= image_tag "icons/IconAdd.svg", alt: "Добавить", class: "A_NavbarAddIcon" %>
         </button>
-        <div
-          class="AddDropdownMenu"
-          data-add-dropdown-target="menu"
-        >
-          <ul class="AddDropdownList">
+      <% else %>
+        <%= link_to new_user_session_path, onclick: "testDropdown();" do %>
+          <%= image_tag "icons/IconAdd.svg", alt: "Добавить", class: "A_NavbarAddIcon" %>
+        <% end %>
+      <% end %>
+      <div class="M_AddDropdownMenu" data-dropdown-target="menu">
+        <ul class="AddDropdownList">
+          <% if user_signed_in? %>
             <li class="AddDropdownItem">
               <%= link_to new_event_path, class: "AddDropdownLink" do %>
                 <i class="fas fa-calendar-plus"></i>
@@ -47,20 +40,70 @@
                 Новая встреча
               <% end %>
             </li>
-          </ul>
+          <% else %>
+            <li class="AddDropdownItem">
+              <%= link_to new_user_session_path, class: "AddDropdownLink" do %>
+                <i class="fas fa-sign-in-alt"></i>
+                Войти для создания
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <%= link_to search_path, class: "A_NavbarItem" do %>
+      <%= image_tag "icons/IconSearch.svg", alt: "Поиск", class: "A_NavbarSearchIcon" %>
+    <% end %>
+
+    <% if user_signed_in? %>
+      <% current_user.create_profile unless current_user.profile %>
+      
+      <div class="A_NavbarItem NotificationsWrapper" data-controller="notifications">
+        <button type="button" class="A_NotificationsButton <%= 'has-unread' if current_user.unread_notifications.any? %>" data-notifications-target="button" data-action="click->notifications#toggle">
+          <%= image_tag "icons/IconNotifications.svg", alt: "Уведомления", class: "A_NavbarNotificationsIcon" %>
+          <% if current_user.unread_notifications.any? %>
+            <span class="O_NotificationDot"></span>
+          <% end %>
+        </button>
+        <div class="O_NotificationsPanel" data-notifications-target="panel">
+          <div class="O_NotificationsCounter">
+            Уведомления
+            <span data-notifications-target="counter">
+              <%= current_user.unread_notifications.count %>
+            </span>
+          </div>
+          <div data-notifications-target="list" class="O_NotificationsList">
+            <% current_user.unread_notifications.each do |notification| %>
+              <div class="O_Notification" 
+                   data-notification-id="<%= notification.id %>"
+                   data-action="click->notifications#markAsRead">
+                <% if notification.url.present? %>
+                  <%= link_to notification.body, redirect_notification_path(notification), 
+                      class: "notification-link",
+                      data: { action: "click->notifications#handleLinkClick" } %>
+                <% elsif notification.comment_id.present? %>
+                  <% comment = Comment.find_by(id: notification.comment_id) %>
+                  <% if comment %>
+                    <% parent = comment.commentable %>
+                    <% url = polymorphic_url(parent, anchor: "comment_#{comment.id}") %>
+                    <%= link_to notification.body, url, class: "notification-link",
+                        data: { action: "click->notifications#handleLinkClick" } %>
+                  <% else %>
+                    <span><%= notification.body %></span>
+                  <% end %>
+                <% else %>
+                  <span><%= notification.body %></span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
         </div>
       </div>
-      <!-- /AddButton -->
 
-      <!-- Профиль и уведомления -->
-      <div class="A_NavbarProfileWrapper" data-controller="profile-dropdown">
-        <button
-          type="button"
-          data-profile-dropdown-target="button"
-          data-action="click->profile-dropdown#toggle"
-          class="A_NavbarProfileButton"
-          id="ProfileButton"
-        >
+      <div class="A_NavbarItem A_NavbarProfileWrapper" style="padding:0;">
+        
+        <%= link_to current_user.profile ? profile_path(current_user.profile) : "#", class: "A_NavbarProfileLink" do %>
           <% if current_user.profile&.avatar? %>
             <%= image_tag(
                   current_user.profile.avatar.url,
@@ -68,104 +111,138 @@
                   class: "A_NavbarAvatar"
                 ) %>
           <% else %>
-            <div class="A_NavbarAvatar" style="<%= avatar_placeholder_style(current_user) %>">
-              <i class="fas fa-user" style="color: #fff; opacity: 0.7;"></i>
+            <div class="A_NavbarAvatar avatar-placeholder" style="<%= avatar_placeholder_style(current_user) %>">
             </div>
           <% end %>
-        </button>
-
-        <ul
-          class="M_ProfileDropdownMenu"
-          data-profile-dropdown-target="menu"
-        >
-          <li class="M_ProfileMenuItem">
-            <%= link_to "Мой профиль",
-                        profile_path(current_user.profile),
-                        class: "A_ProfileMenuLink" %>
-          </li>
-          <li class="M_ProfileMenuItem">
-            <%= link_to "Настройки",
-                        settings_path,
-                        class: "A_ProfileMenuLink" %>
-          </li>
-          <% if current_user.role == "admin" %>
-            <li class="M_ProfileMenuItem_Divider"></li>
-            <li class="M_ProfileMenuItem M_ProfileMenuItem_Admin">
-              <%= link_to "Админ-панель", admin_communities_url, class: "A_ProfileMenuLink" %>
-            </li>
-            <li class="M_ProfileMenuItem M_ProfileMenuItem_Admin">
-              <%= link_to "Модерация жалоб", admin_reports_path, class: "A_ProfileMenuLink" %>
-            </li>
-            <li class="M_ProfileMenuItem M_ProfileMenuItem_Admin">
-              <%= link_to "Пользователи", admin_users_path, class: "A_ProfileMenuLink" %>
-            </li>
-          <% end %>
-          <li class="M_ProfileMenuItem_Divider"></li>
-          <li class="M_ProfileMenuItem">
-            <%= button_to "Выйти",
-                          destroy_user_session_path,
-                          method: :delete,
-                          form: { "data-turbo-confirm" => "Вы уверены?" },
-                          class: "A_ProfileMenuLink" %>
-          </li>
-        </ul>
+        <% end %>
       </div>
-      <!-- Контейнер для уведомлений -->
-      <div
-        class="NotificationsWrapper"
-        data-controller="notifications"
-      >
-        <button
-          type="button"
-          id="NotificationsButton"
-          class="NavbarButton NotificationsButton <%= 'has-unread' if current_user.unread_notifications.any? %>"
-          data-notifications-target="button"
-          data-action="click->notifications#toggle"
-        >
-          <i class="fas fa-bell"></i>
-          <% if current_user.unread_notifications.any? %>
-            <span class="NotificationDot"></span>
-          <% end %>
-        </button>
-        <div
-          id="notificationsPanel"
-          class="NotificationsPanel"
-          data-notifications-target="panel"
-        >
-          <div class="notificationsCounter">
-            Уведомления
-            <span data-notifications-target="counter">
-              <%= current_user.unread_notifications.count %>
-            </span>
-          </div>
-          <div
-            data-notifications-target="list"
-            class="notificationsList"
-          >
-            <% current_user.unread_notifications.each do |notification| %>
-              <% comment = Comment.find_by(id: notification.comment_id) %>
-              <% next unless comment %>
-              <% parent = comment.commentable %>
-              <% url = polymorphic_url(parent, anchor: "comment_#{comment.id}") %>
-              <div class="notification">
-                <%= link_to notification.body, url %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
-      <!-- /NotificationsWrapper -->
     <% else %>
       <div class="A_NavbarAuthBlock">
         <%= link_to "Войти",
                     new_user_session_path,
-                    class: "A_NavbarAuthLink" %>
-        <%= link_to "Зарегистрироваться",
-                    new_user_registration_path,
-                    class: "A_NavbarAuthLink" %>
+                    class: "A_NavbarItem A_NavbarAuthLink" %>
       </div>
     <% end %>
   </div>
 </nav>
 
-<%= render "search_form" %>
+<script>
+
+function testDropdown() {
+  const addButton = document.querySelector('[data-controller="dropdown"]');
+  const menu = addButton?.querySelector('[data-dropdown-target="menu"]');
+  
+  if (menu) {
+    const isVisible = menu.classList.contains('is-open');
+    
+    if (isVisible) {
+
+      menu.classList.remove('is-open');
+      setTimeout(() => {
+        if (!menu.classList.contains('is-open')) {
+          menu.style.display = 'none';
+        }
+      }, 300);
+    } else {
+
+      menu.style.display = 'block';
+      menu.style.backgroundColor = 'white';
+      menu.style.border = '1px solid #ddd';
+      menu.style.borderRadius = '8px';
+      menu.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+      menu.style.minWidth = '200px';
+      menu.style.padding = '8px 0';
+      menu.style.position = 'absolute';
+      menu.style.top = '100%';
+      menu.style.right = '0';
+      menu.style.zIndex = '10002';
+      menu.style.marginTop = '8px';
+
+      const list = menu.querySelector('.AddDropdownList');
+      if (list) {
+        list.style.listStyle = 'none';
+        list.style.margin = '0';
+        list.style.padding = '0';
+      }
+
+      const items = menu.querySelectorAll('.AddDropdownItem');
+      items.forEach(item => {
+        item.style.margin = '0';
+        item.style.padding = '0';
+      });
+
+      const links = menu.querySelectorAll('.AddDropdownLink');
+      links.forEach(link => {
+        link.style.display = 'flex';
+        link.style.alignItems = 'center';
+        link.style.padding = '12px 16px';
+        link.style.color = '#333';
+        link.style.textDecoration = 'none';
+        link.style.fontSize = '14px';
+        link.style.fontWeight = '500';
+        link.style.transition = 'background-color 0.2s ease';
+
+        link.addEventListener('mouseenter', function() {
+          this.style.backgroundColor = '#f5f5f5';
+        });
+        link.addEventListener('mouseleave', function() {
+          this.style.backgroundColor = 'transparent';
+        });
+
+        const icon = link.querySelector('i');
+        if (icon) {
+          icon.style.marginRight = '8px';
+          icon.style.width = '16px';
+          icon.style.textAlign = 'center';
+        }
+      });
+      
+      setTimeout(() => {
+        menu.classList.add('is-open');
+      }, 10);
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const notificationsButton = document.querySelector('.A_NotificationsButton');
+  const notificationsPanel = document.querySelector('.O_NotificationsPanel');
+  const addButton = document.querySelector('[data-controller="dropdown"]');
+  const addMenu = document.querySelector('[data-dropdown-target="menu"]');
+  
+  if (notificationsButton && notificationsPanel) {
+    notificationsButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const isOpen = notificationsPanel.classList.contains('is-open');
+      if (isOpen) {
+        notificationsPanel.classList.remove('is-open');
+      } else {
+        notificationsPanel.classList.add('is-open');
+      }
+    });
+  }
+
+  document.addEventListener('click', function(e) {
+
+    if (notificationsButton && notificationsPanel && 
+        !notificationsButton.contains(e.target) && 
+        !notificationsPanel.contains(e.target)) {
+      notificationsPanel.classList.remove('is-open');
+    }
+
+    if (addButton && addMenu && 
+        !addButton.contains(e.target) && 
+        !addMenu.contains(e.target)) {
+      addMenu.classList.remove('is-open');
+      setTimeout(() => {
+        if (!addMenu.classList.contains('is-open')) {
+          addMenu.style.display = 'none';
+        }
+      }, 300);
+    }
+    
+  });
+});
+</script>

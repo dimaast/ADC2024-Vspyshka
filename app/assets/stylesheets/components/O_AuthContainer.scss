@@ -1,0 +1,12 @@
+.O_AuthContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+}
+@media (max-width: 480px) {
+  .O_AuthContainer {
+    padding: 1rem;
+  }
+}

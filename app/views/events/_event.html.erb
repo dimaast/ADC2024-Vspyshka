@@ -1,0 +1,20 @@
+<%= link_to event_path(event), class: "event-search-card", data: { turbo: false } do %>
+  <% if event.cover.present? %>
+    <%= image_tag event.cover.url, class: "event-search-cover" %>
+  <% end %>
+  <div class="event-search-meta">
+    <% if event.community.present? %>
+      <span class="event-search-author">
+        <%= event.community.title %>
+      </span>
+    <% end %>
+    <% event.categories.each do |category| %>
+      <span class="event-search-tag event-search-tag--category"><%= category.name %></span>
+    <% end %>
+    <% event.tags.each do |tag| %>
+      <span class="event-search-tag"><%= tag.name %></span>
+    <% end %>
+  </div>
+  <h2 class="event-search-title"><%= event.title %></h2>
+  <time class="event-search-date"><%= event.hosted_at.strftime("%d/%m/%Y %H:%M") %></time>
+<% end %>

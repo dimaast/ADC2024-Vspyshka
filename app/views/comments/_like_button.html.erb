@@ -1,0 +1,9 @@
+<% liked = user_signed_in? && comment.likes.exists?(user_id: current_user.id) %>
+<%= button_to like_toggle_path(type: 'Comment', id: comment.id),
+            method: :post,
+            class: "M_CommentLikeButton #{'active' if liked}",
+            data: { turbo: true },
+            form: { class: 'inline' } do %>
+  <%= render 'shared/icon_heart', active: liked %>
+  <span class="CommentLikeCount"><%= comment.likes.count %></span>
+<% end %>

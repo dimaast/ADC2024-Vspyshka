@@ -1,0 +1,39 @@
+.M_CommentActions .A_CommentAction,
+.M_CommentActions button.A_CommentAction,
+.M_CommentActions button.ReplyButton {
+  color: var(--gray-inactive) !important;
+  text-decoration: none;
+  font-size: 20px;
+  line-height: 100%;
+  background: none !important;
+  border: none !important;
+  cursor: pointer;
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  
+  &:hover {
+    color: var(--333) !important;
+    text-decoration: none;
+    background: none !important;
+    box-shadow: none !important;
+  }
+  
+  i {
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  
+  span {
+    white-space: nowrap;
+  }
+}
+
+.A_CommentAction--active {
+  color: var(--333);
+}

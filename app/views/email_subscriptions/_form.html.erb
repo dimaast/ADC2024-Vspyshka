@@ -1,11 +1,26 @@
-<%= form_with(model: EmailSubscription.build) do |form| %>
+<%= form_with(model: EmailSubscription.build, html: { id: 'email-subscription-form' }) do |form| %>
 
   <div>
     <%= form.label :email, style: "display: block" %>
-    <%= form.email_field :email %>
+    <%= form.email_field :email, id: 'email-subscription-email', required: true, autocomplete: 'email' %>
   </div>
 
   <div>
-    <%= form.submit %>
+    <%= form.submit 'Подписаться', id: 'email-subscription-submit', disabled: true %>
   </div>
 <% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const emailInput = document.getElementById('email-subscription-email');
+    const submitBtn = document.getElementById('email-subscription-submit');
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    function toggleButton() {
+      submitBtn.disabled = !validateEmail(emailInput.value);
+    }
+    emailInput.addEventListener('input', toggleButton);
+    toggleButton();
+  });
+</script>

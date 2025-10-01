@@ -1,0 +1,16 @@
+.O_CommunitiesTagsFilter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+  justify-content: center;
+  margin-bottom: 2em;
+  margin-top: var(--space-s);
+}
+
+.communities-filters-container {
+  margin-bottom: 2em;
+  
+  .tags-filter-section {
+    margin-top: var(--space-s);
+  }
+}

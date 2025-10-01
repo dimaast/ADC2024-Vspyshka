@@ -1,0 +1,134 @@
+.M_EventForm {
+  padding: 2rem;
+  border-radius: 12px;
+  background: var(--white);
+  max-width: 600px;
+  margin: 2rem auto;
+  box-shadow: var(--shadow-blue-11);
+}
+.M_EventForm .form-error-notification {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: var(--fee);
+  border: 1px solid var(--fcc);
+}
+.M_EventForm .form-error-notification h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: var(--c33);
+}
+.M_EventForm .form-error-notification ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--c33);
+  font-size: 0.95rem;
+}
+.M_EventForm .form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+.M_EventForm label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--333);
+}
+.M_EventForm input[type="text"],
+.M_EventForm input[type="datetime-local"],
+.M_EventForm textarea,
+.M_EventForm select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--e1e5e9);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: var(--white);
+}
+.M_EventForm input[type="text"]:focus,
+.M_EventForm input[type="datetime-local"]:focus,
+.M_EventForm textarea:focus,
+.M_EventForm select:focus {
+  outline: none;
+  border-color: var(--violet);
+  box-shadow: var(--shadow-blue-16);
+}
+.M_EventForm textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+.M_EventForm input::placeholder,
+.M_EventForm textarea::placeholder {
+  color: var(--999);
+}
+.M_EventForm .cover-upload-area {
+  margin-top: 1.5rem;
+  padding: 2rem;
+  border: 2px dashed var(--e1e5e9);
+  border-radius: 8px;
+  text-align: center;
+  background: var(--offwhite-3);
+  transition: all 0.2s ease;
+}
+.M_EventForm .cover-upload-area:hover {
+  border-color: var(--violet);
+  background: var(--offwhite-13);
+}
+.M_EventForm__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.M_EventForm__errors {
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.M_EventForm__errors h3 {
+  color: #c33;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+.M_EventForm__errors ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #c33;
+}
+.M_EventForm__errors li {
+  margin-bottom: 0.25rem;
+}
+.M_EventForm__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.M_EventForm__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.M_EventForm__field--full {
+  grid-column: 1 / -1;
+}
+.M_EventForm__file-upload {
+  position: relative;
+}
+.M_EventForm__file-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px dashed #e1e5e9;
+  border-radius: 8px;
+  background: #fafbfc;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.M_EventForm__file-input:hover {
+  border-color: #6A6AF7;
+  background: #f8f9ff;
+}
+.M_EventForm__file-input:focus {
+  outline: none;
+}

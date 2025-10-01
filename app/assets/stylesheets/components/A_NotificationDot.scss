@@ -1,0 +1,15 @@
+.A_NotificationDot {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--e53935);
+  border-radius: 50%;
+  border: 2px solid var(--white);
+  display: none;
+}
+
+.A_NotificationsButton.has-unread .A_NotificationDot {
+  display: inline-block;
+}

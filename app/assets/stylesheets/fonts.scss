@@ -15,4 +15,12 @@
 @font-face {
   font-family: 'TT Commons Pro Educational Variable';
   src: font-url('fonts/TT-Commons-Pro-Educational-Variable.ttf') format('truetype');
-}  
+}
+
+@font-face {
+  font-family: 'Proxima Nova Extra Condensed';
+  src: font-url('stylesheets/fonts/ProximaNovaExCn-Extrabold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}

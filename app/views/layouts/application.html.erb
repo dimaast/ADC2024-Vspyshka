@@ -20,9 +20,10 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body data-controller="notifications">
-  <p style="color: red"><%= alert %></p>
+  <body>
+  <p class="alert-message"><%= alert %></p>
     <%= render "navbar" %>
+    <div id="flash"></div>
     <%= yield %>
     <%= render "footer" %>
   </body>

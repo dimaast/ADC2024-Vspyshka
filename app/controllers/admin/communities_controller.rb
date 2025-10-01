@@ -2,7 +2,6 @@ class Admin::CommunitiesController < ApplicationController
   load_and_authorize_resource
   before_action :set_community, only: %i[ update destroy ]
 
-  # GET /communities or /communities.json
   def index
     if current_user&.role == "admin"
       @communities = Community.all
@@ -11,12 +10,10 @@ class Admin::CommunitiesController < ApplicationController
     end
   end
 
-  # GET /communities/new
   def new
     @community = Community.new
   end
 
-  # POST /communities or /communities.json
   def create
     @community = Community.new(community_params)
 
@@ -31,7 +28,6 @@ class Admin::CommunitiesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /communities/1 or /communities/1.json
   def update
     respond_to do |format|
       if @community.update(community_params)
@@ -44,7 +40,6 @@ class Admin::CommunitiesController < ApplicationController
     end
   end
 
-  # DELETE /communities/1 or /communities/1.json
   def destroy
     @community.destroy!
 
@@ -55,12 +50,11 @@ class Admin::CommunitiesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_community
       @community = Community.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def community_params
       params.require(:community).permit(:title, :body, :user_id, :cover, :link)
     end

@@ -1,0 +1,30 @@
+.O_ProfileSubscribeBtn {
+  margin-top: 40px;
+  width: 100%;
+  max-width: 500px;
+  height: 64px;
+  background: #000000;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: none;
+  font-family: 'TT Interphases Educational', sans-serif;
+}
+
+.O_ProfileSubscribeBtn:hover {
+  background: #1a1a1a;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.O_ProfileSubscribeBtn:active {
+  background: #000000;
+}

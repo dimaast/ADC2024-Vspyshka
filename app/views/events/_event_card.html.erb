@@ -1,37 +1,45 @@
-<%# app/views/events/_event_card.html.erb %>
-<div id="<%= dom_id(event) %>" class="M_EventCardDetailed">
-  <%# Ссылка на полную страницу события, включает картинку, избранное, заголовок и дату %>
-  <%= link_to event_path(event), class: 'M_EventCardDetailed__link', data: { turbo: false } do %>
-    <div class="M_EventImageWrapper">
-      <% if event.cover.present? %>
-        <%= image_tag event.cover.url, class: "A_EventCover" %>
-      <% end %>
-      <button type="button" class="Q_BookmarkIcon" aria-label="Добавить в избранное">
-        <%= image_tag "bookmark.svg", alt: "Закладка" %>
-      </button>
+<div id="<%= dom_id(event) %>" class="event-card-wrapper">
+  <%= link_to event_path(event), class: "event-card-link", data: { turbo: false } do %>
+    <div class="event-card">
+      <div class="event-image">
+        <% if event.cover.present? %>
+          <%= image_tag event.cover.url, alt: event.title %>
+        <% else %>
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+            <%= event.title.first(10) %>
+          </div>
+        <% end %>
+        
+        <% if user_signed_in? %>
+          <%= link_to favourite_toggle_path(type: event.class.name, id: event.id), 
+                      class: "Q_BookmarkIconNoBg #{user_signed_in? && event.favourites.exists?(user_id: current_user.id) ? 'active' : ''}", 
+                      data: { turbo_method: :post },
+                      id: dom_id(event, "bookmark") do %>
+            <%= render 'shared/icon_save', active: user_signed_in? && event.favourites.exists?(user_id: current_user.id) %>
+          <% end %>
+        <% else %>
+          <div class="Q_BookmarkIconNoBg">
+            <%= render 'shared/icon_save', active: user_signed_in? && event.favourites.exists?(user_id: current_user.id) %>
+          </div>
+        <% end %>
+      </div>
+      
+      <div class="event-content">
+        <h3 class="event-title"><%= event.title %></h3>
+        <p class="event-date"><%= l(event.hosted_at.to_date, format: :short) %></p>
+        <div class="event-meta">
+          <p class="event-organizer">
+            <% if event.community.present? %>
+              <%= event.community.title %>
+            <% else %>
+              <%= event.user.username %>
+            <% end %>
+          </p>
+          <div class="event-tag">
+            <%= event.category_list.first || "Событие" %>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <%# Автор + категории + теги в одной строке %>
-    <div class="M_EventMetaRow">
-      <span class="A_EventAuthorName">
-        <%= event.community.present? ? event.community.title : event.user.username %>
-      </span>
-      <% event.categories.each do |category| %>
-        <%= link_to category.name,
-                    by_tag_events_path(tag: category.name, category: params[:category]),
-                    class: 'A_Tag A_Tag--category' %>
-      <% end %>
-      <% event.tags.each do |tag| %>
-        <%= link_to tag.name,
-                    by_tag_events_path(category: tag.name, tag: params[:tag]),
-                    class: 'A_Tag' %>
-      <% end %>
-    </div>
-
-    <h2 class="A_EventTitle"><%= event.title %></h2>
-    <time class="A_EventDate"><%= event.hosted_at.strftime("%d/%m/%Y %H:%M") %></time>
-    <% if user_signed_in? %>
-      <div class="A_Tag"><%= event.placed_at %></div>
-    <% end %>
   <% end %>
 </div>

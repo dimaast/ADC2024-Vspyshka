@@ -7,13 +7,13 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
     if @user.save
       render json: {
         messages: "Sign Up Successfully",
-        is_success: true,
+        isSuccess: true,
         jwt: encrypt_payload
       }, status: :ok
     else
       render json: {
         messages: "Sign Up Failed",
-        is_success: false
+        isSuccess: false
       }, status: :unprocessable_entity
     end
   end

@@ -1,0 +1,11 @@
+.A_EventSearchTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--222);
+  margin: 0 0 2px 0;
+}
+@media (max-width: 600px) {
+  .A_EventSearchTitle {
+    font-size: 1rem;
+  }
+}

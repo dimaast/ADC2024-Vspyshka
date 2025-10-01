@@ -1,11 +1,26 @@
-# app/controllers/notifications_controller.rb
 class NotificationsController < ApplicationController
   before_action :authenticate_user!
 
-  # POST /notifications/mark_all_read
   def mark_all_read
-    # Обновляем все непрочитанные для текущего пользователя
+
     current_user.notifications.where(read: false).update_all(read: true)
     head :ok
+  end
+
+  def mark_read
+    notification = current_user.notifications.find(params[:id])
+    notification.update!(read: true)
+    head :ok
+  end
+
+  def redirect
+    notification = current_user.notifications.find(params[:id])
+    notification.update!(read: true) if notification.url.present?
+    
+    if notification.url.present?
+      redirect_to notification.url
+    else
+      redirect_to root_path, alert: 'Ссылка недоступна'
+    end
   end
 end

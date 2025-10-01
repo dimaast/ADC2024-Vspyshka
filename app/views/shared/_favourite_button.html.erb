@@ -1,6 +1,5 @@
-<%# Кнопка закладки %>
 <%= button_to favourite_toggle_path(type: favouritable.class.name, id: favouritable.id, from_profile: params[:from_profile]),
-              class: "favourite-button #{'active' if current_user&.favourites&.exists?(favouriteable: favouritable)}",
-              data: { turbo: true } do %>
-  <i class="fas fa-bookmark"></i>
-<% end %> 
+            class: "Q_BookmarkIconNoBg #{'active' if current_user&.favourites&.exists?(favouriteable: favouritable)}",
+            data: { turbo: true } do %>
+  <%= render 'shared/icon_save', active: current_user&.favourites&.exists?(favouriteable: favouritable) %>
+<% end %>

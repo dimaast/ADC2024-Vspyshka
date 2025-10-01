@@ -1,0 +1,15 @@
+.O_FormRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: var(--black);
+}
+.O_FormRow__label {
+  width: 140px;
+  font-weight: 400;
+  color: #000;
+  font-size: 0.9rem;
+}
+.O_FormRow__field {
+  flex: 1;
+}

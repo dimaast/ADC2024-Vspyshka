@@ -1,0 +1,17 @@
+.O_PrivacyRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-l) var(--space-m);
+  background: white;
+  border-radius: var(--space-m);
+  margin-bottom: var(--space-m);
+}
+.O_PrivacyRow__label {
+  font-weight: 400;
+  color: var(--black);
+}
+.O_PrivacyRow__value {
+  color: var(--666);
+  font-size: 0.9rem;
+}

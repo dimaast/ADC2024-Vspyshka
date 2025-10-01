@@ -1,0 +1,25 @@
+.O_ProfileBottomBlocks {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  margin: 2rem 0;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .O_ProfileBottomBlocks {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .O_ProfileBottomBlocks {
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+}

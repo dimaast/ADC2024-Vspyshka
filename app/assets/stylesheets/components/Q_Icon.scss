@@ -1,18 +1,18 @@
 .Q_Icon {
-    &.MIcon {
+    &.Q_IconEdit {
         width: 24px;
         height: 24px;
     }
 
-    &.IconSearch {
+    &.Q_IconSearch {
         background: url('icons/IconSearch.svg') center / cover no-repeat;
     }
 
-    &.IconAdd {
+    &.Q_IconAdd {
         background: url('icons/IconAdd.svg') center / cover no-repeat;
     }
 
-    &.IconProfile {
+    &.Q_IconProfile {
         background: url('icons/IconProfile.svg') center / cover no-repeat;
     }
 }

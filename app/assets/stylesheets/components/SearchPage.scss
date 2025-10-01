@@ -1,0 +1,392 @@
+.search-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.search-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.search-title {
+  font-size: 48px;
+  font-weight: 700;
+  color: #121212;
+  margin-bottom: 32px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.search-form-container {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-form {
+  width: 100%;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  padding: 4px;
+  transition: all 0.2s ease;
+  
+  &:focus-within {
+    border-color: #121212;
+    box-shadow: 0 0 0 3px rgba(18, 18, 18, 0.1);
+  }
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 16px 20px;
+  font-size: 18px;
+  color: #333;
+  outline: none;
+  
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.search-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: #121212;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background: #333;
+  }
+  
+  i {
+    font-size: 18px;
+  }
+}
+
+.search-autocomplete {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  margin-top: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.autocomplete-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #f8f9fa;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background: #f8f9fa;
+  }
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  &.autocomplete-error {
+    color: #dc3545;
+    font-style: italic;
+  }
+}
+
+.autocomplete-title {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 2px;
+}
+
+.autocomplete-type {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.search-results {
+  margin-top: 40px;
+}
+
+.search-results-header {
+  margin-bottom: 32px;
+  
+  h2 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #121212;
+    margin-bottom: 8px;
+  }
+}
+
+.search-results-count {
+  color: #666;
+  font-size: 16px;
+}
+
+.search-results-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.search-section {
+  .search-section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #121212;
+    margin-bottom: 20px;
+    
+    i {
+      color: #666;
+      font-size: 20px;
+    }
+  }
+}
+
+.search-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.search-result-card {
+  width: 100%;
+}
+
+.search-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.search-result-item {
+  width: 100%;
+}
+
+.search-result-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: #121212;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.search-result-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.search-result-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.search-result-info {
+  flex: 1;
+}
+
+.search-result-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #121212;
+  margin: 0 0 4px 0;
+}
+
+.search-result-description {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.search-no-results,
+.search-empty {
+  text-align: center;
+  padding: 60px 20px;
+  
+  .search-no-results-icon,
+  .search-empty-icon {
+    font-size: 64px;
+    color: #ddd;
+    margin-bottom: 24px;
+  }
+  
+  h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #121212;
+    margin-bottom: 12px;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #666;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-page {
+    padding: 20px 16px;
+  }
+  
+  .search-title {
+    font-size: 32px;
+    margin-bottom: 24px;
+  }
+  
+  .search-input {
+    font-size: 16px;
+    padding: 14px 16px;
+  }
+  
+  .search-submit {
+    width: 48px;
+    height: 48px;
+    
+    i {
+      font-size: 16px;
+    }
+  }
+  
+  .search-results-header h2 {
+    font-size: 24px;
+  }
+  
+  .search-section .search-section-title {
+    font-size: 20px;
+  }
+  
+  .search-results-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .search-result-link {
+    padding: 12px;
+  }
+  
+  .search-result-avatar {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .search-result-name {
+    font-size: 16px;
+  }
+  
+  .search-result-description {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-page {
+    padding: 16px 12px;
+  }
+  
+  .search-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  .search-input-wrapper {
+    padding: 2px;
+  }
+  
+  .search-input {
+    font-size: 14px;
+    padding: 12px 14px;
+  }
+  
+  .search-submit {
+    width: 44px;
+    height: 44px;
+    
+    i {
+      font-size: 14px;
+    }
+  }
+  
+  .search-results-header h2 {
+    font-size: 20px;
+  }
+  
+  .search-section .search-section-title {
+    font-size: 18px;
+  }
+  
+  .search-no-results,
+  .search-empty {
+    padding: 40px 16px;
+    
+    .search-no-results-icon,
+    .search-empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    
+    h3 {
+      font-size: 20px;
+    }
+    
+    p {
+      font-size: 14px;
+    }
+  }
+}

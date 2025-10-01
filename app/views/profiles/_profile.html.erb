@@ -1,34 +1,183 @@
-<div id="<%= dom_id profile %>">
-  <h2><%= profile.user.username %> (<%= profile.full_name %>)</h2>
-  <%= image_tag profile.avatar.url, width: 100 if profile.avatar.present? %>
-  <% unless profile.avatar.present? %>
-    <div class="ProfileAvatar ProfileAvatar--placeholder" style="<%= avatar_placeholder_style(profile.user) %>; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; font-size: 48px; color: #fff;">
-      <%= profile.user.username.first.upcase %>
+<div class="O_ProfilePageWrapper">
+  <div class="O_ProfileCard">
+    <div class="O_ProfileGenerative">
+      <%# Генерация мини-обложек полукругом вокруг аватара, только последние 6 %>
+      <% covers = [] %>
+      <% if @profile&.user&.events %>
+        <% @profile.user.events.order(created_at: :desc).each do |event| %>
+          <% if event.cover.present? %>
+            <% covers << { url: event.cover.url, alt: event.title, created_at: event.created_at } %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% if @profile&.user&.communities %>
+        <% @profile.user.communities.order(created_at: :desc).each do |community| %>
+          <% if community.cover.present? %>
+            <% covers << { url: community.cover.url, alt: community.title, created_at: community.created_at } %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% covers = covers.sort_by { |c| -c[:created_at].to_i }.first(6) %>
+      <% center_x = 50 %> <%# центр аватара: 50% от контейнера %>
+      <% center_y = 50 %>  <%# центр аватара: 50% от контейнера %>
+      <% radius = 25 %> <%# радиус в процентах %>
+      <% angle_step = covers.size > 1 ? Math::PI / (covers.size - 1) : 0 %>
+      <% covers.each_with_index do |cover, i| %>
+        <% angle = Math::PI - i * angle_step %>
+        <% x = center_x + Math.cos(angle) * radius %>
+        <% y = center_y - Math.sin(angle) * radius %>
+        <% rotate = (i < covers.size / 2) ? -18 : 18 %>
+        <img class="O_ProfileGenerativeImg profile-generative-img" src="<%= cover[:url] %>" alt="<%= cover[:alt] %>" style="top: <%= y.round %>% ; left: <%= x.round %>% ; transform: rotate(<%= rotate %>deg);" />
+      <% end %>
     </div>
-  <% end %>
+    <!-- Центральный белый блок с информацией профиля -->
+    <div class="O_ProfileInfoBlock">
+      <% if @profile.avatar.present? %>
+        <img class="O_ProfileAvatar" src="<%= @profile.avatar.url %>" alt="Аватар профиля" />
+      <% else %>
+        <div class="O_ProfileAvatar profile-avatar-placeholder" style="<%= avatar_placeholder_style(@profile.user) %>">
+        </div>
+      <% end %>
+      <div class="O_ProfileNickname">@<%= @profile.user.username %></div>
+      <div class="O_ProfileFullName"><%= @profile.full_name %></div>
+      <% if @profile.body.present? %>
+        <div class="O_ProfileDescription"><%= @profile.body %></div>
+      <% end %>
+    </div>
 
-  <p>
-    <strong>ФИО:</strong>
-    <%= profile.full_name %>
-  </p>
+    <%# --- Блоки интересов, подписчиков и сообществ --- %>
+    <div class="O_ProfileBottomBlocks">
+      <%# --- Блок интересов --- %>
+      <div class="O_ProfileInterests">
+        <h3>Интересы</h3>
+        <% if @profile.user.tag_list.present? %>
+          <div class="profile-interests-list">
+            <% @profile.user.tag_list.each do |tag| %>
+              <span class="profile-interest-tag">
+                <% case tag.downcase %>
+                <% when 'музыка', 'music' %>
+                  <i class="fas fa-music"></i>
+                <% when 'добро', 'доброта', 'kindness' %>
+                  <i class="fas fa-heart"></i>
+                <% when 'хобби', 'hobby', 'хобби' %>
+                  <i class="fas fa-star"></i>
+                <% when 'спорт', 'sport' %>
+                  <i class="fas fa-dumbbell"></i>
+                <% when 'искусство', 'art' %>
+                  <i class="fas fa-palette"></i>
+                <% when 'технологии', 'tech', 'техно' %>
+                  <i class="fas fa-laptop-code"></i>
+                <% when 'путешествия', 'travel' %>
+                  <i class="fas fa-plane"></i>
+                <% when 'книги', 'books' %>
+                  <i class="fas fa-book"></i>
+                <% when 'фильмы', 'movies' %>
+                  <i class="fas fa-film"></i>
+                <% when 'игры', 'games' %>
+                  <i class="fas fa-gamepad"></i>
+                <% else %>
+                  <i class="fas fa-tag"></i>
+                <% end %>
+                <%= tag %>
+              </span>
+            <% end %>
+          </div>
+        <% else %>
+          <p>Интересы не указаны</p>
+        <% end %>
+      </div>
 
-  <p>
-    <strong>Никнейм:</strong>
-    <%= profile.user.username %>
-  </p>
+      <%# --- Блоки подписчиков и сообществ --- %>
+      <div class="O_ProfileMiniBlocks">
+        <% if defined?(@subscribers) && @subscribers %>
+          <%= link_to subscribers_profile_path(@profile, tab: 'subscribers'), class: "ProfileMiniBlock" do %>
+            <span class="profile-mini-label">Подписчики</span>
+            <div class="C_Avatars">
+              <% @subscribers.limit(3).each do |subscriber| %>
+                <%= user_avatar(subscriber, class_name: 'A_Avatar', size: 52) %>
+              <% end %>
+              <% if @subscribers.count > 3 %>
+                <span class="profile-mini-count">+<%= @subscribers.count - 3 %></span>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
 
-  <% if profile.body.present? %>
-    <p>
-      <strong>О себе:</strong>
-      <%= profile.body %>
-    </p>
-  <% end %>
+        <% if defined?(@community_subscriptions) && @community_subscriptions %>
+          <%= link_to subscribers_profile_path(@profile, tab: 'communities'), class: "ProfileMiniBlock" do %>
+            <span class="profile-mini-label">Сообщества</span>
+            <div class="C_Avatars">
+              <% @community_subscriptions.limit(2).each do |community| %>
+                <% if community.cover.present? %>
+                  <%= image_tag community.cover.url, class: 'A_Avatar' %>
+                <% else %>
+                  <div class="A_Avatar A_AvatarPlaceholder">
+                    <%= community.title.first.upcase %>
+                  </div>
+                <% end %>
+              <% end %>
+              <% if @community_subscriptions.count > 2 %>
+                <span class="profile-mini-count">+<%= @community_subscriptions.count - 2 %></span>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
 
-  <% if profile.contact.present? %>
-    <p>
-      <strong>Контакты:</strong>
-      <%= profile.contact %>
-    </p>
-  <% end %>
+    <div class="ProfileShow__menu profile-show-menu">
+      <button class="ProfileShow__menu-btn profile-show-menu-btn" type="button" aria-label="Меню">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="6" cy="14" r="2" fill="#888"/>
+          <circle cx="14" cy="14" r="2" fill="#888"/>
+          <circle cx="22" cy="14" r="2" fill="#888"/>
+        </svg>
+      </button>
+      <div class="ProfileShow__menu-dropdown profile-show-menu-dropdown">
+        <% if can? :edit, @profile %>
+          <%= link_to "Редактировать профиль", edit_profile_path(@profile), class: "ProfileShow__menu-item" %>
+        <% end %>
+        <% if can? :destroy, @profile %>
+          <%= button_to "Удалить профиль", @profile, method: :delete, class: "ProfileShow__menu-item ProfileShow__menu-item--danger", data: { confirm: 'Вы уверены?', turbo: false } %>
+        <% end %>
+        <% if user_signed_in? && current_user.profile == @profile %>
+          <div class="ProfileShow__menu-divider"></div>
+          <%= button_to "Выйти из аккаунта", destroy_user_session_path, method: :delete, class: "ProfileShow__menu-item ProfileShow__menu-item--logout", data: { confirm: 'Вы уверены, что хотите выйти?', turbo: false } %>
+        <% end %>
+      </div>
+    </div>
 
+    <%= render 'subscription/button', subscriptionable: @profile %>
+  </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.ProfileShow__menu').forEach(function(menuBlock) {
+    const btn = menuBlock.querySelector('.ProfileShow__menu-btn');
+    const menu = menuBlock.querySelector('.ProfileShow__menu-dropdown');
+    if (!btn || !menu) return;
+
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      // Закрываем все остальные меню
+      document.querySelectorAll('.ProfileShow__menu-dropdown.open').forEach(function(otherMenu) {
+        if (otherMenu !== menu) otherMenu.classList.remove('open');
+      });
+      menu.classList.toggle('open');
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.remove('open');
+      }
+    });
+
+    menu.querySelectorAll('.ProfileShow__menu-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        menu.classList.remove('open');
+      });
+    });
+  });
+});
+</script>

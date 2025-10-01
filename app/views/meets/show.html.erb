@@ -2,56 +2,176 @@
   description: @meet.body, 
   keywords: "Студорги, Студенческие организации, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
 
-<%= turbo_frame_tag dom_id(@meet) do %>
-  <%= render @meet %>
-  <% if user_signed_in? && can?(:manage, @meet) %>
-    <div>
-      <%= link_to "Edit this meet", edit_meet_path(@meet) %> |
-      <%= link_to "Back to meets", meets_path %>
-      <%= button_to "Destroy this meet", @meet, method: :delete %>
+<div class="O_MeetShowPage">
+  
+  <div class="M_MeetShowCard">
+    <div class="M_MeetShowCard__header">
+      <div class="M_MeetShowCard__user-info">
+        <div class="A_MeetShowAvatar">
+          <% if @meet.user.profile&.avatar.present? %>
+            <%= image_tag @meet.user.profile.avatar.url, alt: @meet.user.username %>
+          <% else %>
+            <div class="A_MeetShowAvatarPlaceholder" style="<%= avatar_placeholder_style(@meet.user) %>">
+            </div>
+          <% end %>
+        </div>
+        <div class="M_MeetShowCard__user-details">
+          <div class="A_MeetShowUsername">@<%= @meet.user.username %></div>
+          <div class="A_MeetShowText"><%= @meet.body %></div>
+        </div>
+      </div>
+      <div class="M_MeetShowCard__menu">
+        <button class="M_MeetShowCard__menu-btn" type="button" aria-label="Меню">
+          <i class="fas fa-ellipsis-h"></i>
+        </button>
+        <div class="M_MeetShowCard__menu-dropdown">
+          <% if user_signed_in? && can?(:manage, @meet) %>
+            <%= link_to "Редактировать встречу", edit_meet_path(@meet), class: "M_MeetShowCard__menu-item" %>
+            <%= button_to "Удалить встречу", @meet, method: :delete, class: "M_MeetShowCard__menu-item M_MeetShowCard__menu-item--danger", data: { confirm: 'Вы уверены?', turbo: false } %>
+          <% end %>
+          <%= link_to "Пожаловаться на встречу", new_report_path(reportable_type: 'Meet', reportable_id: @meet.id), class: "M_MeetShowCard__menu-item M_MeetShowCard__menu-item--report", data: { turbo: false } %>
+        </div>
+      </div>
     </div>
-  <% end %>
-<% end %>
-
-<% if user_signed_in? %>
-  <%= render "favourite/button", favouriteable: @meet %>
-  <%= render "response/button", responseable: @meet %>
-<% end %>
-
-<%# Список лайкнувших %>
-<% if @meet.favourites.any? %>
-  <%# Лайкнувшие %>
-  <h3>Лайки от:</h3>
-    <% @meet.favourites.includes(:user).each do |favourite| %>
-      <%= favourite.user.profile.name %>
-    <% end %>
-<% else %>
-  <p>Никто не лайкнул</p>
-<% end %>
-
-<%# Список откликнувшихся %>
-<% if @meet.responses.any? %>
-  <%# Откикнувшиеся %>
-  <h3>Отклики от:</h3>
-    <% @meet.responses.includes(:user).each do |response| %>
-      <%= response.user.profile.name %>
-    <% end %>
-<% else %>
-  <p>Никто не откликнулся</p>
-<% end %>
-
-<% if user_signed_in? %>
-  <h2>Добавить комментарий:</h2>
-  <%= render "comments/form", comment: Comment.new, commentable: @meet %>
-<% end %>
-
-<%= turbo_stream_from @meet, :comments %>
-
-<h2>Комментарии:</h2>
-<div id="C_Comments">
-  <% @meet.comments.no_replies.each do |comment| %>
-    <div class="M_Comment">
-      <%= render "comments/comment", comment: comment, commentable: @meet %>
+    
+    <div class="M_MeetShowCard__details">
+      <div class="M_MeetShowCard__info">
+        <div class="A_MeetShowDateTime">
+          <%= image_tag "icons/IconCalendar.svg", alt: "Календарь", class: "A_MeetShowDateTime__icon" %>
+          <%= l(@meet.hosted_at, format: :meet_date_time) %>
+        </div>
+        <div class="A_MeetShowLocation">
+          <%= image_tag "icons/IconPlace.svg", alt: "Место", class: "A_MeetShowLocation__icon" %>
+          <%= @meet.placed_at.present? ? @meet.placed_at : "Место уточняется" %>
+        </div>
+      </div>
+      
+      <div class="M_MeetShowCard__participants">
+        <div class="M_MeetShowAvatars" id="meet-participants-avatars" data-meet-id="<%= @meet.id %>">
+          <% if @meet.responses.any? %>
+            <% latest_responses = @meet.responses.includes(user: :profile).order(created_at: :desc).limit(3) %>
+            <% latest_responses.each do |response| %>
+              <%= user_avatar(response.user, class_name: "A_MeetShowParticipantAvatar") %>
+            <% end %>
+            <% if @meet.responses.count > 3 %>
+              <div class="A_MeetShowMoreParticipants">+<%= @meet.responses.count - 3 %></div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
     </div>
-  <% end %>
+    
+    <div class="M_MeetShowCard__tags">
+      <% @meet.tags.each do |tag| %>
+        <div class="A_MeetShowTag">
+          <i class="fas fa-tag"></i>
+          <%= tag.name %>
+        </div>
+      <% end %>
+    </div>
+    
+    <div class="M_MeetShowCard__actions">
+      <% if user_signed_in? %>
+        <%= render "response/button", responseable: @meet %>
+      <% end %>
+      <% if user_signed_in? %>
+        <%= link_to favourite_toggle_path(type: @meet.class.name, id: @meet.id), 
+                    class: "Q_BookmarkIconNoBg #{@meet.favourites.exists?(user_id: current_user.id) ? 'active' : ''}", 
+                    data: { turbo_method: :post } do %>
+          <%= render 'shared/icon_save', active: @meet.favourites.exists?(user_id: current_user.id) %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="M_MeetShowDiscussion">
+    <h2 class="A_MeetShowDiscussionTitle">Обсуждение</h2>
+    
+    <div class="M_MeetShowComments">
+      <%= turbo_stream_from @meet, :comments %>
+      <div id="C_Comments">
+        <% visible_comments = @meet.comments.no_replies.limit(6) %>
+        <% hidden_comments = @meet.comments.no_replies.offset(6) %>
+        
+        <% visible_comments.each do |comment| %>
+          <%= render "comments/comment", comment: comment, commentable: @meet %>
+        <% end %>
+        
+        <% if hidden_comments.any? %>
+          <div id="hidden-comments" style="display: none;">
+            <% hidden_comments.each do |comment| %>
+              <%= render "comments/comment", comment: comment, commentable: @meet %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      
+      <% if @meet.comments.count > 6 %>
+        <div class="A_MeetShowShowMore">
+          <button id="show-more-comments" class="A_MeetShowShowMoreLink">Показать больше комментариев</button>
+        </div>
+      <% end %>
+    </div>
+
+    <% if user_signed_in? %>
+      <div class="M_MeetShowCommentForm">
+        <%= render "comments/form", comment: Comment.new, commentable: @meet %>
+      </div>
+    <% end %>
+  </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const showMoreButton = document.getElementById('show-more-comments');
+  const hiddenComments = document.getElementById('hidden-comments');
+  
+  if (showMoreButton && hiddenComments) {
+    showMoreButton.addEventListener('click', function() {
+      if (hiddenComments.style.display === 'none') {
+        hiddenComments.style.display = 'block';
+        showMoreButton.textContent = 'Скрыть комментарии';
+      } else {
+        hiddenComments.style.display = 'none';
+        showMoreButton.textContent = 'Показать больше комментариев';
+      }
+    });
+  }
+});
+</script>
+
+<script>
+document.querySelectorAll('.M_MeetShowCard__menu-dropdown.open').forEach(function(menu) {
+  menu.classList.remove('open');
+});
+document.querySelectorAll('.M_MeetShowCard__menu-btn').forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var dropdown = btn.nextElementSibling;
+    dropdown.classList.toggle('open');
+  });
+});
+document.querySelectorAll('.M_MeetShowCard__menu-dropdown .M_MeetShowCard__menu-item').forEach(function(item) {
+  item.addEventListener('click', function() {
+    document.querySelectorAll('.M_MeetShowCard__menu-dropdown.open').forEach(function(menu) {
+      menu.classList.remove('open');
+    });
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const participantsAvatars = document.getElementById('meet-participants-avatars');
+  
+  if (participantsAvatars) {
+    const meetId = participantsAvatars.getAttribute('data-meet-id');
+    
+    participantsAvatars.addEventListener('click', function() {
+      if (meetId) {
+        window.location.href = '/meets/' + meetId + '/participants';
+      }
+    });
+
+    participantsAvatars.style.cursor = 'pointer';
+  }
+});
+</script>

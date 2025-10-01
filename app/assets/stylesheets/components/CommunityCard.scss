@@ -1,0 +1,95 @@
+.CommunityCard {
+  display: flex;
+  flex-direction: column;
+  background: #F6F6F6;
+  border-radius: 16px;
+  padding: 20px;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+  cursor: pointer;
+}
+
+.CommunityCard__image {
+  width: 112px;
+  height: 112px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 0 auto 16px;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.CommunityCard__placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.CommunityCard__stats {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.CommunityCard__stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+  
+  i {
+    font-size: 14px;
+  }
+}
+
+.CommunityCard__content {
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.CommunityCard__title {
+  font-family: "Proxima Nova Extra Condensed", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #121212;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.CommunityCard__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.CommunityCard__tag {
+  background: #f0f0f0;
+  color: #666;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  position: relative;
+  z-index: 10;
+}

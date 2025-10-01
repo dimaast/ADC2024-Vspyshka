@@ -1,0 +1,724 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require reset
+ *= require vars
+ *= require fonts
+ *= require basics
+ *= require components/A_Typography
+
+ *= require_tree ./components
+ */
+
+
+
+.alert-message {
+  color: red;
+}
+
+.notice-message {
+  color: green;
+}
+
+.error-message {
+  color: red;
+}
+
+.is-visible {
+  display: block;
+}
+.is-hidden {
+  display: none;
+}
+
+.ProfileTabsJS__nav {
+  margin-bottom: 0;
+}
+.ProfileTabsJS__btn {
+  padding: 8px 18px;
+  border-radius: 8px 8px 0 0;
+  background: #f7f7f7;
+  border: 1px solid #eee;
+  border-bottom: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ProfileTabsJS__btn.active {
+  background: #fff;
+  border-bottom: 1px solid #fff;
+  font-weight: 700;
+}
+.ProfileTabsJS__content {
+  display: none;
+}
+.ProfileTabsJS__content.active {
+  display: block;
+}
+
+.events-filter-form {
+  text-align: center;
+  margin-bottom: 1em;
+}
+.events-filter-label {
+  margin-left: 20px;
+}
+.events-filter-date {
+  margin-left: 5px;
+}
+.events-sort-block {
+  text-align: center;
+  margin-bottom: 1em;
+}
+.events-sort-label {
+  margin-right: 5px;
+}
+.events-sort-select {
+  margin-left: 5px;
+}
+
+// Унифицированные стили участников событий (как у профилей подписчиков)
+.event-participants-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.event-participants-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.event-participants-title {
+  font-family: "Proxima Nova Extra Condensed", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #121212;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.event-participants-back {
+  color: #A3A3A3;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    color: #121212;
+    border-color: #121212;
+    text-decoration: none;
+  }
+}
+
+.event-participants-content {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.event-participants-row {
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #f1f3f4;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background: #f8f9fa;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.event-participants-link {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.event-participants-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #121212;
+  margin-bottom: 4px;
+}
+
+.event-participants-fullname {
+  font-size: 14px;
+  color: #6c757d;
+  margin: 0 0 4px 0;
+}
+
+.event-participants-date {
+  font-size: 12px;
+  color: #999999;
+  margin: 0;
+}
+
+.event-participants-empty {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.event-participants-empty-icon {
+  font-size: 48px;
+  color: #e9ecef;
+  margin-bottom: 16px;
+}
+
+.event-participants-empty-text {
+  font-size: 16px;
+  color: #6c757d;
+  margin: 0;
+}
+
+.event-participants-pagination {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+// Адаптивность для участников событий
+@media (max-width: 768px) {
+  .event-participants-wrapper {
+    padding: 16px;
+  }
+
+  .event-participants-title {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  .event-participants-content {
+    padding: 16px;
+  }
+
+  .event-participants-row {
+    padding: 12px 0;
+  }
+
+  .event-participants-name {
+    font-size: 14px;
+  }
+
+  .event-participants-fullname {
+    font-size: 13px;
+  }
+
+  .event-participants-date {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .event-participants-wrapper {
+    padding: 12px;
+  }
+
+  .event-participants-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .event-participants-content {
+    padding: 12px;
+  }
+
+  .event-participants-row {
+    padding: 10px 0;
+  }
+
+  .event-participants-name {
+    font-size: 14px;
+  }
+
+  .event-participants-fullname {
+    font-size: 12px;
+  }
+
+  .event-participants-date {
+    font-size: 10px;
+  }
+}
+
+.interests-bubbles {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  background: #f8f8f8;
+  border-radius: var(--space-l);
+  margin-bottom: var(--space-l);
+}
+
+.not-found-wrapper {
+  text-align: center;
+  margin-top: 10vh;
+}
+.not-found-title {
+  font-size: 3em;
+  color: #730E15;
+}
+.not-found-text {
+  font-size: 1.3em;
+  color: #444;
+}
+.not-found-btn {
+  display: inline-block;
+  margin-top: 2em;
+  font-size: 1.1em;
+  color: #fff;
+  background: #730E15;
+  padding: 0.7em 2em;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.user-icon-navbar {
+  color: #fff;
+  opacity: 0.7;
+}
+
+.profile-subscribers-title {
+  margin-bottom: var(--space-xl);
+}
+.profile-subscribers-tabs {
+  max-width: 600px;
+  margin: 0 auto var(--space-xl) auto;
+}
+.profile-subscribers-nav {
+  display: flex;
+  gap: var(--space-xs);
+  margin-bottom: 0;
+}
+.profile-subscribers-content {
+  margin-top: var(--space-l);
+}
+.profile-subscribers-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-m);
+  padding: 18px 0;
+  border-bottom: 1px solid #eee;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s;
+}
+.profile-avatar-large {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #888;
+}
+.profile-subscribers-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.profile-subscribers-fullname {
+  font-size: 1.1rem;
+  color: #555;
+}
+.profile-subscribers-owner {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.profile-subscribers-owner-desc {
+  font-size: 1.05rem;
+  color: #555;
+}
+
+.profile-generative-img {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.profile-avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-mini-block {
+  margin-top: 18px;
+  margin-bottom: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-m);
+}
+.profile-mini-label {
+  font-size: 1.1rem;
+  color: #666;
+  min-width: 70px;
+}
+.profile-mini-count {
+  margin-left: var(--space-xs);
+  color: #888;
+  font-size: 1.1rem;
+}
+.profile-subscribers-count, .profile-community-count {
+  margin-left: var(--space-xs);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.profile-show-menu {
+  position: relative;
+  display: inline-block;
+  margin-bottom: var(--space-l);
+}
+.profile-show-menu-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.15s;
+  vertical-align: middle;
+  color: #666666;
+  
+  &:hover {
+    background: #f5f5f5;
+    color: #333333;
+  }
+  
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+.profile-show-menu-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 2.2em;
+  min-width: 180px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  z-index: 100;
+  padding: 0.5em 0;
+  border: 1px solid #f3f3f3;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
+}
+
+.profile-show-menu-dropdown.open {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ProfileShow__menu-item {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  color: #333333;
+  text-decoration: none;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  
+  &:hover {
+    background: #f5f5f5;
+    color: #121212;
+  }
+  
+  &--danger {
+    color: #dc3545;
+    
+    &:hover {
+      background: #ffe6e6;
+      color: #a00;
+    }
+  }
+}
+.profile-interests {
+  margin: var(--space-m) 0;
+}
+.profile-interests-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.profile-interest-tag {
+  display: inline-block;
+  background: linear-gradient(90deg, #6a82fb 0%, #fc5c7d 100%);
+  color: #fff;
+  border-radius: 50px;
+  padding: 8px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(100,100,100,0.08);
+  transition: 0.2s;
+}
+.profile-subscribers-block, .profile-community-block {
+  margin-top: var(--space-xl);
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  border-radius: var(--space-l);
+  padding: var(--space-xs) 0;
+}
+.profile-subscribers-title, .profile-community-title {
+  margin-bottom: var(--space-xs);
+}
+.profile-subscribers-link, .profile-community-link {
+  color: #888;
+  font-size: 1.1rem;
+}
+.profile-events-archive-title {
+  margin-top: 2em;
+}
+
+.meet-participants-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 32px 0;
+}
+.meet-participants-back {
+  display: inline-block;
+  margin-bottom: 24px;
+  text-decoration: none;
+  color: #555;
+  font-size: 1.1rem;
+}
+.meet-participants-title {
+  margin-bottom: 32px;
+}
+.meet-participants-count {
+  margin-bottom: 24px;
+  color: #666;
+  font-size: 1.1rem;
+}
+.meet-participants-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid #eee;
+  justify-content: space-between;
+}
+.meet-participants-link {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s;
+}
+.meet-participants-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.meet-participants-fullname {
+  font-size: 1.1rem;
+  color: #555;
+}
+.meet-participants-pagination {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.admin-users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.admin-users-row {
+  border-bottom: 1px solid #eee;
+}
+.admin-users-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #fff;
+}
+.admin-users-profile-list {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 13px;
+}
+
+.community-subscribe-btn {
+  margin: var(--space-l) 0 var(--space-xl) 0;
+  position: relative;
+  z-index: 10;
+}
+.community-subscribers {
+  margin: var(--space-l) 0 var(--space-xl) 0;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  border-radius: var(--space-l);
+  padding: var(--space-xs) 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.community-subscribers-count {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.community-subscribers-label {
+  font-size: 1.1rem;
+  color: #666;
+}
+.community-show-menu {
+  position: relative;
+  display: inline-block;
+  margin-bottom: var(--space-xl);
+}
+.community-show-menu-btn {
+  background: none;
+  border: none;
+  padding: 0.2em;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.15s;
+  vertical-align: middle;
+}
+.community-show-menu-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 2.2em;
+  min-width: 180px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  z-index: 100;
+  padding: 0.5em 0;
+  border: 1px solid #f3f3f3;
+}
+
+.community-subscribers-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: var(--space-xl) 0;
+}
+.community-subscribers-title {
+  margin-bottom: var(--space-xl);
+}
+.community-subscribers-count {
+  margin-bottom: var(--space-l);
+  color: #666;
+  font-size: 1.1rem;
+}
+.community-subscribers-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-m);
+  padding: 18px 0;
+  border-bottom: 1px solid #eee;
+  justify-content: space-between;
+}
+.community-subscribers-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #888;
+}
+.community-subscribers-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.community-subscribers-fullname {
+  font-size: 1.1rem;
+  color: #555;
+}
+.community-subscribers-pagination {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.comment-avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #fff;
+}
+
+.reply-form-hidden {
+  display: none;
+}
+
+// Импорт стилей главной страницы
+@import 'components/O_HomepageContainer';
+@import 'components/A_SectionTitle';
+@import 'components/M_EventCard';
+@import 'components/M_MeetingCard';
+@import 'components/M_CommunityCard';
+@import 'components/M_PublicationCard';
+@import 'components/M_EventShowComment';
+@import 'pages/ProfileSubscribersPage';
+@import 'pages/AdminDashboard';
+@import 'components/O_MeetParticipantsPage';

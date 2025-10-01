@@ -1,0 +1,35 @@
+<% set_meta_tags(title: "Подписчики сообщества") %>
+
+<div class="community-subscribers-wrapper">
+  <%= link_to community_path(@community), style: 'display:inline-block; margin-bottom:24px; text-decoration:none; color:#555; font-size:1.1rem;' do %>
+    ← Назад к сообществу
+  <% end %>
+  <h1 class="community-subscribers-title">Подписчики сообщества</h1>
+  <div class="community-subscribers-count">Всего подписчиков: <%= @community.subscriptions.count %></div>
+  <% if @subscribers.any? %>
+    <% @subscribers.each do |subscriber| %>
+      <div class="community-subscribers-row">
+        <%= link_to profile_path(subscriber.profile), style: 'display: flex; align-items: center; gap: 20px; text-decoration: none; color: inherit; transition: background 0.15s;' do %>
+          <% if subscriber.profile.avatar.present? %>
+            <%= image_tag subscriber.profile.avatar.url, class: 'A_Avatar', style: 'width: 56px; height: 56px; border-radius: 16px; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.08);' %>
+          <% else %>
+            <div class="A_Avatar community-subscribers-avatar community-subscribers-avatar-placeholder">
+              <%= subscriber.username.first.upcase %>
+            </div>
+          <% end %>
+          <div>
+            <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 2px;">
+              <%= subscriber.username %>
+            </div>
+            <div style="font-size: 1.1rem; color: #555;">
+              <%= subscriber.profile.full_name %>
+            </div>
+          </div>
+        <% end %>
+        <%= render partial: 'subscription/button', locals: { subscriptionable: subscriber.profile } %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>У этого сообщества пока нет подписчиков.</p>
+  <% end %>
+</div>

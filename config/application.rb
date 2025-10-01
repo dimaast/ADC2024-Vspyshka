@@ -26,6 +26,23 @@ module Adc2024Vspyshka
     config.active_record.time_zone_aware_attributes = true
     # config.eager_load_paths << Rails.root.join("extras")
     #
-    config.i18n.default_locale = :en
+    config.i18n.default_locale = :ru
+    config.i18n.available_locales = [:ru, :en]
+
+    config.after_initialize do
+      # Не запускать в rake, консоли, миграциях
+      if defined?(Rails::Server)
+        Thread.new do
+          loop do
+            begin
+              ReminderNotificationsJob.perform_now
+            rescue => e
+              Rails.logger.error("ReminderNotificationsJob error: #{e.message}")
+            end
+            sleep 1.hour
+          end
+        end
+      end
+    end
   end
 end

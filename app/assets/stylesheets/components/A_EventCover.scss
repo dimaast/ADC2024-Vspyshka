@@ -1,0 +1,17 @@
+.A_EventCover {
+  border-radius: 8px;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.3s;
+}
+.M_EventCardDetailed:hover .A_EventCover {
+  transform: scale(1.04);
+}
+@media (max-width: 600px) {
+  .A_EventCover {
+    height: 120px;
+    border-radius: 8px;
+  }
+}

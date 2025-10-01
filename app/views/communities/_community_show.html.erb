@@ -1,0 +1,73 @@
+<div class="CommunityShow">
+  
+  <% if user_signed_in? && current_user.admin? %>
+    <div class="CommunityShow__menu">
+      <button class="CommunityShow__menu-btn" type="button" aria-label="Меню">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="4" cy="10" r="1.5" fill="#888"/>
+          <circle cx="10" cy="10" r="1.5" fill="#888"/>
+          <circle cx="16" cy="10" r="1.5" fill="#888"/>
+        </svg>
+      </button>
+      <div class="CommunityShow__menu-dropdown">
+        <% if can? :edit, @community %>
+          <%= link_to "Редактировать сообщество", edit_community_path(@community), class: "CommunityShow__menu-item" %>
+        <% end %>
+        <% if can? :destroy, @community %>
+          <%= button_to "Удалить сообщество", admin_community_path(@community), method: :delete, class: "CommunityShow__menu-item CommunityShow__menu-item--danger", data: { confirm: 'Вы уверены?', turbo: false } %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="CommunityShow__header">
+    <div class="CommunityShow__left">
+      <div class="CommunityShow__image">
+        <% if @community.cover.present? %>
+          <%= image_tag @community.cover.url, alt: @community.title, class: 'CommunityShow__cover' %>
+        <% else %>
+          <div class="CommunityShow__placeholder">
+            <%= @community.title.first.upcase %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="CommunityShow__bottom">
+        <div class="CommunityShow__stats">
+          <%= link_to subscribers_community_path(@community), class: "CommunityShow__stat CommunityShow__stat--clickable", style: 'text-decoration: none; color: inherit;' do %>
+            <i class="fas fa-user"></i>
+            <span><%= @community.subscriptions.count %></span>
+          <% end %>
+          <% if @community.events.count > 0 %>
+            <%= link_to "#events", class: "CommunityShow__stat CommunityShow__stat--clickable", style: 'text-decoration: none; color: inherit;' do %>
+              <i class="fas fa-bars"></i>
+              <span><%= @community.events.count %></span>
+            <% end %>
+          <% else %>
+            <div class="CommunityShow__stat">
+              <i class="fas fa-bars"></i>
+              <span><%= @community.events.count %></span>
+            </div>
+          <% end %>
+        </div>
+        
+        <div class="CommunityShow__subscribe-btn">
+          <%= render "subscription/button", subscriptionable: @community %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="CommunityShow__info">
+      <h1 class="CommunityShow__title"><%= @community.title %></h1>
+      <p class="CommunityShow__description"><%= @community.body %></p>
+      
+      <% if @community.tags.any? %>
+        <div class="CommunityShow__tags">
+          <% @community.tags.each do |tag| %>
+            <span class="CommunityShow__tag"><%= tag.name %></span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

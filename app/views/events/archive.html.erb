@@ -1,7 +1,7 @@
 <% content_for :title, "Архив событий" %>
 
 <h1>Архив событий (<%= @events.count %> <%= Russian.p(@events.count, "событие", "события", "событий") %>) </h1>
-<p><%#= localize(@events.count, "событие", "события", "событий")  %></p>
+<p></p>
 <div class="C_EventsAndMeets">
   <% @events.each do |event| %>
     <%= render partial: 'event_card', locals: { event: event } %>

@@ -1,0 +1,835 @@
+// Страница события
+.O_EventShowPage {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0;
+  padding: 120px 0 0 0;
+  margin: 0;
+  min-height: 100vh;
+  
+  // Адаптивные отступы
+  @media (max-width: 1200px) {
+    padding: 100px 0 0 0;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 80px 0 0 0;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 60px 0 0 0;
+    grid-template-columns: 1fr;
+  }
+}
+
+// Основная карточка события
+.M_EventShowCard {
+  grid-column: 2 / 12; // Занимает колонки с 2 по 11 (10 колонок)
+  background: #ffffff;
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  border-radius: 16px;
+  padding: 0;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr; // Две колонки
+  min-height: 600px;
+  
+  // Светящаяся граница
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: linear-gradient(45deg, rgba(76, 175, 80, 0.3), rgba(76, 175, 80, 0.1));
+    border-radius: 16px;
+    z-index: -1;
+    opacity: 0.6;
+  }
+  
+  // На мобильном занимает всю ширину
+  @media (max-width: 480px) {
+    grid-column: 1;
+    grid-template-columns: 1fr;
+  }
+}
+
+// Левая колонка - постер события
+.M_EventShowCard__left {
+  background: #ffffff;
+  border-radius: 0;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: #333333;
+  align-items: flex-start;
+  border: none;
+  box-shadow: none;
+  justify-content: space-between;
+}
+
+// Правая колонка - детали события
+.M_EventShowCard__right {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.M_EventShowCard__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0;
+  position: relative;
+}
+
+.M_EventShowCard__report {
+  position: absolute;
+  top: 0;
+  right: 60px; // Отступ от кнопки меню
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+// Постер события
+.M_EventShowCard__poster {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.A_EventShowPosterImage {
+  width: 426px;
+  height: 426px;
+  border-radius: 16px;
+  overflow: hidden;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.A_EventShowPoster {
+  text-align: center;
+  width: 100%;
+}
+
+.A_EventShowPosterTitle {
+  font-size: 74px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.A_EventShowPosterSubtitle {
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+// Организатор
+.M_EventShowCard__organizer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  color: #333333;
+}
+
+.A_EventShowOrganizerText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.A_EventShowOrganizerLabel {
+  font-size: 22px;
+  color: #A3A3A3;
+  margin: 0;
+  font-weight: 400;
+}
+
+.M_EventShowOrganizerInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: 35px;
+}
+
+.A_EventShowOrganizerAvatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.A_EventShowOrganizerAvatarPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  border-radius: 12px;
+  background: #333333;
+}
+
+.A_EventShowOrganizerName {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--black-hover);
+  line-height: 1.2;
+}
+
+.A_EventShowFollowBtn {
+  background: #000000 !important;
+  border: none !important;
+  color: #ffffff !important;
+  padding: 0 !important;
+  margin: 0 !important; // Убираем все марджины
+  height: 50px !important;
+  border-radius: 8px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  line-height: 100% !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+  text-decoration: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: inherit !important;
+  box-shadow: none !important;
+  flex: 1 !important; // Занимает все доступное место
+  min-width: 0 !important;
+  width: auto !important; // Убираем фиксированную ширину
+  max-width: none !important; // Убираем ограничения максимальной ширины
+  
+  &:hover {
+    background: #333333 !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    transform: none !important; // Убираем трансформацию при наведении
+  }
+  
+  &:active {
+    background: #000000 !important;
+    transform: none !important; // Убираем трансформацию при нажатии
+  }
+}
+
+// Дополнительные стили для ссылок с этим классом
+a.A_EventShowFollowBtn {
+  flex: 1 !important; // Занимает все доступное место
+  min-width: 0 !important;
+  max-width: none !important;
+  width: auto !important; // Убираем фиксированную ширину
+  margin: 0 !important; // Убираем все марджины
+  padding: 0 !important; // Убираем все паддинги
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important; // Убираем подчеркивание ссылки
+}
+
+// Стили для кнопки подписки из partial
+.M_EventShowCard__organizer [id^="subscription_button_"] {
+  margin-left: auto;
+  
+  a {
+    background: #121212;
+    border: none;
+    color: #ffffff;
+    padding: 0 16px;
+    height: 33px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 100%;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      background: #000000;
+      color: #ffffff;
+      text-decoration: none;
+    }
+  }
+}
+
+// Участники
+.M_EventShowCard__attendees {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.A_EventShowAttendeesLabel {
+  font-size: 14px;
+  color: #666666;
+}
+
+.M_EventShowAttendeesInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.M_EventShowAttendeesAvatars {
+  display: flex;
+  gap: -8px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.A_EventShowAttendeeAvatar {
+  width: 52px; // Размер на десктопе
+  height: 52px; // Размер на десктопе
+  border-radius: 12px;
+  border: 2px solid #ffffff;
+  margin-left: -8px;
+  
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.A_EventShowMoreAttendees {
+  width: 52px; // Размер на десктопе
+  height: 52px; // Размер на десктопе
+  border-radius: 12px;
+  background: #f0f0f0;
+  border: 2px solid #ffffff;
+  margin-left: -8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px; // Увеличил размер шрифта для большего элемента
+  font-weight: 600;
+  color: #666666;
+}
+
+.A_EventShowAttendeesText {
+  font-size: 14px;
+  color: #333333;
+}
+
+// Теги
+.M_EventShowCard__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.A_EventShowTag {
+  @extend .A_Tag !optional;
+}
+
+// Ссылка на жалобу
+.M_EventShowCard__report {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.A_EventShowReportLink {
+  color: #999999;
+  font-size: 12px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  
+  &:hover {
+    color: #666666;
+  }
+  
+  &::before {
+    content: "⚠️";
+    font-size: 10px;
+  }
+}
+
+// Заголовок события
+.A_EventShowTitle {
+  font-family: "Proxima Nova Extra Condensed", sans-serif;
+  font-size: 74px;
+  font-weight: 700;
+  color: #121212;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+// Информация о событии
+.M_EventShowCard__info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.A_EventShowInfoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.A_EventShowInfoItem i {
+  width: 20px;
+  height: 20px;
+  color: #666666;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.A_EventShowInfoContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.A_EventShowInfoLabel {
+  @extend .A_Meta !optional;
+}
+
+.A_EventShowInfoValue {
+  @extend .A_Text !optional;
+  @extend .A_Text--sm !optional;
+  font-weight: 600;
+}
+
+// О событии
+.M_EventShowCard__about {
+  margin-top: auto;
+}
+
+.A_EventShowAboutTitle {
+  @extend .A_Text !optional;
+  @extend .A_Text--xl !optional;
+  color: #A3A3A3;
+  margin: 0 0 24px 0;
+}
+
+.A_EventShowAboutText {
+  @extend .A_Content !optional;
+  color: #666666;
+  margin: 0;
+}
+
+// Кнопки действий
+.M_EventShowCard__actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 0 !important; // Убираем паддинги контейнера
+  margin: 0 !important; // Убираем марджины контейнера
+  
+  // Стили для turbo-frame
+  turbo-frame {
+    display: flex !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .A_EventShowFollowBtn {
+    flex: 1 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    width: auto !important; // Убираем фиксированную ширину
+    margin: 0 !important; // Убираем марджины
+  }
+  
+  a.A_EventShowFollowBtn {
+    flex: 1 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    width: auto !important; // Убираем фиксированную ширину
+    margin: 0 !important; // Убираем марджины
+  }
+}
+
+.M_EventShowCard__actions .Q_BookmarkIconNoBg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 8px;
+  background: #000000;
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.2s;
+  
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  &:hover {
+    background: #333333;
+    color: #ffffff;
+  }
+  
+  &.active {
+    background: #4caf50;
+    color: #ffffff;
+  }
+}
+
+// Меню
+.M_EventShowCard__menu {
+  position: relative;
+}
+
+.M_EventShowCard__menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #666666;
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:hover {
+    border-color: #4caf50;
+    color: #4caf50;
+  }
+  
+  i {
+    font-size: 16px;
+  }
+}
+
+.M_EventShowCard__menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s;
+  
+  &.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+.M_EventShowCard__menu-item {
+  display: block;
+  padding: 12px 16px;
+  color: #333333;
+  text-decoration: none;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  &:hover {
+    background: #f8f9fa;
+  }
+  
+  &--danger {
+    color: #dc3545;
+  }
+  
+  &--report {
+    color: #ffc107;
+  }
+}
+
+// Секция обсуждения
+.M_EventShowDiscussion {
+  margin-top: 24px;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.A_EventShowDiscussionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--gray-inactive);
+  line-height: 100%;
+  margin: 0 0 24px 0;
+  text-align: left;
+}
+
+.M_EventShowComments {
+  margin-bottom: 20px;
+}
+
+.M_EventShowEmptyComments {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.A_EventShowEmptyIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  background: rgba(76, 175, 80, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  
+  i {
+    font-size: 32px;
+    color: #4caf50;
+  }
+}
+
+.A_EventShowEmptyText {
+  font-size: 18px;
+  color: #A3A3A3;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+// Адаптивные стили для заголовка события
+@media (max-width: 1200px) {
+  .A_EventShowPosterTitle {
+    font-size: 64px;
+  }
+}
+
+@media (max-width: 768px) {
+  .A_EventShowPosterTitle {
+    font-size: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .A_EventShowPosterTitle {
+    font-size: 36px;
+  }
+}
+
+.M_EventShowComment {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.A_EventShowShowMore {
+  text-align: left;
+  margin: 20px 0;
+}
+
+.A_EventShowShowMoreLink {
+  color: #121212 !important;
+  text-decoration: none !important;
+  font-size: 22px !important;
+  line-height: 100% !important;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  transition: none !important;
+  font-weight: normal !important;
+  box-shadow: none !important;
+  height: auto !important;
+  display: inline-block !important;
+  align-items: unset !important;
+  justify-content: unset !important;
+  
+  &:hover {
+    background: none !important;
+    border: none !important;
+    color: #121212 !important;
+    text-decoration: none !important;
+    transform: none !important;
+  }
+  
+  &:active {
+    transform: none !important;
+  }
+}
+
+.M_EventShowCommentForm {
+  margin-top: 20px;
+  
+  .form-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f8f9fa;
+    border-radius: 20px;
+    padding: 8px 16px;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .form-control {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 8px 0;
+    font-size: 14px;
+    color: #333333;
+    
+    &::placeholder {
+      color: #999999;
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+  
+  .btn-send {
+    background: #4caf50;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    
+    &:hover {
+      background: #45a049;
+    }
+    
+    i {
+      font-size: 12px;
+    }
+  }
+}
+
+// Адаптивность
+@media (max-width: 768px) {
+  .M_EventShowCard {
+    grid-template-columns: 1fr;
+    
+    .M_EventShowCard__left {
+      border-radius: 16px 16px 0 0;
+    }
+  }
+  
+  .A_EventShowTitle {
+    font-size: 48px;
+    text-align: center;
+  }
+  
+  .A_EventShowPosterTitle {
+    font-size: 32px;
+  }
+  
+  .A_EventShowPosterImage {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .A_EventShowAttendeeAvatar,
+  .A_EventShowMoreAttendees {
+    width: 40px; // Размер на мобильных
+    height: 40px; // Размер на мобильных
+  }
+  
+  .M_EventShowCard__actions {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .M_EventShowCard {
+    margin: 16px;
+    border-radius: 12px;
+  }
+  
+  .A_EventShowTitle {
+    font-size: 36px;
+  }
+  
+  .A_EventShowPosterTitle {
+    font-size: 24px;
+  }
+  
+  .A_EventShowPosterImage {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .A_EventShowAttendeeAvatar,
+  .A_EventShowMoreAttendees {
+    width: 32px; // Размер на маленьких мобильных
+    height: 32px; // Размер на маленьких мобильных
+  }
+  
+  .M_EventShowCard__actions {
+    width: 100%;
+  }
+}

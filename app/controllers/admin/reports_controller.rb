@@ -1,7 +1,7 @@
 class Admin::ReportsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_admin
-  before_action :set_report, only: [:show, :update]
+  before_action :set_report, only: [ :show, :update ]
 
   def index
     @reports = Report.includes(:event, :user).order(created_at: :desc)
@@ -12,7 +12,7 @@ class Admin::ReportsController < ApplicationController
 
   def update
     if @report.update(report_params)
-      redirect_to admin_reports_path, notice: 'Статус жалобы успешно обновлен'
+      redirect_to admin_reports_path, notice: "Статус жалобы успешно обновлен"
     else
       render :show, status: :unprocessable_entity
     end

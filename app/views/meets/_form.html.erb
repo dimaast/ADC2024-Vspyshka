@@ -1,38 +1,70 @@
-<%= form_with(model: meet) do |form| %>
-  <% if meet.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(meet.errors.count, "error") %> prohibited this meet from being saved:</h2>
-
-      <ul>
-        <% meet.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div>
-    <%= form.label :hosted_at, style: "display: block" %>
-    <%= form.datetime_field :hosted_at, min: Date.today %>
-  </div>
-
-  <div>
-    <%= form.label :body, style: "display: block" %>
-    <%= form.text_area :body %>
-  </div>  
-
-  <%# Теги %>
-  <div>
-    <label for="tags">Теги</label>
-    <% Tag.tags_list.each do |tag| %>
-      <div class="form-check">
-        <%= check_box_tag "meet[tag_list][]", tag.name, false, class: 'form-check-input', id: "meet_tag_list_#{tag.name}" %>
-        <%= label_tag "meet_tag_list_#{tag.name}", tag.name, class: 'form-check-label', for: "meet_tag_list_#{tag.name}" %>
+<div class="MeetForm">
+  <%= form_with(model: meet, class: "MeetForm__form") do |form| %>
+    <% if meet.errors.any? %>
+      <div class="MeetForm__errors">
+        <h3>Ошибки при сохранении встречи:</h3>
+        <ul>
+          <% meet.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
       </div>
     <% end %>
-  </div>
 
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+    <div class="MeetForm__layout">
+      <!-- Левая колонка: Теги -->
+      <div class="MeetForm__left">
+        <!-- Добавить теги -->
+        <button type="button" class="MeetForm__tags-button">
+          <i class="fas fa-plus"></i>
+          Добавить теги
+        </button>
+      </div>
+
+      <!-- Правая колонка: Детали встречи -->
+      <div class="MeetForm__right">
+        <!-- Заголовок -->
+        <h1 class="A_FormTitle">СОЗДАНИЕ ВСТРЕЧИ</h1>
+
+        <!-- Поля формы -->
+        <div class="MeetForm__fields">
+          <!-- Дата и время -->
+          <div class="MeetForm__field">
+            <div class="MeetForm__input-group">
+              <i class="fas fa-calendar-alt MeetForm__input-icon"></i>
+              <%= form.datetime_field :hosted_at, min: Date.today, class: "MeetForm__input", placeholder: "Дата и время" %>
+            </div>
+          </div>
+
+          <!-- Место проведения -->
+          <div class="MeetForm__field">
+            <div class="MeetForm__input-group">
+              <i class="fas fa-map-marker-alt MeetForm__input-icon"></i>
+              <%= form.text_field :placed_at, class: "MeetForm__input", placeholder: "Место проведения" %>
+              <i class="fas fa-chevron-down MeetForm__input-arrow"></i>
+            </div>
+          </div>
+
+          <!-- Подробности о месте -->
+          <div class="MeetForm__field">
+            <div class="MeetForm__input-group">
+              <%= form.text_field :placed_additional, class: "MeetForm__input", placeholder: "Подробности о месте" %>
+              <i class="fas fa-info-circle MeetForm__input-info"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Описание встречи -->
+        <div class="MeetForm__description-section">
+          <label class="MeetForm__description-label">О встрече</label>
+          <%= form.text_area :body, class: "MeetForm__textarea", placeholder: "Введите описание встречи" %>
+        </div>
+
+        <!-- Кнопка публикации -->
+        <div class="MeetForm__actions">
+          <%= form.submit 'Опубликовать', class: "MeetForm__submit" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

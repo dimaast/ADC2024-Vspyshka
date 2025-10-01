@@ -3,26 +3,79 @@
   description: @community.body, 
   keywords: "Студорги, Студенческие организации, События, Волонтерство, Волонтеры, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
 
-<%= render @community %>
-<%= render "subscription/button", subscriptionable: @community %>
+<%= render 'community_show' %>
 
 <% if @community.events.any? %>
-  <h2>События этого сообщества</h2>
-  <div class="C_EventsAndMeets">
-    <% @community.events.each do |event| %>
-      <%= render partial: 'events/event_card', locals: { event: event } %>
+  <div class="community-events-section">
+    <h2 id="events" style="scroll-margin-top: 100px;">События сообщества</h2>
+    
+    <div class="events-tabs">
+      <%= link_to community_path(@community, events_filter: 'current'), 
+          class: "events-tab #{'active' if @events_filter == 'current'}" do %>
+        Актуальное
+      <% end %>
+      <%= link_to community_path(@community, events_filter: 'archive'), 
+          class: "events-tab #{'active' if @events_filter == 'archive'}" do %>
+        Архив
+      <% end %>
+    </div>
+    
+    <div class="C_EventsAndMeets">
+      <% @events.each do |event| %>
+        <%= render partial: 'events/event_card', locals: { event: event } %>
+      <% end %>
+    </div>
+    
+    <% if @events.empty? %>
+      <p class="no-events-message">
+        <% if @events_filter == 'archive' %>
+          В архиве пока нет событий.
+        <% else %>
+          У этого сообщества пока нет актуальных событий.
+        <% end %>
+      </p>
     <% end %>
   </div>
 <% else %>
   <p>У этого сообщества пока нет событий.</p>
 <% end %>
 
-<div>
-  <%= link_to "Back to communities", communities_path %> | 
-  <% if can? :edit, @community %>
-    <%= link_to "Edit this community", edit_community_path(@community) %>
-  <% end %>
-  <% if can? :destroy, @community %>
-    <%= button_to "Destroy this community", admin_community_path(@community), method: :delete %>
-  <% end %>
-</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const menu = document.querySelector('.CommunityShow__menu');
+  const menuBtn = document.querySelector('.CommunityShow__menu-btn');
+  const dropdown = document.querySelector('.CommunityShow__menu-dropdown');
+  
+  if (menu && menuBtn && dropdown) {
+
+    function closeMenu() {
+      dropdown.classList.remove('open');
+      dropdown.style.display = 'none';
+    }
+
+    menuBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (dropdown.classList.contains('open')) {
+        closeMenu();
+      } else {
+        dropdown.classList.add('open');
+        dropdown.style.display = 'block';
+      }
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!menu.contains(e.target)) {
+        closeMenu();
+      }
+    });
+
+    dropdown.addEventListener('click', function(e) {
+      if (e.target.classList.contains('CommunityShow__menu-item')) {
+        closeMenu();
+      }
+    });
+  }
+});
+</script>

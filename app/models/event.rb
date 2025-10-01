@@ -1,6 +1,6 @@
 class Event < ApplicationRecord
   include PgSearch::Model
-  multisearchable against: [:title, :body]
+  multisearchable against: [ :title, :body ], using: { trigram: { threshold: 0.2 } }
 
   validates :title, presence: true, length: { minimum: 5 }
   has_many :comments, as: :commentable, dependent: :destroy
@@ -15,9 +15,3 @@ class Event < ApplicationRecord
   acts_as_taggable_on :tags
   acts_as_taggable_on :categories
 end
-
-# def as_json
-#   { title: title,
-#     body: body,
-#     user: user.username }
-# end

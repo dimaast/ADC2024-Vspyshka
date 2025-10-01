@@ -1,7 +1,63 @@
 .W_NavbarButtons {
     display: flex;
-    width: 285px;
-    flex-direction: row;
-    column-gap: 10px;
-    justify-content: end;
+    align-items: center;
+    gap: 10px;
+    overflow: visible;
+}
+
+.W_NavbarButtons > * {
+    margin: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .W_NavbarButtons {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .W_NavbarButtons {
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.A_Button.NavbarButton.AddButton {
+    background-color: #121212 !important;
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 12px !important;
+    position: relative;
+    z-index: 10001;
+    padding: 0 !important; // Переопределяем общие стили A_Button
+    margin: 0 !important; // Убираем возможные отступы
+    box-shadow: none !important; // Убираем тень из общих стилей
+    
+    &:hover {
+        background-color: #232323 !important;
+        transform: none !important; // Убираем transform из общих стилей
+    }
+    
+    &:active {
+        transform: none !important; // Убираем transform из общих стилей
+    }
+    
+    button, a {
+        all: unset;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10003;
+        padding: 0 !important; // Убираем padding
+        margin: 0 !important; // Убираем margin
+    }
+    
+    i {
+        color: var(--white);
+        font-size: 1.1rem;
+    }
 }

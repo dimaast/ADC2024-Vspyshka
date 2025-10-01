@@ -1,6 +1,6 @@
 <%= form_with(model: [:admin, program]) do |form| %>
   <% if program.errors.any? %>
-    <div style="color: red">
+    <div class="error-message">
       <h2><%= pluralize(program.errors.count, "error") %> prohibited this program from being saved:</h2>
 
       <ul>

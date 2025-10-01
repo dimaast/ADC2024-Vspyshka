@@ -1,0 +1,144 @@
+.publications-section {
+  .publication-tabs {
+    display: flex;
+    gap: var(--space-s);
+  }
+
+  .publication-tab {
+    background: none;
+    border: none;
+    padding: var(--space-xs) var(--space-m);
+    font-size: 0.9rem;
+    color: var(--offwhite-33);
+    cursor: pointer;
+    transition: color 0.2s;
+    border-bottom: 2px solid transparent;
+    text-decoration: none;
+
+    &.active {
+      color: var(--black);
+      border-bottom-color: var(--black);
+      font-weight: 600;
+    }
+
+    &:hover {
+      color: var(--black);
+    }
+  }
+
+  .publications-cards-container {
+
+  }
+}
+
+.publication-card {
+  min-width: 200px;
+  background: var(--white);
+  border-radius: 16px;
+  padding: var(--space-m);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+}
+
+.publication-image {
+  margin-bottom: var(--space-s);
+
+  img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+}
+
+.publication-content {
+  .publication-author {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--black);
+    margin: 0 0 var(--space-xs) 0;
+  }
+
+  .publication-title {
+    font-size: 0.8rem;
+    color: var(--offwhite-33);
+    margin: 0;
+  }
+}
+
+.meeting-avatar {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--offwhite-10);
+  border-radius: 12px;
+  margin-bottom: var(--space-s);
+}
+
+.user-avatar-large {
+  width: 60px;
+  height: 60px;
+  background: var(--offwhite-20);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+}
+
+.meeting-meta {
+  margin-top: var(--space-xs);
+  
+  .meeting-date {
+    font-size: 0.75rem;
+    color: var(--offwhite-33);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    
+    i {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .publications-section {
+    .publications-cards-container {
+      .publication-card {
+        grid-column: span 2; // 4 в ряд на планшетах
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .publications-section {
+    .publications-cards-container {
+      .publication-card {
+        grid-column: span 2; // 2 в ряд на мобильных
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .publications-section {
+    .publications-cards-container {
+      .publication-card {
+        grid-column: span 1; // 1 в ряд на маленьких экранах
+        width: 100%;
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+.O_BlockedUsers {
+  margin-top: 2rem;
+}
+.O_BlockedUsers h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.O_BlockedUsers ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.O_BlockedUsers li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+.O_BlockedUsers li:last-child {
+  margin-bottom: 0;
+}
+.O_BlockedUsers__name {
+  font-weight: 500;
+  color: var(--black);
+}
+.O_BlockedUsers__count {
+  font-weight: 400;
+  color: #000;
+}

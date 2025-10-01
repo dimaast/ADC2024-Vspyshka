@@ -1,6 +1,23 @@
-// .A_Tag {
-//     width: fit-content;
-//     padding: 10px 14px;
-//     background-color: #c1c1c1;
-//     border-radius: 40px;
-// }
+.A_Tag {
+  display: inline-block;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background-color: var(--eef0ff);
+  color: var(--6C63FF);
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  background: var(--eef0ff);
+  color: var(--6C63FF);
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 13px;
+  margin-right: 4px;
+}
+.A_Tag:hover {
+  background-color: var(--dde0ff);
+}
+.A_Tag--category {
+  background: var(--e0f7fa);
+  color: var(--00796b);
+}

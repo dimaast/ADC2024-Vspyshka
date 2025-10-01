@@ -1,0 +1,41 @@
+.M_ReportDetails {
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: var(--shadow-blue-7);
+  overflow: hidden;
+}
+.M_ReportDetails__section {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--eee);
+}
+.M_ReportDetails__section:last-child {
+  border-bottom: none;
+}
+.M_ReportDetails__section h3 {
+  margin-bottom: 1rem;
+  color: var(--333);
+  font-size: 1.25rem;
+}
+.M_ReportDetails__field {
+  margin-bottom: 1rem;
+}
+.M_ReportDetails__field strong {
+  display: inline-block;
+  width: 150px;
+  color: var(--333);
+}
+.M_ReportDetails__field span,
+.M_ReportDetails__field p {
+  color: var(--666);
+  margin: 0;
+}
+.M_ReportDetails__status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.M_ReportDetails__status--pending { background: var(--fff3cd); color: var(--856404); }
+.M_ReportDetails__status--approved { background: var(--f8d7da); color: var(--721c24); }
+.M_ReportDetails__status--rejected { background: var(--d1ecf1); color: var(--0c5460); }

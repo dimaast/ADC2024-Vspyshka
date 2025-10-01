@@ -1,31 +1,47 @@
 class MeetsController < ApplicationController
-  load_and_authorize_resource except: [:index, :show]
+  before_action :authenticate_user!, except: [ :index, :show ]
+  load_and_authorize_resource except: [ :index, :show ]
   before_action :set_meet, only: %i[ show edit update destroy ]
 
-  # GET /meets or /meets.json
   def index
     @meets = Meet.all
+
+    if params[:place].present?
+      @meets = @meets.where(placed_at: params[:place])
+    end
+
+    if params[:date].present?
+      date = Date.parse(params[:date])
+      @meets = @meets.where(hosted_at: date.beginning_of_day..date.end_of_day)
+    end
+
+    case params[:sort]
+    when 'popular'
+      @meets = @meets.joins(:responses).group('meets.id').order('COUNT(responses.id) DESC')
+    when 'new'
+      @meets = @meets.order(created_at: :desc)
+    else
+      @meets = @meets.order(created_at: :desc) # По умолчанию сортируем по дате создания
+    end
+    
+    @meets = @meets.page(params[:page]).per(10)
   end
 
   def by_tag
-    @meets = Meet.tagged_with(params[:tag])
+    @meets = Meet.tagged_with(params[:tag]).page(params[:page]).per(10)
     render :index
   end
 
-  # GET /meets/1 or /meets/1.json
   def show
   end
 
-  # GET /meets/new
   def new
     @meet = Meet.new
   end
 
-  # GET /meets/1/edit
   def edit
   end
 
-  # POST /meets or /meets.json
   def create
     @meet = current_user.meets.new(meet_params)
     @meet.tag_list = params[:meet][:tag_list].to_a.reject(&:blank?)
@@ -41,7 +57,6 @@ class MeetsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /meets/1 or /meets/1.json
   def update
     respond_to do |format|
       if @meet.update(meet_params)
@@ -54,23 +69,26 @@ class MeetsController < ApplicationController
     end
   end
 
-  # DELETE /meets/1 or /meets/1.json
   def destroy
     @meet.destroy!
-
     respond_to do |format|
       format.html { redirect_to meets_path, status: :see_other, notice: "Meet was successfully destroyed." }
       format.json { head :no_content }
+      format.turbo_stream
     end
   end
 
+  def participants
+    @meet = Meet.find(params[:id])
+    @participants = @meet.responses.includes(user: :profile).order(created_at: :desc).page(params[:page]).per(20)
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_meet
       @meet = Meet.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def meet_params
       params.require(:meet).permit(:body, :hosted_at, :user_id, tag_list: [])
     end

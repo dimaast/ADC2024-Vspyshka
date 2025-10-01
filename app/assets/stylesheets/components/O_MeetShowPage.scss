@@ -1,0 +1,628 @@
+// Страница встречи
+.O_MeetShowPage {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  min-height: 100vh;
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr); // 12 колонок
+  
+  // Мобильные устройства
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr; // На мобильном - одна колонка
+  }
+}
+
+// Основная карточка встречи
+.M_MeetShowCard {
+  grid-column: 2 / 12; // Занимает колонки с 2 по 11 (10 колонок)
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 120px; // Отступ от навбара на десктопе
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  position: relative;
+  
+  
+  // На мобильном занимает всю ширину
+  @media (max-width: 480px) {
+    grid-column: 1;
+  }
+}
+
+.M_MeetShowCard__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.M_MeetShowCard__user-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.A_MeetShowAvatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.A_MeetShowAvatarPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  justify-content: center;
+  font-size: 56px;
+  font-weight: 600;
+  color: #ffffff;
+  border-radius: 6px;
+}
+
+.A_MeetShowUsername {
+  font-family: "Proxima Nova", "TT Commons Pro Edu Variable", sans-serif;
+  font-weight: 785;
+  font-stretch: condensed;
+  letter-spacing: -0.56px;
+  line-height: 100%;
+  color: var(--black);
+  margin: 0;
+  font-size: 50px;
+  
+  @media (max-width: 1200px) {
+    font-size: 42px;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 36px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 28px;
+  }
+}
+
+.M_MeetShowCard__menu {
+  position: relative;
+  display: inline-block;
+}
+
+.M_MeetShowCard__menu-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.15s;
+  color: #666666;
+  
+  &:hover {
+    background: #f5f5f5;
+  }
+  
+  i {
+    font-size: 16px;
+  }
+}
+
+.M_MeetShowCard__menu-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  min-width: 180px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 8px 0;
+  border: 1px solid #f0f0f0;
+  margin-top: 4px;
+  
+  &.open {
+    display: block;
+  }
+}
+
+.M_MeetShowCard__menu-item {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  color: #333333;
+  text-decoration: none;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  
+  &:hover {
+    background: #f5f5f5;
+  }
+  
+  &--danger {
+    color: #dc3545;
+    
+    &:hover {
+      background: #ffe6e6;
+    }
+  }
+  
+  &--report {
+    color: #fd7e14;
+    
+    &:hover {
+      background: #fff3e0;
+    }
+  }
+}
+
+
+.M_MeetShowCard__user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.A_MeetShowText {
+  font-size: 30px;
+  line-height: 100%;
+  color: var(--black);
+  margin: 0 0 20px 0;
+  
+  @media (max-width: 1200px) {
+    font-size: 26px;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 18px;
+  }
+}
+
+.M_MeetShowCard__details {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  margin-bottom: 20px;
+}
+
+.M_MeetShowCard__info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.A_MeetShowDateTime,
+.A_MeetShowLocation {
+  display: flex;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  gap: 8px;
+  font-size: 22px;
+  line-height: 100%;
+  color: #A3A3A3;
+  
+  i {
+    width: 16px;
+    text-align: center;
+  }
+  
+  .A_MeetShowDateTime__icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .A_MeetShowLocation__icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.M_MeetShowCard__participants {
+  display: flex;
+  align-items: flex-start; // Выравнивание по верхнему краю
+}
+
+.M_MeetShowAvatars {
+  display: flex;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  gap: -8px; // Перекрытие аватаров
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.A_MeetShowParticipantAvatar {
+  width: 52px; // Размер на десктопе
+  height: 52px; // Размер на десктопе
+  border-radius: 12px;
+  border: 2px solid #ffffff;
+  margin-left: -8px;
+  
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.A_MeetShowMoreParticipants {
+  width: 52px; // Размер на десктопе
+  height: 52px; // Размер на десктопе
+  border-radius: 12px;
+  background: #f0f0f0;
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666666;
+  margin-left: -8px;
+}
+
+.M_MeetShowCard__tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.A_MeetShowTag {
+  display: flex;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  gap: 6px;
+  @extend .A_Tag !optional;
+  
+  i {
+    font-size: 10px;
+  }
+}
+
+.M_MeetShowCard__actions {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  width: 100%;
+  
+  .Button--black {
+    flex: 1 !important;
+  }
+}
+
+.M_MeetShowCard__details {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  margin-bottom: 20px;
+}
+
+.M_MeetShowCard__info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.A_MeetShowDateTime,
+.A_MeetShowLocation {
+  display: flex;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  gap: 8px;
+  font-size: 22px;
+  line-height: 100%;
+  color: #A3A3A3;
+  
+  i {
+    width: 16px;
+    text-align: center;
+  }
+  
+  .A_MeetShowDateTime__icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .A_MeetShowLocation__icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.M_MeetShowCard__participants {
+  display: flex;
+  align-items: flex-start; // Выравнивание по верхнему краю
+}
+
+.M_MeetShowAvatars {
+  display: flex;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  gap: -8px; // Перекрытие аватаров
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.A_MeetShowParticipantAvatar {
+  width: 52px; // Размер на десктопе
+  height: 52px; // Размер на десктопе
+  border-radius: 12px;
+  border: 2px solid #ffffff;
+  margin-left: -8px;
+  
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.A_MeetShowMoreParticipants {
+  width: 52px; // Размер на десктопе
+  height: 52px; // Размер на десктопе
+  border-radius: 12px;
+  background: #f0f0f0;
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666666;
+  margin-left: -8px;
+}
+
+.M_MeetShowCard__tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.A_MeetShowTag {
+  display: flex;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  gap: 6px;
+  @extend .A_Tag !optional;
+  
+  i {
+    font-size: 10px;
+  }
+}
+
+// Кнопка регистрации
+.Button--black {
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0;
+  height: 50px;
+  width: 900px; // Фиксированная ширина на десктопе
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  justify-content: center;
+  flex: 1 !important;
+  
+  &:hover {
+    background: #333333;
+  }
+  
+  // Адаптивность для мобильных устройств
+  @media (max-width: 1024px) {
+    width: 100%; // На планшетах - полная ширина
+  }
+}
+
+// Кнопка закладки
+.M_MeetShowCard__actions .Q_BookmarkIconNoBg {
+  width: 50px;
+  height: 50px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start; // Выравнивание по верхнему краю
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-decoration: none;
+  
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  &:hover {
+    background: #333333;
+  }
+  
+  &.active {
+    background: #4caf50;
+  }
+}
+
+// Секция обсуждения
+.M_MeetShowDiscussion {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.A_MeetShowDiscussionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--gray-inactive);
+  line-height: 100%;
+  margin: 0 0 20px 0;
+  text-align: left;
+}
+
+.M_MeetShowDiscussion {
+  grid-column: 2 / 12; // Занимает колонки с 2 по 11 (10 колонок), как карточка встречи
+  margin-top: 24px;
+  
+  // На мобильном занимает всю ширину
+  @media (max-width: 480px) {
+    grid-column: 1;
+  }
+}
+
+.M_MeetShowComments {
+  margin-bottom: 20px;
+}
+
+.A_MeetShowShowMore {
+  text-align: left;
+  margin: 16px 0;
+}
+
+.A_MeetShowShowMoreLink {
+  color: #121212 !important;
+  text-decoration: none !important;
+  font-size: 22px !important;
+  line-height: 100% !important;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  transition: none !important;
+  font-weight: normal !important;
+  box-shadow: none !important;
+  height: auto !important;
+  display: inline-block !important;
+  align-items: unset !important;
+  justify-content: unset !important;
+  
+  &:hover {
+    background: none !important;
+    border: none !important;
+    color: #121212 !important;
+    text-decoration: none !important;
+    transform: none !important;
+  }
+  
+  &:active {
+    transform: none !important;
+  }
+}
+
+.M_MeetShowCommentForm {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 20px;
+}
+
+// Адаптивность
+@media (max-width: 1024px) and (min-width: 769px) {
+  .A_MeetShowDateTime,
+  .A_MeetShowLocation {
+    font-size: 20px;
+  }
+  
+  .A_MeetShowAvatar {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+// Планшеты (768px - 1024px)
+@media (max-width: 1024px) and (min-width: 769px) {
+  .M_MeetShowCard {
+    margin-top: 100px; // Промежуточный отступ для планшетов
+  }
+}
+
+@media (max-width: 768px) {
+  .O_MeetShowPage {
+    padding: 16px;
+  }
+  
+  .M_MeetShowCard {
+    grid-column: 1 / 13; // Занимает все 12 колонок на мобильных
+    padding: 20px;
+    margin-top: 60px; // Уменьшенный отступ на мобильных
+  }
+  
+  .M_MeetShowCard__details {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .M_MeetShowCard__participants {
+    align-self: flex-end;
+  }
+  
+  .M_MeetShowCard__actions {
+    width: 100%;
+  }
+  
+  .A_MeetShowDateTime,
+  .A_MeetShowLocation {
+    font-size: 18px;
+  }
+  
+  .A_MeetShowParticipantAvatar {
+    width: 40px; // Размер на мобильных
+    height: 40px; // Размер на мобильных
+  }
+  
+  .A_MeetShowAvatar {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .M_MeetShowCard {
+    margin-top: 40px; // Минимальный отступ на маленьких мобильных
+  }
+  
+  .M_MeetShowCard__actions {
+    width: 100%;
+  }
+  
+  .A_MeetShowDateTime,
+  .A_MeetShowLocation {
+    font-size: 16px;
+  }
+  
+  .A_MeetShowAvatar {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .A_MeetShowParticipantAvatar {
+    width: 32px; // Размер на маленьких мобильных
+    height: 32px; // Размер на маленьких мобильных
+  }
+}
+

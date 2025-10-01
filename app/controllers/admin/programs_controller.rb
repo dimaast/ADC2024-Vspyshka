@@ -2,25 +2,20 @@ class Admin::ProgramsController < ApplicationController
   load_and_authorize_resource
   before_action :set_program, only: %i[ show edit update destroy ]
 
-  # GET /programs or /programs.json
   def index
     @programs = Program.all
   end
 
-  # GET /programs/1 or /programs/1.json
   def show
   end
 
-  # GET /programs/new
   def new
     @program = Program.new
   end
 
-  # GET /programs/1/edit
   def edit
   end
 
-  # POST /programs or /programs.json
   def create
     @program = Program.new(program_params)
 
@@ -35,7 +30,6 @@ class Admin::ProgramsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /programs/1 or /programs/1.json
   def update
     respond_to do |format|
       if @program.update(program_params)
@@ -48,7 +42,6 @@ class Admin::ProgramsController < ApplicationController
     end
   end
 
-  # DELETE /programs/1 or /programs/1.json
   def destroy
     @program.destroy!
 
@@ -59,12 +52,11 @@ class Admin::ProgramsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_program
       @program = Program.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def program_params
       params.require(:program).permit(:name, :faculty_id)
     end

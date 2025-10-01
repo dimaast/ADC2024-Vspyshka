@@ -1,0 +1,21 @@
+.O_EventShow__going span {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.O_EventShow__avatars {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.O_EventShow__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.O_EventShow__going__more {
+  font-size: 0.95rem;
+  color: #888;
+  margin-left: 0.5rem;
+}

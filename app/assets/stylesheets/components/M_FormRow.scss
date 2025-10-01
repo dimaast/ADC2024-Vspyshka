@@ -1,0 +1,15 @@
+.M_FormRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  margin-bottom: var(--space-m);
+}
+.M_FormRow__label {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+.M_FormRow__field {
+  display: flex;
+  flex-direction: column;
+}

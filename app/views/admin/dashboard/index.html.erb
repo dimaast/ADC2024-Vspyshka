@@ -1,0 +1,52 @@
+<% content_for :title, "Админ-панель" %>
+
+<div class="AdminDashboard">
+  <div class="AdminDashboard__header">
+    <h1>Панель администратора</h1>
+  </div>
+
+  <div class="AdminDashboard__stats">
+    <div class="StatCard">
+      <h3>Сообщества</h3>
+      <span class="StatCard__number"><%= @communities_count %></span>
+      <%= link_to "Управлять", admin_communities_path, class: "StatCard__link" %>
+    </div>
+    <div class="StatCard">
+      <h3>Пользователи</h3>
+      <span class="StatCard__number"><%= @users_count %></span>
+      <%= link_to "Управлять", admin_users_path, class: "StatCard__link" %>
+    </div>
+    <div class="StatCard">
+      <h3>Жалобы</h3>
+      <span class="StatCard__number"><%= @reports_count %></span>
+      <%= link_to "Управлять", admin_reports_path, class: "StatCard__link" %>
+    </div>
+  </div>
+
+  <div class="AdminDashboard__reports-summary">
+    <h2>Статистика жалоб</h2>
+    <div class="ReportsSummary">
+      <div class="ReportsSummary__item">
+        <span class="ReportsSummary__label">Ожидают рассмотрения:</span>
+        <span class="ReportsSummary__count ReportsSummary__count--pending"><%= @reports_pending %></span>
+      </div>
+      <div class="ReportsSummary__item">
+        <span class="ReportsSummary__label">Одобрено:</span>
+        <span class="ReportsSummary__count ReportsSummary__count--approved"><%= @reports_approved %></span>
+      </div>
+      <div class="ReportsSummary__item">
+        <span class="ReportsSummary__label">Отклонено:</span>
+        <span class="ReportsSummary__count ReportsSummary__count--rejected"><%= @reports_rejected %></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="AdminDashboard__quick-actions">
+    <h2>Быстрые действия</h2>
+    <div class="QuickActions">
+      <%= link_to "Создать сообщество", new_admin_community_path, class: "QuickActionButton" %>
+      <%= link_to "Просмотреть жалобы", admin_reports_path, class: "QuickActionButton" %>
+      <%= link_to "Управление пользователями", admin_users_path, class: "QuickActionButton" %>
+    </div>
+  </div>
+</div>

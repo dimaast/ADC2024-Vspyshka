@@ -1,13 +1,13 @@
-<div class="CommentsList" id="C_Comments">
+<div class="M_CommentsList" id="C_Comments">
   <% if comments.any? %>
     <% comments.no_replies.each do |comment| %>
-      <div class="CommentItem">
+      <div class="M_CommentItem">
         <%= render "comments/comment", comment: comment, commentable: comment.commentable %>
       </div>
     <% end %>
   <% else %>
-    <div class="EmptyComments">
+    <div class="M_EmptyComments">
       <p>Пока нет комментариев. Будьте первым!</p>
     </div>
   <% end %>
-</div> 
+</div>

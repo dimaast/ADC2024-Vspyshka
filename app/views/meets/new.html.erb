@@ -2,12 +2,8 @@
   title: "Создать новую встречу",
   keywords: "Студорги, Студенческие организации, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
 
-<h1>New meet</h1>
-
-<%= render "form", meet: @meet %>
-
-<br>
-
-<div>
-  <%= link_to "Back to meets", meets_path %>
+<div class="MeetCreatePage">
+  <div class="MeetCreatePage__container">
+    <%= render "form", meet: @meet %>
+  </div>
 </div>

@@ -1,0 +1,72 @@
+.NotificationsWrapper.A_NavbarItem {
+  width: 42px !important;
+  height: 42px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: none !important;
+  border: none !important;
+  
+  &:hover, &:focus {
+    background: none !important;
+    color: inherit !important;
+  }
+}
+
+.A_NavbarItem .A_NotificationsButton,
+.A_NotificationsButton {
+  position: relative;
+  cursor: pointer;
+  width: 42px !important;
+  height: 42px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 10000;
+  background: var(--white) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: 12px;
+  transition: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+  
+  &:hover, &:focus {
+    background: var(--white) !important;
+    color: var(--black) !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+  
+  &:active {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  
+  &.has-unread {
+    i {
+      color: #007bff;
+    }
+    
+    .A_NavbarNotificationsIcon {
+      color: #007bff;
+    }
+  }
+}
+
+.A_NotificationsButton i {
+  font-size: 24px;
+  color: #666;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.A_NavbarNotificationsIcon {
+  @extend .A_NavbarIcon !optional;
+  width: 24px;
+  height: 24px;
+  color: #666;
+}

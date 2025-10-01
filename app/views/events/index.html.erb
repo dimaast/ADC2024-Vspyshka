@@ -6,14 +6,75 @@
 
 <% content_for :title, "События" %>
 
-<h1>События (<%= @events.count %>)</h1>
+<div class="communities-title-container">
+  <h1 class="communities-title">События</h1>
+</div>
 
-<%= render 'tags/filter' %>
+<div class="events-filters-container">
+  <form method="get" action="<%= events_path %>" class="events-filter-form">
+    <div class="filter-row">
+      <div class="filter-field">
+        <div class="place-selector <%= 'default-state' if params[:place].blank? %>">
+          <i class="fas fa-map-marker-alt"></i>
+          <select name="place" id="place" onchange="this.form.submit()">
+            <option value="">Все места</option>
+            <% ['Онлайн', 'Корпус 1', 'Корпус 2', 'Корпус 3', 'Корпус 4', 'Другое'].each do |place| %>
+              <option value="<%= place %>" <%= 'selected' if params[:place] == place %>><%= place %></option>
+            <% end %>
+          </select>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+      </div>
+      
+          <div class="filter-field">
+            <input type="date" name="date" id="date" value="<%= params[:date] %>" onchange="this.form.submit()" class="A_DateInput">
+          </div>
+    </div>
+    
+    <%# Сохраняем выбранные фильтры по тегам и категориям %>
+    <% if params[:category].present? %>
+      <input type="hidden" name="category" value="<%= params[:category] %>">
+    <% end %>
+    <% if params[:tag].present? %>
+      <input type="hidden" name="tag" value="<%= params[:tag] %>">
+    <% end %>
+  </form>
+  
+  <div class="tags-filter-section">
+    <%= render 'tags/filter' %>
+  </div>
+</div>
+
+<div class="events-sort-container">
+  <%= link_to events_path(sort: 'popular'), class: "sort-option #{'active' if params[:sort] == 'popular' || params[:sort].blank?}", data: { turbo_frame: 'events_list' } do %>
+    <i class="fas fa-chart-line"></i>
+    <span>Отсортировать по популярности</span>
+  <% end %>
+  
+  <%= link_to events_path(sort: 'new'), class: "sort-option #{'active' if params[:sort] == 'new'}", data: { turbo_frame: 'events_list' } do %>
+    <i class="fas fa-calendar-alt"></i>
+    <span>Отсортировать по дате</span>
+  <% end %>
+</div>
+
 
 <turbo-frame id="events_list">
   <div class="C_EventsAndMeets">
-    <% @events.each do |event| %>
+    <% @events.first(6).each do |event| %>
       <%= render partial: 'event_card', locals: { event: event } %>
     <% end %>
   </div>
 </turbo-frame>
+
+
+<turbo-frame id="events_list_second">
+  <div class="C_EventsAndMeets">
+    <% @events.offset(6).each do |event| %>
+      <%= render partial: 'event_card', locals: { event: event } %>
+    <% end %>
+  </div>
+</turbo-frame>
+
+<div class="pagination-wrapper">
+  <%= paginate @events %>
+</div>

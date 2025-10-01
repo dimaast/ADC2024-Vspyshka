@@ -1,0 +1,94 @@
+// Основной контейнер главной страницы
+.homepage-container {
+  position: relative;
+  z-index: 2;
+  background: var(--white);
+  min-height: 100vh;
+  padding: 0;
+  margin-top: 400px; // Уменьшенный отступ сверху
+  
+  // Общая сетка для всех элементов
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 36px;
+  max-width: 1728px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px; // Добавляем отступы по бокам
+}
+
+// Общие стили для секций
+section {
+  margin-bottom: var(--space-xl);
+  grid-column: 1 / -1; // Занимает всю ширину сетки
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-l);
+  grid-column: 1 / -1; // Занимает всю ширину сетки
+}
+
+
+// Адаптивность
+@media (max-width: 1728px) {
+  .homepage-container {
+    padding: 0 20px;
+    margin-top: 350px; // Уменьшенный отступ для больших экранов
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .homepage-container {
+    padding: 0 20px;
+    margin-top: 300px; // Уменьшенный отступ для планшетов
+    grid-template-columns: repeat(8, 1fr);
+    gap: 24px;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .homepage-container {
+    padding: 0 16px;
+    margin-top: 250px; // Уменьшенный отступ для мобильных устройств
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 100%;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-m);
+  }
+}
+
+@media (max-width: 600px) {
+  .homepage-container {
+    padding: 0 16px;
+    margin-top: 200px; // Уменьшенный отступ для средних мобильных устройств
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .homepage-container {
+    padding: 0 12px;
+    margin-top: 150px; // Уменьшенный отступ для маленьких экранов
+    grid-template-columns: 1fr;
+    gap: 16px;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .homepage-container {
+    padding: 0 8px;
+    margin-top: 120px; // Уменьшенный отступ для очень маленьких экранов
+    max-width: 100%;
+  }
+}

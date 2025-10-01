@@ -1,0 +1,357 @@
+:root {
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 22px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 28px;
+  --font-size-5xl: 32px;
+  --font-size-6xl: 36px;
+  --font-size-7xl: 48px;
+  --font-size-8xl: 60px;
+  --font-size-9xl: 74px;
+
+  --font-size-xs-mobile: 10px;
+  --font-size-sm-mobile: 12px;
+  --font-size-base-mobile: 14px;
+  --font-size-lg-mobile: 16px;
+  --font-size-xl-mobile: 18px;
+  --font-size-2xl-mobile: 20px;
+  --font-size-3xl-mobile: 22px;
+  --font-size-4xl-mobile: 24px;
+  --font-size-5xl-mobile: 26px;
+  --font-size-6xl-mobile: 28px;
+  --font-size-7xl-mobile: 32px;
+  --font-size-8xl-mobile: 36px;
+  --font-size-9xl-mobile: 40px;
+}
+
+.A_Title {
+  font-family: "Proxima Nova Extra Condensed", sans-serif;
+  font-weight: 800;
+  color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.A_Title--xl {
+  font-size: var(--font-size-9xl);
+  
+  @media (max-width: 1200px) {
+    font-size: var(--font-size-8xl);
+  }
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-7xl);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-6xl);
+  }
+}
+
+.A_Title--lg {
+  font-size: var(--font-size-7xl);
+  
+  @media (max-width: 1200px) {
+    font-size: var(--font-size-6xl);
+  }
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-5xl);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-4xl);
+  }
+}
+
+.A_Title--md {
+  font-size: var(--font-size-5xl);
+  
+  @media (max-width: 1200px) {
+    font-size: var(--font-size-4xl);
+  }
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-3xl);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-2xl);
+  }
+}
+
+.A_Title--sm {
+  font-size: var(--font-size-3xl);
+  
+  @media (max-width: 1200px) {
+    font-size: var(--font-size-2xl);
+  }
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-xl);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-lg);
+  }
+}
+
+.A_Text {
+  font-family: 'TT Interphases Educational', sans-serif;
+  color: var(--black);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.A_Text--xl {
+  font-size: var(--font-size-2xl);
+  font-weight: 600;
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-xl);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-lg);
+  }
+}
+
+.A_Text--lg {
+  font-size: var(--font-size-xl);
+  font-weight: 500;
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-lg);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-base);
+  }
+}
+
+.A_Text--md {
+  font-size: var(--font-size-lg);
+  font-weight: 400;
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-base);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-sm);
+  }
+}
+
+.A_Text--sm {
+  font-size: var(--font-size-base);
+  font-weight: 400;
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-sm);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-xs);
+  }
+}
+
+.A_Text--xs {
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-xs);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 10px;
+  }
+}
+
+.A_Meta {
+  font-size: var(--font-size-sm);
+  color: var(--gray-inactive);
+  font-weight: 400;
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-xs);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 10px;
+  }
+}
+
+.A_Meta--lg {
+  font-size: var(--font-size-base);
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-sm);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-xs);
+  }
+}
+
+.A_Author {
+  font-family: "TT Commons Pro Edu Variable", sans-serif;
+  font-weight: 785;
+  font-stretch: condensed;
+  letter-spacing: -0.56px;
+  line-height: 100%;
+  color: var(--black);
+  margin: 0;
+}
+
+.A_Author--lg {
+  font-size: var(--font-size-4xl);
+  
+  @media (max-width: 1200px) {
+    font-size: var(--font-size-3xl);
+  }
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-2xl);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-xl);
+  }
+}
+
+.A_Author--md {
+  font-size: var(--font-size-3xl);
+  
+  @media (max-width: 1200px) {
+    font-size: var(--font-size-2xl);
+  }
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-xl);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-lg);
+  }
+}
+
+.A_Author--sm {
+  font-size: var(--font-size-2xl);
+  
+  @media (max-width: 1200px) {
+    font-size: var(--font-size-xl);
+  }
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-lg);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-base);
+  }
+}
+
+.A_Content {
+  font-size: var(--font-size-lg);
+  line-height: 1.5;
+  color: var(--black);
+  margin: 0;
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-base);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-sm);
+  }
+}
+
+.A_Content--lg {
+  font-size: var(--font-size-xl);
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-lg);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-base);
+  }
+}
+
+.A_Content--sm {
+  font-size: var(--font-size-base);
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-sm);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-xs);
+  }
+}
+
+.A_Tag {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: #666666;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  padding: 6px 12px;
+  display: inline-block;
+  
+  @media (max-width: 768px) {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+}
+
+.A_ButtonText {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  line-height: 100%;
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-sm);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-xs);
+  }
+}
+
+.A_ButtonText--lg {
+  font-size: var(--font-size-lg);
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-base);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: var(--font-size-sm);
+  }
+}
+
+.A_ButtonText--sm {
+  font-size: var(--font-size-sm);
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-xs);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 10px;
+  }
+}

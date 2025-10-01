@@ -1,9 +1,22 @@
 .A_NavbarAvatar {
-    display: flex;
-    width: 41px;
-    height: 41px;
-    justify-content: center;
-    align-items: center;
+    width: 42px;
+    height: 42px;
     border-radius: 12px;
-    border: 1px solid #DDDDDD;
+    overflow: hidden;
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.A_NavbarAvatar img:not(.A_NavbarProfileIcon) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.A_NavbarProfileIcon {
+    @extend .A_NavbarIcon !optional;
+    width: 24px !important;
+    height: 24px !important;
+    color: #666;
 }

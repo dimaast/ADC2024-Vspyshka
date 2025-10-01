@@ -1,0 +1,18 @@
+.O_Notification {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--f0f0f0);
+  transition: background-color 0.2s;
+}
+.O_Notification:last-child {
+  border-bottom: none;
+}
+.O_Notification a {
+  text-decoration: none;
+  color: var(--333);
+}
+.O_Notification:hover {
+  background-color: var(--f9f9f9);
+}
+.O_Notification--new {
+  background-color: var(--fffbea);
+}

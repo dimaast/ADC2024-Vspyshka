@@ -2,7 +2,11 @@
     box-sizing: border-box;
 }
 
-/* Основной контент должен быть поверх glow */
+html {
+    background-color: #ffffff;
+    background: #ffffff;
+}
+
 .EventShow,
 .O_Navbar,
 .M_EventCard,
@@ -17,38 +21,79 @@ a {
 }
 
 body {
-    padding: 40px 150px 0px 150px;
+    padding: var(--space-l) 150px 0px 150px;
     font-family: 'TT Interphases Educational', sans-serif;
-    background-color: var(--almostwhite);
-    background: var(--almostwhite);
-    
-    /* Inner glow по краям */
-    position: relative;
-    
-    &::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        pointer-events: none;
-        z-index: 1;
-        box-shadow: 
-            inset 0 0 50px rgba(106, 106, 247, 0.3),
-            inset 0 0 100px rgba(106, 106, 247, 0.2),
-            inset 0 0 150px rgba(106, 106, 247, 0.1);
-    }
+    background-color: #ffffff;
+    background: #ffffff;
+}
+
+@media (max-width: 1200px) {
+  body {
+    padding: var(--space-l) 80px 0px 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: var(--space-l) 40px 0px 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: var(--space-l) 20px 0px 20px;
+  }
 }
 
 h1 {
-    font-size: 48px;
-    margin: 20px 0px 20px 0px;
+    font-size: 74px;
+    margin: var(--space-m) 0 var(--space-m) 0;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
 }
 
 h2 {
+    font-size: 48px;
+    margin: var(--space-m) 0 var(--space-m) 0;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+@media (max-width: 1200px) {
+  h1 {
+    font-size: 64px;
+  }
+  
+  h2 {
+    font-size: 42px;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 48px;
+  }
+  
+  h2 {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 36px;
+  }
+  
+  h2 {
     font-size: 28px;
-    margin: 20px 0px 20px 0px;
+  }
+}
+
+p {
+    font-size: 22px;
+    line-height: 100%;
+    margin: 0;
 }
 
 .S_Menubar {
@@ -57,15 +102,15 @@ h2 {
 
     div {
         display: flex;
-        column-gap: 14px;
+        column-gap: var(--space-xs);
     }
 }
 
 .M_EventCard {
     display: block;
-    padding: 20px;
+    padding: var(--space-m);
     background-color: var(--gray);
-    border-radius: 20px;
+    border-radius: var(--space-m);
     
     a {
         text-decoration: none;
@@ -75,9 +120,9 @@ h2 {
 
 .M_MeetCard {
     display: block;
-    padding: 20px;
+    padding: var(--space-m);
     background-color: var(--gray);
-    border-radius: 20px;
+    border-radius: var(--space-m);
     text-decoration: none;
     color: black;
 }
@@ -97,22 +142,20 @@ h2 {
 .M_Comment {
     display: block;
     width: 700px;
-    padding: 20px;
-    margin-bottom: 10px;
-    background-color: rgb(243, 243, 243);
-    border-radius: 20px;
+    padding: var(--space-m);
+    margin-bottom: var(--space-xs);
+    background-color: var(--f3f3f3);
+    border-radius: var(--space-m);
     text-decoration: none;
     color: black;
 }
 
 .M_Reply {
-    margin: 20px 0px 0px 50px;
-    padding: 20px;
-    border-radius: 20px;
-    background-color: rgb(253, 253, 253);
+    margin: var(--space-m) 0 0 50px;
+    padding: var(--space-m);
+    border-radius: var(--space-m);
+    background-color: var(--lightgray);
 }
-
-// 
 
 select, ::picker(select) {
     appearance: base-select;
@@ -128,18 +171,18 @@ select {
 }
 
 select {
-    border: 1px solid #ddd;
-    background: #eee;
+    border: 1px solid var(--ddd);
+    background: var(--eee);
     padding: 10px;
     transition: 0.4s;
 }
 
 select:hover, select:focus {
-    background: #ccc;
+    background: var(--ccc);
 }
 
 select::picker-icon {
-    color: #ccc;
+    color: var(--ccc);
     transition: 0.4s rotate;
 }
 
@@ -154,10 +197,10 @@ select:open::picker-icon {
 option {
   display: flex;
   justify-content: flex-start;
-  gap: 20px;
-  border: 1px solid #ccc;
-  background: #fff;
-  padding: 10px 20px 10px 20px;
+  gap: var(--space-m);
+  border: 1px solid var(--ccc);
+  background: var(--white);
+  padding: var(--space-xs) var(--space-m) var(--space-xs) var(--space-m);
   transition: 0.4s;
 }
 
@@ -173,12 +216,8 @@ option:not(option:last-of-type) {
   border-bottom: none;
 }
 
-// option:nth-of-type(odd) {
-//   background: #fff;
-// }
-
 option:hover, option:focus {
-  background: #ccc;
+  background: var(--ccc);
 }
 
 option .icon {
@@ -214,5 +253,97 @@ option::checkmark {
 }
 ::picker(select) {
   top: calc(anchor(bottom) + 10px);
-//   left: anchor(10%);
+
+}
+
+.alert, .notice {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
+}
+
+.alert {
+  color: var(--color-alert-text);
+  background-color: var(--color-alert-bg);
+  border-color: var(--color-alert-border);
+}
+
+.notice {
+  color: var(--color-notice-text);
+  background-color: var(--color-notice-bg);
+  border-color: var(--color-notice-border);
+}
+
+.flash-message {
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  color: var(--white);
+  background: var(--color-alert-text);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-blue-12);
+}
+
+.flash-message.notice {
+  background-color: var(--color-flash-notice-bg);
+}
+
+.flash-message.success {
+  background-color: var(--color-flash-success-bg);
+}
+
+.flash-message .close-button {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.is-visible {
+  display: block !important;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.not-found-wrapper {
+  text-align: center;
+  margin-top: 10vh;
+}
+.not-found-title {
+  font-size: 3em;
+  color: #730E15;
+}
+.not-found-text {
+  font-size: 1.3em;
+  color: #444;
+}
+.not-found-btn {
+  display: inline-block;
+  margin-top: 2em;
+  font-size: 1.1em;
+  color: #fff;
+  background: #730E15;
+  padding: 0.7em 2em;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.user-icon-navbar {
+  color: #fff;
+  opacity: 0.7;
+}
+
+.reply-form-hidden {
+  display: none;
 }

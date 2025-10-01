@@ -3,7 +3,31 @@ class Api::V1::EventsController < ApplicationController
 
   # GET /events or /events.json
   def index
-    @events = Event.all
+    page = params[:page]&.to_i || 1
+    per_page = params[:per_page]&.to_i || 20
+    per_page = [per_page, 100].min # Ограничиваем максимум 100 записей на страницу
+    
+    @events = Event.order(created_at: :desc)
+                   .limit(per_page)
+                   .offset((page - 1) * per_page)
+    
+    total_count = Event.count
+    total_pages = (total_count.to_f / per_page).ceil
+    
+    render json: {
+      events: @events.map { |event| event.as_json.merge(
+        tags: event.tag_list,
+        categories: event.category_list
+      )},
+      pagination: {
+        current_page: page,
+        per_page: per_page,
+        total_count: total_count,
+        total_pages: total_pages,
+        has_next_page: page < total_pages,
+        has_prev_page: page > 1
+      }
+    }
   end
 
   def show
@@ -11,44 +35,86 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def create
-    puts "decrypt_payload"
-    puts decrypt_payload
+    begin
+      user = User.find_by_jti(decrypt_payload[0]["jti"])
+      
+      unless user
+        return render json: { error: "User not found" }, status: :unauthorized
+      end
 
-    user = User.find_by_jti(decrypt_payload[0][":jti"])
-    event = user.events.new(event_params)
+      event = user.events.new(event_params)
 
-    if event.save
-      render json: event, status: :created
-    else
-      render json: event.errors, status: :unprocessable_entity
+      if event.save
+        render json: event, status: :created
+      else
+        render json: { errors: event.errors.full_messages }, status: :unprocessable_entity
+      end
+    rescue JWT::DecodeError, JWT::ExpiredSignature => e
+      render json: { error: "Invalid or expired token" }, status: :unauthorized
+    rescue => e
+      render json: { error: "Authentication failed: #{e.message}" }, status: :unauthorized
     end
   end
 
   def destroy
-    @event = Event.find(params[:id])
-    user = User.find_by_jti(decrypt_payload[0][":jti"])
+    begin
+      @event = Event.find(params[:id])
+      user = User.find_by_jti(decrypt_payload[0]["jti"])
 
-    unless @event.user == user
-      return render json: { error: "Unauthorized" }, status: :unauthorized
+      unless user
+        return render json: { error: "User not found" }, status: :unauthorized
+      end
+
+      unless @event.user == user
+        return render json: { error: "Unauthorized" }, status: :unauthorized
+      end
+
+      @event.destroy
+      head :no_content
+    rescue JWT::DecodeError, JWT::ExpiredSignature => e
+      render json: { error: "Invalid or expired token" }, status: :unauthorized
+    rescue => e
+      render json: { error: "Authentication failed: #{e.message}" }, status: :unauthorized
     end
-
-    @event.destroy
-    head :no_content
   end
 
   def update
-    @event = Event.find(params[:id])
-    user = User.find_by_jti(decrypt_payload[0][":jti"])
+    begin
+      @event = Event.find(params[:id])
+      user = User.find_by_jti(decrypt_payload[0]["jti"])
 
-    unless @event.user == user
-      return render json: { error: "Unauthorized" }, status: :unauthorized
-    end
+      unless user
+        return render json: { error: "User not found" }, status: :unauthorized
+      end
 
-    if @event.update(event_params)
-      render json: @event
-    else
-      render json: @event.errors, status: :unprocessable_entity
+      unless @event.user == user
+        return render json: { error: "Unauthorized" }, status: :unauthorized
+      end
+
+      if @event.update(event_params)
+        render json: @event
+      else
+        render json: { errors: @event.errors.full_messages }, status: :unprocessable_entity
+      end
+    rescue JWT::DecodeError, JWT::ExpiredSignature => e
+      render json: { error: "Invalid or expired token" }, status: :unauthorized
+    rescue => e
+      render json: { error: "Authentication failed: #{e.message}" }, status: :unauthorized
     end
+  end
+
+  # GET /events/places
+  def places
+    places = [
+      'Онлайн',
+      'Корпус на Покровке',
+      'Корпус на Шаболовке',
+      'Корпус на Мясницкой',
+      'Корпус в Строгино',
+      'Культурный центр ЗИЛ',
+      'Другое'
+    ]
+    render json: { places: places }
   end
 
   private

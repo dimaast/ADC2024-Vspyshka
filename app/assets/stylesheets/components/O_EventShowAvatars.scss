@@ -1,0 +1,12 @@
+.O_EventShow__avatars {
+  display: flex;
+  align-items: center;
+}
+.O_EventShow__avatars .O_EventShow__avatar {
+  margin-right: -12px;
+  position: relative;
+  z-index: 1;
+}
+.O_EventShow__avatars .O_EventShow__avatar:last-child {
+  margin-right: 0;
+}

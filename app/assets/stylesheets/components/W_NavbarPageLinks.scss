@@ -1,5 +1,17 @@
 .W_NavbarPageLinks {
     display: flex;
     flex-direction: row;
-    column-gap: 20px;
+    column-gap: 18px;
+}
+
+@media (max-width: 768px) {
+  .W_NavbarPageLinks {
+    column-gap: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .W_NavbarPageLinks {
+    column-gap: 12px;
+  }
 }

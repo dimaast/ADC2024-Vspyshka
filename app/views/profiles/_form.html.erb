@@ -1,6 +1,6 @@
 <%= form_with(model: profile) do |form| %>
   <% if profile.errors.any? %>
-    <div style="color: red">
+    <div class="error-message">
       <h2><%= pluralize(profile.errors.count, "error") %> prohibited this profile from being saved:</h2>
 
       <ul>
@@ -27,11 +27,6 @@
   </div>
 
   <div>
-    <%= form.label :name, "Отображаемое имя", style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div>
     <%= form.label :body, "О себе", style: "display: block" %>
     <%= form.text_area :body %>
   </div>
@@ -46,15 +41,13 @@
     <%= form.file_field :avatar %>
   </div>
 
-    <%# Теги %>
   <div>
-    <label for="tags">Теги</label>
-    <% Tag.tags_list.each do |tag| %>
-      <div class="form-check">
-        <%= check_box_tag "profile[tag_list][]", tag.name, false, class: 'form-check-input', id: "profile_tag_list_#{tag.name}" %>
-        <%= label_tag "profile_tag_list_#{tag.name}", tag.name, class: 'form-check-label', for: "profile_tag_list_#{tag.name}" %>
-      </div>
-    <% end %>
+    <%= form.label :username, "Никнейм", style: "display: block" %>
+    <%= text_field_tag :username, profile.user.username, name: 'profile[username]' %>
+  </div>
+
+  <div>
+    <%= link_to 'Изменить интересы (визуально)', choose_interests_path, class: 'A_Button', style: 'margin-bottom: 16px;' %>
   </div>
 
   <div>

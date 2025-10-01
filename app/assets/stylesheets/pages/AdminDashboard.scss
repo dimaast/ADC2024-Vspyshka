@@ -1,0 +1,202 @@
+.AdminDashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.AdminDashboard__header {
+  margin-bottom: 32px;
+  
+  h1 {
+    font-family: "Proxima Nova Extra Condensed", sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #121212;
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #6c757d;
+    margin: 0;
+  }
+}
+
+.AdminDashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.StatCard {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  
+  &:hover {
+
+  }
+  
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #6c757d;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  &__number {
+    font-size: 32px;
+    font-weight: 700;
+    color: #121212;
+    display: block;
+    margin-bottom: 16px;
+  }
+  
+  &__link {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #121212;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    
+    &:hover {
+      background: #333333;
+      color: white;
+      text-decoration: none;
+    }
+  }
+}
+
+.AdminDashboard__reports-summary {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 40px;
+  
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #121212;
+    margin: 0 0 20px 0;
+  }
+}
+
+.ReportsSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f3f4;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  &__label {
+    font-size: 16px;
+    color: #6c757d;
+  }
+  
+  &__count {
+    font-size: 18px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    
+    &--pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+    
+    &--approved {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    &--rejected {
+      background: #f8d7da;
+      color: #721c24;
+    }
+  }
+}
+
+.AdminDashboard__quick-actions {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #121212;
+    margin: 0 0 20px 0;
+  }
+}
+
+.QuickActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.QuickActionButton {
+  display: inline-block;
+  padding: 12px 24px;
+  background: #121212;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  
+  &:hover {
+    background: #333333;
+    color: white;
+    text-decoration: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .AdminDashboard {
+    padding: 16px;
+  }
+  
+  .AdminDashboard__stats {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .StatCard {
+    padding: 20px;
+  }
+  
+  .ReportsSummary {
+    gap: 12px;
+  }
+  
+  .QuickActions {
+    flex-direction: column;
+  }
+  
+  .QuickActionButton {
+    text-align: center;
+  }
+}

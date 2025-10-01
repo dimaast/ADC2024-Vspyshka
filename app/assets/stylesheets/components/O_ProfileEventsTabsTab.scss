@@ -1,0 +1,15 @@
+.O_ProfileEventsTabs__tab {
+  background: var(--f5f6fa);
+  border: none;
+  border-radius: 8px 8px 0 0;
+  padding: 12px 32px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--888);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.O_ProfileEventsTabs__tab.active {
+  background: var(--6a82fb);
+  color: var(--white);
+}

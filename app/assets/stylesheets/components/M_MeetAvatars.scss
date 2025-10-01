@@ -1,0 +1,14 @@
+.M_MeetAvatars {
+  display: flex;
+  align-items: center;
+}
+
+.M_MeetAvatars .M_MeetAvatar {
+  margin-right: -12px;
+  position: relative;
+  z-index: 1;
+}
+
+.M_MeetAvatars .M_MeetAvatar:last-child {
+  margin-right: 0;
+}

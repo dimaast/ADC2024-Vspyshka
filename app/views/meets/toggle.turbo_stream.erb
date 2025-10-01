@@ -4,8 +4,7 @@
                 class: "Q_BookmarkIconNoBg #{@favouriteable.favourites.exists?(user_id: current_user.id) ? 'active' : ''}", 
                 data: { turbo_method: :post },
                 id: dom_id(@favouriteable, "bookmark") do %>
-      <%= image_tag @favouriteable.favourites.exists?(user_id: current_user.id) ? "bookmark_filled.svg" : "bookmarknobg.svg", 
-                  alt: "Закладка" %>
+      <%= render 'shared/icon_save', active: @favouriteable.favourites.exists?(user_id: current_user.id) %>
     <% end %>
   <% end %>
 <% else %>
@@ -24,4 +23,4 @@
       <% end %>
     </div>
   <% end %>
-<% end %> 
+<% end %>

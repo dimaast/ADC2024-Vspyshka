@@ -1,0 +1,12 @@
+.A_AuthFormTitle {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--333);
+}
+@media (max-width: 480px) {
+  .A_AuthFormTitle {
+    font-size: 1.6rem;
+  }
+}

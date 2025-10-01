@@ -1,14 +1,120 @@
 <% set_meta_tags( 
-  title: "Редактировать профиль",
+  title: "Настройки профиля",
   keywords: "Студорги, Студенческие организации, События, Мероприятия, Ивенты, Тусовки, Вышка, НИУ ВШЭ, ВШЭ" )%>
 
-<h1>Editing profile</h1>
+<div class="O_ProfileEditPage">
+  <h1 class="A_ProfileEditTitle">Настройки профиля</h1>
+  
+  <div class="O_ProfileEditContainer">
+    
+    <%= form_with(model: @profile, local: true, class: "M_ProfileEditForm", multipart: true) do |form| %>
+      
+      <div class="O_ProfileAvatarSection" data-controller="avatar-upload">
+        <div class="O_ProfileAvatarWrapper">
+          <% if @profile.avatar.present? %>
+            <%= image_tag @profile.avatar.url, class: "O_ProfileEditAvatar", alt: "Аватар профиля", id: "avatar-preview" %>
+          <% else %>
+            <div class="O_ProfileEditAvatar O_ProfileEditAvatarPlaceholder" id="avatar-preview">
+              <%= @profile.user.username.first.upcase %>
+            </div>
+          <% end %>
+        </div>
+        <label for="avatar-input" class="A_ProfileEditAvatarBtn">Выбрать фото</label>
+        <%= form.file_field :avatar, id: "avatar-input", class: "A_ProfileEditAvatarInput", accept: "image/*", style: "display: none;", data: { action: "change->avatar-upload#handleFileSelect" } %>
+      </div>
+      
+      <div class="O_ProfileEditSection">
+        <h2 class="A_ProfileEditSectionTitle">Личная информация</h2>
+        
+        <div class="O_ProfileEditFields">
+          <div class="M_ProfileEditField">
+            <%= form.label :last_name, "Фамилия", class: "A_ProfileEditLabel" %>
+            <%= form.text_field :last_name, class: "A_ProfileEditInput", placeholder: "Введите фамилию" %>
+          </div>
 
-<%= render "form", profile: @profile %>
+          <div class="M_ProfileEditField">
+            <%= form.label :first_name, "Имя", class: "A_ProfileEditLabel" %>
+            <%= form.text_field :first_name, class: "A_ProfileEditInput", placeholder: "Введите имя" %>
+          </div>
 
-<br>
+          <div class="M_ProfileEditField">
+            <%= form.label :middle_name, "Отчество", class: "A_ProfileEditLabel" %>
+            <%= form.text_field :middle_name, class: "A_ProfileEditInput", placeholder: "Введите отчество" %>
+          </div>
 
-<div>
-  <%= link_to "Show this profile", @profile %> |
-  <%= link_to "Back to profiles", profiles_path %>
+          <div class="M_ProfileEditField">
+            <%= form.label :faculty_id, "Факультет", class: "A_ProfileEditLabel" %>
+            <%= form.select :faculty_id, options_from_collection_for_select(Faculty.all, :id, :name, @profile.faculty_id), 
+                { prompt: "Выберите факультет" }, { class: "A_ProfileEditSelect" } %>
+          </div>
+
+          <div class="M_ProfileEditField">
+            <%= form.label :program_id, "Программа", class: "A_ProfileEditLabel" %>
+            <%= form.select :program_id, options_from_collection_for_select(Program.all, :id, :name, @profile.program_id), 
+                { prompt: "Выберите программу" }, { class: "A_ProfileEditSelect" } %>
+          </div>
+
+          <div class="M_ProfileEditField">
+            <%= form.label :contact, "Контакт для связи", class: "A_ProfileEditLabel" %>
+            <%= form.text_field :contact, class: "A_ProfileEditInput", placeholder: "Введите контакт" %>
+          </div>
+
+          <div class="M_ProfileEditField M_ProfileEditFieldToggle">
+            <label class="A_ProfileEditToggleLabel">
+              <span class="A_ProfileEditToggleText">Приватный аккаунт</span>
+              <div class="A_ProfileEditToggle">
+                <input type="checkbox" class="A_ProfileEditToggleInput" id="private_account">
+                <span class="A_ProfileEditToggleSlider"></span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="O_ProfileEditActions">
+          <%= form.submit "Сохранить", class: "A_ProfileEditSaveBtn" %>
+          <%= link_to "Удалить аккаунт", @profile, 
+              class: "A_ProfileEditDeleteBtn", 
+              data: { 
+                turbo_method: :delete, 
+                turbo_confirm: "Вы уверены, что хотите удалить аккаунт?" 
+              } %>
+        </div>
+      </div>
+
+      <div class="O_ProfileEditSection">
+        <h2 class="A_ProfileEditSectionTitle">Данные об аккаунте</h2>
+        
+        <div class="O_ProfileEditFields">
+          <div class="M_ProfileEditField">
+            <%= form.label :username, "Юзернейм", class: "A_ProfileEditLabel" %>
+            <%= text_field_tag "user[username]", @profile.user.username, class: "A_ProfileEditInput", placeholder: "Введите юзернейм" %>
+          </div>
+
+          <div class="M_ProfileEditField">
+            <%= form.label :email, "Почта", class: "A_ProfileEditLabel" %>
+            <%= email_field_tag "user[email]", @profile.user.email, class: "A_ProfileEditInput", placeholder: "Введите почту" %>
+          </div>
+
+          <div class="M_ProfileEditField">
+            <%= form.label :current_password, "Текущий пароль", class: "A_ProfileEditLabel" %>
+            <%= password_field_tag "user[current_password]", "", class: "A_ProfileEditInput", placeholder: "Введите текущий пароль" %>
+          </div>
+
+          <div class="M_ProfileEditField">
+            <%= form.label :password, "Новый пароль", class: "A_ProfileEditLabel" %>
+            <%= password_field_tag "user[password]", "", class: "A_ProfileEditInput", placeholder: "Введите новый пароль" %>
+          </div>
+
+          <div class="M_ProfileEditField">
+            <%= form.label :password_confirmation, "Повторите новый пароль", class: "A_ProfileEditLabel" %>
+            <%= password_field_tag "user[password_confirmation]", "", class: "A_ProfileEditInput", placeholder: "Повторите новый пароль" %>
+          </div>
+        </div>
+
+        <div class="O_ProfileEditActions">
+          <%= form.submit "Сохранить", class: "A_ProfileEditSaveBtn" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

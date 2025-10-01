@@ -5,18 +5,14 @@ export default class extends Controller {
   static targets = ["panel", "button", "counter", "list"]
 
   connect() {
-    // Подключаемся к каналу уведомлений
     this.subscription = consumer.subscriptions.create(
       { channel: "NotificationsChannel" },
       {
         connected: () => {
-          console.log("NotificationsChannel: connected")
         },
         disconnected: () => {
-          console.log("NotificationsChannel: disconnected")
         },
         received: (data) => {
-          console.log("NotificationsChannel: received", data)
           this.prependNotification(data.body, data.url)
           this.incrementCounter()
         }
@@ -33,7 +29,13 @@ export default class extends Controller {
   }
 
   toggle(event) {
+    event.preventDefault()
     event.stopPropagation()
+    
+    if (!this.panelTarget) {
+      return
+    }
+    
     const isVisible = this.panelTarget.classList.contains('is-open')
     
     if (isVisible) {
@@ -42,8 +44,7 @@ export default class extends Controller {
       this.panelTarget.classList.add('is-open')
     }
     
-    // Закрываем другие панели, если нужно
-    document.querySelectorAll('.NotificationsPanel').forEach(panel => {
+    document.querySelectorAll('.O_NotificationsPanel').forEach(panel => {
       if (panel !== this.panelTarget) panel.classList.remove('is-open');
     });
   }
@@ -56,8 +57,12 @@ export default class extends Controller {
 
   prependNotification(body, url) {
     const notification = document.createElement("div")
-    notification.className = "notification notification--new"
-    notification.innerHTML = `<a href="${url}">${body}</a>`
+    notification.className = "O_Notification"
+    if (url) {
+      notification.innerHTML = `<a href="${url}" class="notification-link">${body}</a>`
+    } else {
+      notification.textContent = body
+    }
     this.listTarget.insertBefore(notification, this.listTarget.firstChild)
   }
 
@@ -66,5 +71,67 @@ export default class extends Controller {
     const currentCount = parseInt(counter.textContent) || 0
     counter.textContent = currentCount + 1
     this.buttonTarget.classList.add("has-unread")
+  }
+
+  markAsRead(event) {
+    event.preventDefault()
+    event.stopPropagation()
+    
+    const notificationElement = event.currentTarget
+    const notificationId = notificationElement.dataset.notificationId
+    
+    if (notificationId) {
+      fetch(`/notifications/${notificationId}/mark_read`, {
+        method: 'PATCH',
+        headers: {
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+          'Content-Type': 'application/json'
+        }
+      }).then(() => {
+        notificationElement.remove()
+        this.updateCounter()
+        this.updateUnreadIndicator()
+      }).catch(error => {
+      })
+    }
+  }
+
+  handleLinkClick(event) {
+    event.stopPropagation()
+    
+    const notificationElement = event.target.closest('.O_Notification')
+    const notificationId = notificationElement.dataset.notificationId
+    
+    if (notificationId) {
+      fetch(`/notifications/${notificationId}/mark_read`, {
+        method: 'PATCH',
+        headers: {
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+          'Content-Type': 'application/json'
+        }
+      }).then(() => {
+        notificationElement.remove()
+        this.updateCounter()
+        this.updateUnreadIndicator()
+      }).catch(error => {
+      })
+    }
+  }
+
+  updateCounter() {
+    const unreadNotifications = this.listTarget.querySelectorAll('.O_Notification')
+    const counter = this.counterTarget
+    counter.textContent = unreadNotifications.length
+  }
+
+  updateUnreadIndicator() {
+    const counter = this.counterTarget
+    const count = parseInt(counter.textContent) || 0
+    
+    if (count === 0) {
+      this.buttonTarget.classList.remove("has-unread")
+    } else {
+      this.buttonTarget.classList.add("has-unread")
+    }
   }
 }

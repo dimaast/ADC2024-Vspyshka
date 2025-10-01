@@ -12,6 +12,6 @@ class Profile < ApplicationRecord
   validates :last_name, presence: { message: "Необходимо указать фамилию" }
 
   def full_name
-    [last_name, first_name, middle_name].compact.join(' ')
+    [ last_name, first_name ].compact.join(" ")
   end
 end

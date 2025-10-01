@@ -1,0 +1,33 @@
+<% set_meta_tags(title: "Участники встречи") %>
+
+<div class="meet-participants-wrapper">
+  <%= link_to meet_path(@meet), class: 'meet-participants-back' do %>
+    ← Назад к встрече
+  <% end %>
+  <h1 class="meet-participants-title">Участники встречи</h1>
+  <h1 style="margin-bottom: 32px;">Участники встречи</h1>
+  <div style="margin-bottom: 24px; color: #666; font-size: 1.1rem;">Всего участников: <%= @meet.responses.count %></div>
+  <% if @participants.any? %>
+    <% @participants.each do |response| %>
+      <div style='display: flex; align-items: center; gap: 20px; padding: 18px 0; border-bottom: 1px solid #eee; justify-content: space-between;'>
+        <%= link_to profile_path(response.user.profile), style: 'display: flex; align-items: center; gap: 20px; text-decoration: none; color: inherit; transition: background 0.15s;' do %>
+          <%= user_avatar(response.user, class_name: 'A_Avatar', size: 56) %>
+          <div>
+            <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 2px;">
+              <%= response.user.username %>
+            </div>
+            <div style="font-size: 1.1rem; color: #555;">
+              <%= response.user.profile.full_name %>
+            </div>
+          </div>
+        <% end %>
+        <%= render partial: 'subscription/button', locals: { subscriptionable: response.user.profile } %>
+      </div>
+    <% end %>
+    <div class="meet-participants-pagination">
+      <%= paginate @participants %>
+    </div>
+  <% else %>
+    <p>Пока никто не откликнулся на встречу.</p>
+  <% end %>
+</div>

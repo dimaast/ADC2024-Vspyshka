@@ -1,0 +1,17 @@
+.M_StatCard {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow-blue-7);
+  text-align: center;
+}
+.M_StatCard h3 {
+  font-size: 1rem;
+  color: var(--666);
+  margin-bottom: 0.5rem;
+}
+.M_StatCard__number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--333);
+}

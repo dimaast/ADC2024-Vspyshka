@@ -1,0 +1,15 @@
+.M_AuthFieldCheckbox {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+}
+.M_AuthFieldCheckbox input[type="checkbox"] {
+  margin-right: 0.5rem;
+  width: 16px;
+  height: 16px;
+}
+.M_AuthFieldCheckbox label {
+  font-weight: 400;
+  color: var(--666);
+  font-size: 0.9rem;
+}

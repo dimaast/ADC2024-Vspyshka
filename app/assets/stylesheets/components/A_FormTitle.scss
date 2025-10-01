@@ -1,0 +1,41 @@
+.A_FormTitle {
+  font-family: "Proxima Nova Extra Condensed", sans-serif;
+  font-size: 74px;
+  font-weight: 800;
+  color: #121212;
+  margin: 0 0 24px 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-align: center;
+
+  @media (max-width: 1200px) {
+    font-size: 60px;
+    margin-bottom: 20px;
+  }
+  
+  @media (max-width: 1024px) {
+    font-size: 50px;
+    margin-bottom: 18px;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 40px;
+    margin-bottom: 16px;
+  }
+  
+  @media (max-width: 640px) {
+    font-size: 32px;
+    margin-bottom: 14px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  
+  @media (max-width: 360px) {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+}

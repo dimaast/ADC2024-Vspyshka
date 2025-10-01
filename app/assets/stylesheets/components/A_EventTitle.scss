@@ -1,0 +1,19 @@
+.A_EventTitle {
+  margin: 0 0 var(--space-xs);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--black);
+}
+
+.A_EventTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 var(--space-l) 0;
+  color: var(--222);
+}
+@media (max-width: 600px) {
+  .A_EventTitle {
+    font-size: 1.05rem;
+  }
+}

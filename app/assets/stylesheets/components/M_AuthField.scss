@@ -1,0 +1,44 @@
+.M_AuthField {
+  margin-bottom: 1.5rem;
+}
+.M_AuthField label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--555);
+  font-size: 0.95rem;
+}
+.M_AuthField input[type="email"],
+.M_AuthField input[type="password"],
+.M_AuthField input[type="text"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--e1e5e9);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: var(--f8f9fa);
+}
+.M_AuthField input[type="email"]:focus,
+.M_AuthField input[type="password"]:focus,
+.M_AuthField input[type="text"]:focus {
+  outline: none;
+  border-color: var(--violet);
+  box-shadow: var(--shadow-blue-2);
+  background: var(--white);
+}
+.M_AuthField input[type="email"]::placeholder,
+.M_AuthField input[type="password"]::placeholder,
+.M_AuthField input[type="text"]::placeholder {
+  color: var(--999);
+}
+.M_AuthField .error-message {
+  color: var(--e74c3c);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+.M_AuthField em {
+  color: var(--666);
+  font-size: 0.85rem;
+  font-style: normal;
+}

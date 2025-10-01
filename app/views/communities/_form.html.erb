@@ -6,52 +6,60 @@
   end
 %>
 
-<%= form_with(model: community_model) do |form| %>
-  <% if community.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(community.errors.count, "error") %> prohibited this community from being saved:</h2>
+<div class="EventForm">
+  <%= form_with(model: community_model, class: "EventForm__form") do |form| %>
+    <% if community.errors.any? %>
+      <div class="EventForm__errors">
+        <h3>Ошибки при сохранении сообщества:</h3>
+        <ul>
+          <% community.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-      <ul>
-        <% community.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+    <div class="EventForm__grid">
+      <div class="EventForm__field EventForm__field--full">
+        <%= form.label :title, "Название сообщества", class: "EventForm__label" %>
+        <% if current_user && current_user.role == "admin" %>
+          <%= form.text_field :title, class: "EventForm__input", placeholder: "Введите название" %>
+        <% else %>
+          <%= form.text_field :title, class: "EventForm__input", disabled: true %>
         <% end %>
-      </ul>
+      </div>
+
+      <div class="EventForm__field EventForm__field--full">
+        <%= form.label :body, "Описание", class: "EventForm__label" %>
+        <%= form.text_area :body, class: "EventForm__textarea", placeholder: "Опишите сообщество..." %>
+      </div>
+
+      <div class="EventForm__field">
+        <%= form.label :user_id, "ID владельца", class: "EventForm__label" %>
+        <%= form.text_field :user_id, class: "EventForm__input" %>
+      </div>
+
+      <div class="EventForm__field">
+        <%= form.label :cover, "Обложка сообщества", class: "EventForm__label" %>
+        <div class="EventForm__file-upload">
+          <%= form.file_field :cover, class: "EventForm__file-input", accept: "image/*" %>
+          <div class="EventForm__file-preview">
+            <% if community.cover.present? %>
+              <%= image_tag community.cover.url, class: "EventForm__preview-image" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="EventForm__field">
+        <%= form.label :contact, "Контактная информация", class: "EventForm__label" %>
+        <%= form.text_field :contact, class: "EventForm__input", placeholder: "E-mail, Telegram, VK..." %>
+      </div>
+    </div>
+
+    <div class="EventForm__actions">
+      <%= form.submit "Сохранить", class: "Button Button--primary" %>
+      <%= link_to "Отмена", communities_path, class: "Button Button--secondary" %>
     </div>
   <% end %>
-
-  <% if current_user && current_user.role == "admin" %>
-    <div>
-      <%= form.label :title, style: "display: block" %>
-      <%= form.text_field :title %>
-    </div>
-  <% else %>
-    <div>
-      <%= form.label :title, style: "display: block" %>
-      <%= form.text_field :title, disabled: true %>
-    </div>
-  <% end %>
-
-  <div>
-    <%= form.label :body, style: "display: block" %>
-    <%= form.text_area :body %>
-  </div>
-
-  <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div>
-    <%= form.label :cover, style: "display: block" %>
-    <%= form.file_field :cover %>
-  </div>
-
-  <div>
-    <%= form.label :contact, style: "display: block" %>
-    <%= form.text_field :contact %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>

@@ -6,9 +6,7 @@
   <% unless content_for?(:events_list) %>
     <turbo-frame id="response_button_<%= responseable.class.name.downcase %>_<%= responseable.id %>">
   <% end %>
-    <div class="response-button <%= 'active' if response && response.count > 0 %>">
-      <%= link_to button_text, response_toggle_path(type: responseable.class, id: responseable.id), data: { turbo_stream: true }, class: "response-link" %>
-    </div>
+    <%= link_to button_text, response_toggle_path(type: responseable.class, id: responseable.id), data: { turbo_stream: true }, class: "A_EventShowFollowBtn" %>
   <% unless content_for?(:events_list) %>
     </turbo-frame>
   <% end %>

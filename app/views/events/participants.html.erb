@@ -1,0 +1,42 @@
+<% set_meta_tags(title: "Участники события") %>
+
+<div class="event-participants-wrapper">
+  <div class="event-participants-header">
+    <h1 class="event-participants-title">Участники события</h1>
+    <%= link_to "← Назад к событию", event_path(@event), class: "event-participants-back" %>
+  </div>
+
+  <div class="event-participants-content">
+    <% if @participants.any? %>
+      <% @participants.each do |response| %>
+        <%= link_to profile_path(response.user.profile), class: 'event-participants-row' do %>
+          <% if response.user.profile&.avatar.present? %>
+            <%= image_tag response.user.profile.avatar.url, class: 'profile-avatar-large' %>
+          <% else %>
+            <div class="profile-avatar-large profile-avatar-placeholder" style="<%= avatar_placeholder_style(response.user) %>"> </div>
+          <% end %>
+          <div>
+            <div class="event-participants-name">
+              @<%= response.user.username %>
+            </div>
+            <div class="event-participants-fullname">
+              <%= response.user.profile&.full_name || "Имя не указано" %>
+            </div>
+            <div class="event-participants-date">
+              Присоединился <%= time_ago_in_words(response.created_at) %> назад
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% else %>
+      <div class="event-participants-empty">
+        <div class="event-participants-empty-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="event-participants-empty-text">
+          Пока никто не откликнулся на событие
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

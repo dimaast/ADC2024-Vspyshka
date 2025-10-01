@@ -1,0 +1,42 @@
+.section-title {
+  font-family: "Proxima Nova Extra Condensed", sans-serif;
+  font-size: 110px;
+  font-weight: 800;
+  color: var(--black);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  line-height: 0.8;
+}
+
+.festival-title {
+  font-family: "Proxima Nova Extra Condensed", sans-serif;
+  font-size: 110px;
+  font-weight: 800;
+  color: var(--white);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  line-height: 0.8;
+}
+
+@media (max-width: 1200px) {
+  .section-title,
+  .festival-title {
+    font-size: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title,
+  .festival-title {
+    font-size: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title,
+  .festival-title {
+    font-size: 40px;
+  }
+}

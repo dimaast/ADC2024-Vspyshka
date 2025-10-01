@@ -1,9 +1,9 @@
 class Report < ApplicationRecord
-  belongs_to :event
+  belongs_to :reportable, polymorphic: true
   belongs_to :user
 
   validates :reason, presence: true, length: { minimum: 10, maximum: 1000 }
-  validates :event_id, uniqueness: { scope: :user_id, message: "Вы уже жаловались на это событие" }
+  validates :reportable_id, uniqueness: { scope: [:user_id, :reportable_type], message: "Вы уже жаловались на этот объект" }
 
   enum status: { pending: 0, approved: 1, rejected: 2 }
 

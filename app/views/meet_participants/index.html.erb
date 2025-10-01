@@ -1,0 +1,42 @@
+<% set_meta_tags(title: "Участники встречи") %>
+
+<div class="meet-participants-page">
+  <div class="meet-participants-header">
+    <h1 class="meet-participants-title">Участники встречи</h1>
+    <%= link_to "← Назад к встрече", meet_path(@meet), class: "meet-participants-back" %>
+  </div>
+
+  <div class="meet-participants-content">
+    <% if @participants.any? %>
+      <% @participants.each do |participant| %>
+        <%= link_to profile_path(participant.user.profile), class: 'meet-participants-row' do %>
+          <% if participant.user.profile&.avatar.present? %>
+            <%= image_tag participant.user.profile.avatar.url, class: 'profile-avatar-large' %>
+          <% else %>
+            <div class="profile-avatar-large profile-avatar-placeholder" style="<%= avatar_placeholder_style(participant.user) %>"> </div>
+          <% end %>
+          <div>
+            <div class="meet-participants-name">
+              @<%= participant.user.username %>
+            </div>
+            <div class="meet-participants-fullname">
+              <%= participant.user.profile&.full_name || "Имя не указано" %>
+            </div>
+            <div class="meet-participants-date">
+              Присоединился <%= time_ago_in_words(participant.created_at) %> назад
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% else %>
+      <div class="meet-participants-empty">
+        <div class="meet-participants-empty-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="meet-participants-empty-text">
+          Пока никто не присоединился к этой встрече
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

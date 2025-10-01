@@ -1,0 +1,99 @@
+.A_NavbarItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  color: var(--black);
+  background: none;
+  border: none;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+
+  &:hover, &:focus {
+    background: var(--f5f5f5);
+    color: var(--007AFF);
+  }
+}
+
+.W_NavbarPageLinks .A_NavbarItem {
+  width: auto !important;
+  height: auto !important;
+  font-family: 'TT Interphases Educational' !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  line-height: 130% !important;
+  color: var(--121212) !important;
+  padding: 10px 0px !important;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  white-space: nowrap !important;
+  
+  &:hover, &:focus {
+    background: none !important;
+    color: var(--007AFF) !important;
+  }
+}
+
+.W_NavbarButtons .A_NavbarItem[href*="search"] {
+  background: var(--white) !important;
+  border: 1px solid var(--border-light) !important;
+  color: #666 !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 12px !important;
+  padding: 0 !important;
+  
+  &:hover, &:focus {
+    background: var(--white) !important;
+    color: #666 !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+  
+  &:active {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  
+  .A_NavbarSearchIcon {
+    @extend .A_NavbarIcon;
+    color: #666;
+  }
+}
+
+.A_NavbarIcon {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.A_AddButton {
+  .A_NavbarAddIcon {
+    @extend .A_NavbarIcon;
+    color: var(--white);
+  }
+}
+
+@media (max-width: 768px) {
+
+  .W_NavbarPageLinks .A_NavbarItem {
+    font-size: 18px !important;
+    padding: 8px 0px !important;
+  }
+  
+}
+
+@media (max-width: 480px) {
+
+  .W_NavbarPageLinks .A_NavbarItem {
+    font-size: 16px !important;
+    padding: 6px 0px !important;
+  }
+  
+}

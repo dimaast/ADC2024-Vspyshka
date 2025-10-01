@@ -316,7 +316,7 @@
 # uploaders: def extension_allowlist %w[jpg jpeg gif png] end
 # uploaders: def filename "#{secure_token(10).#{file.extension}}" if original_filename end
 # uploaders: version :thumb do process resize_to_fit: [50, 50] end
-# views/events/_event:  <%= image_tag event.cover.thumb.url if event.cover.present? %>
+# views/events/_event:  <%= image_tag event.cover.url if event.cover.present? %>
 # uploaders: include CarrierWave::ImageOptimizer
 # gemfile: gem "carrierwave-imageoptimizer"
 # bundle install
@@ -419,10 +419,60 @@ TEXT
            .strip
            .split(" ")
 
+# Список готовых комментариев
+COMMENT_TEXTS = [
+  "Ооооо, я тут буду!",
+  "я так ждала жесссссссть!",
+  "Я тоооооооже кайф",
+  "Ооооо, я тут буду!",
+  "И я тоже, ждите!!! Вообще так долго ждала нового сезона, теперь планирую посетить все дискотеки по эпохам",
+  "Наконец-то, я ждала этого вечность!",
+  "Кто-то хочет вместе собраться?",
+  "Давайте пойдем вместе",
+  "Хочу найти компанию, смотрите во встречах в профиле",
+  "Ищу, с кем пойти",
+  "Спасибо организаторам, классное событие",
+  "Хочу пойти, пока думаю",
+  "Классно!",
+  "Супер, обязательно буду!",
+  "Отличная идея!",
+  "Когда будет следующее?",
+  "Можно с друзьями?",
+  "Сколько стоит?",
+  "Где проходит?",
+  "Во сколько начало?",
+  "Буду рад присоединиться!",
+  "Отличная программа!",
+  "Жду с нетерпением!",
+  "Обязательно приду!",
+  "Круто!",
+  "Интересно!",
+  "Здорово!",
+  "Пойдем вместе!",
+  "Отлично!",
+  "Супер идея!"
+].freeze
+
 def create_sentence
-  sentence = []
-  rand(10..20).times { sentence << @words.sample }
-  sentence.join(" ").capitalize + "."
+  COMMENT_TEXTS.sample
+end
+
+# Список описаний для событий
+EVENT_DESCRIPTIONS = [
+  "Увлекательное мероприятие для всех желающих!",
+  "Присоединяйтесь к нам на этом замечательном событии!",
+  "Отличная возможность провести время с пользой!",
+  "Интересная программа и хорошая компания!",
+  "Не пропустите это уникальное событие!",
+  "Приглашаем всех желающих!",
+  "Будет очень интересно и познавательно!",
+  "Отличный способ провести время!",
+  "Присоединяйтесь к нашему сообществу!",
+  "Ждем всех на этом замечательном мероприятии!"
+].freeze
+
+def create_event_description
+  EVENT_DESCRIPTIONS.sample
 end
 
 # Функции загрузки случайных обложек (CarrierWave или аналог)
@@ -430,7 +480,7 @@ def upload_event_cover_image
   begin
     uploader = CoverUploader.new(Event.new, :cover)
     upload_path = File.join(Rails.root, "public/autoupload/events")
-    
+
     # Проверяем, существует ли папка
     if Dir.exist?(upload_path)
       random_file = Dir.glob(File.join(upload_path, "*.{jpg,jpeg,png,gif}")).sample
@@ -439,13 +489,13 @@ def upload_event_cover_image
         return uploader
       end
     end
-    
+
     # Если папка не существует или файлы не найдены, возвращаем nil
     puts "Warning: No event cover images found in #{upload_path}"
-    return nil
+    nil
   rescue => e
     puts "Error uploading event cover image: #{e.message}"
-    return nil
+    nil
   end
 end
 
@@ -453,7 +503,7 @@ def upload_community_cover_image
   begin
     uploader = CommunityCoverUploader.new(Community.new, :cover)
     upload_path = File.join(Rails.root, "public/autoupload/communities")
-    
+
     # Проверяем, существует ли папка
     if Dir.exist?(upload_path)
       random_file = Dir.glob(File.join(upload_path, "*.{jpg,jpeg,png}")).sample
@@ -462,22 +512,45 @@ def upload_community_cover_image
         return uploader
       end
     end
-    
+
     # Если папка не существует или файлы не найдены, возвращаем nil
     puts "Warning: No community cover images found in #{upload_path}"
-    return nil
+    nil
   rescue => e
     puts "Error uploading community cover image: #{e.message}"
-    return nil
+    nil
+  end
+end
+
+def upload_avatar_image
+  begin
+    uploader = ProfileAvatarUploader.new(Profile.new, :avatar)
+    upload_path = File.join(Rails.root, "public/autoupload/avatars")
+
+    # Проверяем, существует ли папка
+    if Dir.exist?(upload_path)
+      random_file = Dir.glob(File.join(upload_path, "*.{jpg,jpeg,png,webp}")).sample
+      if random_file
+        uploader.cache!(File.open(random_file))
+        return uploader
+      end
+    end
+
+    # Если папка не существует или файлы не найдены, возвращаем nil
+    puts "Warning: No avatar images found in #{upload_path}"
+    nil
+  rescue => e
+    puts "Error uploading avatar image: #{e.message}"
+    nil
   end
 end
 
 # Места для ивентов
 @places = [
-  "Покровский бульвар",
-  "Малая Пионерская",
-  "Онлайн",
-  "Другое"
+  'Онлайн', 'Корпус на Покровке', 'Корпус на Шаболовке', 'Корпус на Мясницкой', 'Корпус в Строгино', 'Культурный центр ЗИЛ'
+]
+@place_details = [
+  'ауд. 301', 'ауд. 505', 'конференц-зал', 'актовый зал', 'переговорка №7', 'ауд. 218', 'кампус'
 ]
 
 # Список сообществ
@@ -604,10 +677,14 @@ end
 ]
 
 @usernames = [
-  "alex_dev", "coder_max", "web_master", "tech_guru", "code_ninja", "digital_wizard", "byte_buddy", "script_kid", "debug_master", "git_hacker",
-  "ruby_rover", "rails_runner", "js_jumper", "css_crafter", "html_hero", "sql_sage", "api_ace", "cloud_captain", "data_dragon", "frontend_fox",
-  "backend_bear", "fullstack_falcon", "devops_dolphin", "qa_queen", "ui_unicorn", "ux_wizard", "mobile_monkey", "desktop_dog", "server_shark", "client_cat",
-  "programmer_panda", "developer_deer", "engineer_eagle", "architect_ant", "designer_duck", "analyst_antelope", "tester_tiger", "scrum_squirrel", "agile_ape", "lean_lion"
+  "anchousy", "creative_soul", "design_enthusiast", "artistic_mind", "curious_traveler", 
+  "bookworm_adventurer", "film_buff", "nature_lover", "den", "maryiii", 
+  "deziiign", "dimaast", "dianapshenn", "mariina00", "nastyash",
+  "art_lover", "music_fan", "sport_enthusiast", "tech_geek", "foodie_explorer",
+  "travel_bug", "book_lover", "movie_critic", "gaming_pro", "fitness_freak",
+  "photo_artist", "dance_queen", "coffee_addict", "night_owl", "early_bird",
+  "city_explorer", "nature_walker", "beach_bum", "mountain_climber", "urban_dweller",
+  "creative_writer", "digital_nomad", "social_butterfly", "introvert_soul", "party_animal"
 ]
 
 # Основная функция seed
@@ -632,26 +709,45 @@ def seed
   end
   9.times do |i|
     begin
-      User.create!(
-        username: "user#{i+1}",
-        email: "user#{i+1}@edu.hse.ru",
+      username = @usernames[i]
+      user = User.create!(
+        username: username,
+        email: "#{username}@edu.hse.ru",
         password: 'password',
         password_confirmation: 'password',
         role: 'user',
-        first_name: "Имя#{i+1}",
-        last_name: "Фамилия#{i+1}",
-        middle_name: "Отчествович#{i+1}"
+        first_name: @first_names.sample,
+        last_name: @last_names.sample,
+        middle_name: @middle_names.sample
       )
-      puts "User user#{i+1} создан"
+      # Генерируем интересы (теги)
+      tag_list = %w[музыка спорт дизайн кино волонтёрство технологии еда игры].sample(rand(2..4))
+      user.tag_list = tag_list
+      user.save!
+      # Генерируем био (body) для профиля
+      user.profile.update!(body: "Это био пользователя #{user.username}. Люблю #{tag_list.join(', ')}.")
+      
+      # Загружаем аватарку для профиля
+      avatar_uploader = upload_avatar_image
+      if avatar_uploader
+        user.profile.avatar = avatar_uploader
+        user.profile.save!
+        puts "Аватарка загружена для #{username}"
+      end
+      
+      puts "User #{username} создан"
     rescue ActiveRecord::RecordInvalid => e
-      puts "Ошибка при создании user#{i+1}: #{e.record.errors.full_messages.join(', ')}"
+      puts "Ошибка при создании #{username}: #{e.record.errors.full_messages.join(', ')}"
     end
   end
   create_tags
   create_faculties
   create_communities
-  create_events(10)
-  create_meets(10)
+  create_community_subscribers
+  create_events(30)
+  create_meets(30)
+  create_event_responses
+  create_meet_responses
 
   # Проверка связей тегов и категорий
   puts "\nПроверка тегов и категорий у событий:"
@@ -662,6 +758,27 @@ def seed
   end
   puts "\nВсе теги в системе: #{ActsAsTaggableOn::Tag.all.map(&:name).join(', ')}"
   puts "Всего связей (taggings): #{ActsAsTaggableOn::Tagging.count}"
+
+  # После создания пользователей, генерируем подписчиков профиля и подписки на сообщества
+  users = User.all.to_a
+  profiles = Profile.all.to_a
+  communities = Community.all.to_a
+  # Подписчики профиля
+  profiles.each do |profile|
+    subscribers = users.reject { |u| u == profile.user }.sample(rand(2..5))
+    subscribers.each do |subscriber|
+      next if Subscription.exists?(user: subscriber, subscriptionable: profile)
+      Subscription.create!(user: subscriber, subscriptionable: profile)
+    end
+  end
+  # Подписки пользователя на сообщества
+  users.each do |user|
+    subs_communities = communities.sample(rand(2..4))
+    subs_communities.each do |community|
+      next if Subscription.exists?(user: user, subscriptionable: community)
+      Subscription.create!(user: user, subscriptionable: community)
+    end
+  end
 end
 
 # Сбрасываем и создаём базу заново
@@ -669,6 +786,7 @@ def reset_db
   puts 'Очищаю базу данных...'
   # Удаляем все связанные данные в правильном порядке
   Favourite.delete_all
+  Like.delete_all  # Добавляем удаление лайков перед удалением пользователей
   Response.delete_all
   Report.delete_all
   Comment.delete_all
@@ -678,6 +796,8 @@ def reset_db
   Program.delete_all
   Faculty.delete_all
   Profile.delete_all
+  Subscription.delete_all
+  SupportMessage.delete_all  # Добавляем удаление сообщений поддержки перед удалением пользователей
   User.delete_all
   ActsAsTaggableOn::Tagging.delete_all   # СНАЧАЛА taggings!
   ActsAsTaggableOn::Tag.delete_all       # ПОТОМ tags!
@@ -689,8 +809,12 @@ def create_tags
   tag_names = %w[музыка спорт дизайн кино волонтёрство технологии еда игры]
   category_names = %w[концерт лекция фестиваль мастер-класс турнир]
 
-  # Удаляем все теги с этими именами (любого типа)
-  ActsAsTaggableOn::Tag.where(name: tag_names + category_names).delete_all
+  # Удаляем все taggings для этих тегов
+  tags_to_delete = ActsAsTaggableOn::Tag.where(name: tag_names + category_names)
+  ActsAsTaggableOn::Tagging.where(tag_id: tags_to_delete.pluck(:id)).delete_all
+
+  # Теперь можно удалить теги
+  tags_to_delete.delete_all
 
   tag_names.each do |tag|
     ActsAsTaggableOn::Tag.find_or_create_by!(name: tag, tag_type: "tag")
@@ -714,18 +838,65 @@ end
 
 def create_communities
   user = User.first
+  tag_list = %w[музыка спорт дизайн кино волонтёрство технологии еда игры]
   @communities.each do |community_data|
-    Community.create!(
+    community = Community.create!(
       title: community_data[:title],
       user: user,
       cover: community_data[:cover],
       contact: community_data[:contact],
       body: community_data[:body]
     )
+    # Назначаем 2-3 случайных тега
+    community.tag_list = tag_list.sample(rand(2..3))
+    community.save!
   end
 end
 
-def create_events(_count)
+def create_community_subscribers
+  puts "\nСоздаю подписчиков для сообществ..."
+  users = User.all.to_a
+  Community.all.each do |community|
+    # Для каждого сообщества создаём от 2 до 10 подписчиков
+    subscribers_count = rand(2..10)
+    subscribers = users.sample(subscribers_count)
+    subscribers.each do |user|
+      # Не подписываем владельца и не дублируем подписку
+      next if user == community.user || Subscription.exists?(user: user, subscriptionable: community)
+      Subscription.create!(user: user, subscriptionable: community)
+    end
+    puts "В сообщество '#{community.title}' подписано #{subscribers_count} пользователей"
+  end
+  puts "Всего подписок: #{Subscription.count}"
+end
+
+def create_comments_for_commentable(commentable, users)
+  # Создаём 2-4 комментария
+  comments = []
+  rand(2..4).times do
+    user = users.sample
+    comment = Comment.create!(
+      commentable: commentable,
+      user: user,
+      body: create_sentence
+    )
+    comments << comment
+  end
+  # Для каждого комментария создаём 1-2 ответа
+  comments.each do |parent_comment|
+    rand(1..2).times do
+      user = users.sample
+      Comment.create!(
+        commentable: commentable,
+        user: user,
+        body: create_sentence,
+        comment_id: parent_comment.id
+      )
+    end
+  end
+end
+
+def create_events(count)
   puts "User count before events: #{User.count}"
   puts "Users: #{User.all.map(&:email).join(", ")}"
   covers = [
@@ -734,26 +905,93 @@ def create_events(_count)
   tag_list = %w[музыка спорт дизайн кино волонтёрство технологии еда игры]
   category_list = %w[концерт лекция фестиваль мастер-класс турнир]
   communities = Community.all.to_a
-  events = [
-    { title: 'Концерт современной музыки', body: 'Приглашаем на вечер живой музыки с участием молодых исполнителей. В программе — авторские композиции и каверы на известные хиты.', place: 'Покровский бульвар', price: '500', date: Date.today + 3.days },
-    { title: 'Конференция по дизайну', body: 'Ведущие дизайнеры расскажут о трендах в графическом и промышленном дизайне. Мастер-классы и нетворкинг.', place: 'Онлайн', price: 'Бесплатно', date: Date.today + 7.days },
-    { title: 'Киноночь: Классика мирового кино', body: 'Просмотр и обсуждение культовых фильмов XX века. Вход свободный, попкорн за наш счёт!', place: 'Малая Пионерская', price: 'Бесплатно', date: Date.today + 1.day },
-    { title: 'Благотворительный забег', body: 'Спортивное мероприятие для всех желающих. Все собранные средства пойдут на поддержку детских домов.', place: 'Покровский бульвар', price: '300', date: Date.today + 10.days },
-    { title: 'Лекция: Искусственный интеллект', body: 'Эксперт по ИИ расскажет о современных достижениях и перспективах развития искусственного интеллекта.', place: 'Онлайн', price: 'Бесплатно', date: Date.today + 5.days },
-    { title: 'Фестиваль уличной еды', body: 'Лучшие фудтраки города, дегустации, мастер-классы от шеф-поваров и живая музыка.', place: 'Другое', price: 'Вход свободный', date: Date.today + 14.days },
-    { title: 'Турнир по настольным играм', body: 'Соревнования по самым популярным настольным играм. Призы победителям!', place: 'Покровский бульвар', price: '200', date: Date.today + 2.days },
-    { title: 'Мастер-класс по фотографии', body: 'Профессиональный фотограф поделится секретами удачных снимков. Практика на свежем воздухе.', place: 'Малая Пионерская', price: '400', date: Date.today + 4.days },
-    { title: 'Воркшоп: Публичные выступления', body: 'Научитесь уверенно выступать перед аудиторией. Практические упражнения и обратная связь.', place: 'Онлайн', price: 'Бесплатно', date: Date.today + 6.days },
-    { title: 'Квиз по истории', body: 'Интеллектуальная игра для команд. Проверьте свои знания и выиграйте призы!', place: 'Другое', price: '100', date: Date.today + 8.days }
+  users = User.all.to_a
+  
+  # Создаем специальные события из дизайна
+  special_events = [
+    {
+      title: "Вечер презентаций альбома «Reputation»",
+      body: "Приглашаем на вечер презентаций нового альбома «Reputation». В программе: выступления артистов, обсуждение треков, автограф-сессия.",
+      placed_at: "Культурный центр ЗИЛ",
+      placed_additional: "конференц-зал",
+      price: "Бесплатно",
+      hosted_at: Date.today + 2.days, # Пятница, через 2 дня
+      event_type: "flash"
+    },
+    {
+      title: "Heatwave Sounds",
+      body: "Музыкальный вечер с участием T.COUTURE, DALIAGANJA, FESSI. Современная электронная музыка и живое выступление.",
+      placed_at: "Корпус на Покровке",
+      placed_additional: "актовый зал",
+      price: "300",
+      hosted_at: Date.today + 2.days, # Пятница, через 2 дня
+      event_type: "heatwave"
+    },
+    {
+      title: "ДИСКОТЕКА 80-90х",
+      body: "Ретро-вечеринка в стиле 80-90х годов. Лучшие хиты эпохи, танцы до утра, конкурсы и призы.",
+      placed_at: "Корпус на Шаболовке",
+      placed_additional: "актовый зал",
+      price: "200",
+      hosted_at: Date.today + 3.days, # Суббота, через 3 дня
+      event_type: "disco"
+    },
+    {
+      title: "Музыкальный фестиваль иконок",
+      body: "Фестиваль современной музыки с участием молодых исполнителей. Разнообразные жанры и стили.",
+      placed_at: "Онлайн",
+      placed_additional: "трансляция",
+      price: "Бесплатно",
+      hosted_at: Date.today + 4.days, # Воскресенье, через 4 дня
+      event_type: "icons"
+    }
   ]
-  events.each_with_index do |attrs, idx|
+  
+  # Создаем специальные события
+  special_events.each do |event_data|
+    event = Event.create!(
+      title: event_data[:title],
+      body: event_data[:body],
+      placed_at: event_data[:placed_at],
+      placed_additional: event_data[:placed_additional],
+      price: event_data[:price],
+      hosted_at: event_data[:hosted_at],
+      user: users.sample
+    )
+    
+    # Добавляем теги в зависимости от типа события
+    case event_data[:event_type]
+    when "flash"
+      event.tag_list = ["музыка", "дизайн"]
+      event.category_list = ["концерт"]
+    when "heatwave"
+      event.tag_list = ["музыка", "технологии"]
+      event.category_list = ["концерт"]
+    when "disco"
+      event.tag_list = ["музыка", "игры"]
+      event.category_list = ["фестиваль"]
+    when "icons"
+      event.tag_list = ["музыка", "дизайн"]
+      event.category_list = ["фестиваль"]
+    end
+    event.save!
+    
+    # Генерируем комментарии
+    create_comments_for_commentable(event, users)
+  end
+  
+  # Создаем остальные события
+  (count - special_events.length).times do |idx|
+    # События на ближайшую неделю (1-7 дней в будущем)
+    days_offset = rand(1..7)
     event = Event.new(
-      title: attrs[:title],
-      body: attrs[:body],
-      placed_at: attrs[:place],
-      price: attrs[:price],
-      hosted_at: attrs[:date],
-      user: User.all.sample
+      title: "Событие №0#{idx+1}",
+      body: create_event_description,
+      placed_at: @places.sample,
+      placed_additional: @place_details.sample,
+      price: [ "Бесплатно", "100", "200", "300", "400", "500", "Вход свободный" ].sample,
+      hosted_at: Date.today + days_offset,
+      user: users.sample
     )
     # Примерно половина событий будет с community
     if communities.any? && idx.even?
@@ -761,38 +999,118 @@ def create_events(_count)
     end
     # Обложка
     cover_file = covers[idx % covers.length]
-    event.cover = File.open(Rails.root.join('app/assets/images', cover_file))
+    event.cover = File.exist?(Rails.root.join('app/assets/images', cover_file)) ? File.open(Rails.root.join('app/assets/images', cover_file)) : nil
     # Теги и категории
     event.tag_list = tag_list.sample(2)
     event.category_list = category_list.sample(1)
     event.save!
+    # Генерируем комментарии и ответы
+    create_comments_for_commentable(event, users)
   end
 end
 
-def create_meets(_count)
+def create_meets(count)
   puts "User count before meets: #{User.count}"
   puts "Users: #{User.all.map(&:email).join(", ")}"
-  meets = [
-    { body: 'Дружеская встреча для всех, кто любит настолки. Приносите свои любимые игры и делитесь опытом! Это отличная возможность познакомиться с новыми людьми и попробовать что-то новое.', placed_at: 'Покровский бульвар', date: Date.today + 2.days },
-    { body: 'Практика английского языка в неформальной обстановке. Для любого уровня. Общение, игры, обсуждение фильмов и книг на английском языке. Приходите и совершенствуйте свой английский вместе с нами!', placed_at: 'Онлайн', date: Date.today + 3.days },
-    { body: 'Принесите книги, которые хотите обменять, и найдите для себя что-то новое. Здесь вы сможете познакомиться с интересными людьми, обсудить любимые произведения и расширить свою библиотеку.', placed_at: 'Малая Пионерская', date: Date.today + 5.days },
-    { body: 'Совместная поездка по живописным маршрутам города. Не забудьте шлем! Вас ждёт отличная компания, свежий воздух и новые впечатления. Присоединяйтесь к нашему велосообществу!', placed_at: 'Другое', date: Date.today + 7.days },
-    { body: 'Смотрим и обсуждаем новинки и классику кино. Чай и печенье прилагаются. После просмотра делимся впечатлениями, обсуждаем режиссуру и актёрскую игру.', placed_at: 'Покровский бульвар', date: Date.today + 1.day },
-    { body: 'Встреча для всех, кто любит рисовать, лепить или заниматься рукоделием. Приносите свои материалы и делитесь творческими идеями. Здесь вы найдёте единомышленников и вдохновение.', placed_at: 'Онлайн', date: Date.today + 4.days },
-    { body: 'Утренняя зарядка на свежем воздухе для бодрого начала дня. Простые упражнения, хорошее настроение и поддержка друг друга гарантированы!', placed_at: 'Другое', date: Date.today + 6.days },
-    { body: 'Обсуждаем актуальные темы и учимся аргументировать свою точку зрения. Встреча для тех, кто любит дискуссии, новые знания и интересные знакомства.', placed_at: 'Малая Пионерская', date: Date.today + 8.days },
-    { body: 'Групповая прогулка с фотоаппаратами по интересным местам города. Обмениваемся советами, делаем красивые снимки и просто хорошо проводим время.', placed_at: 'Покровский бульвар', date: Date.today + 9.days },
-    { body: 'Тёплая встреча для всех, кто когда-либо учился в нашем университете. Вспоминаем лучшие моменты, делимся новостями и строим планы на будущее.', placed_at: 'Онлайн', date: Date.today + 10.days }
+  users = User.all.to_a
+
+  meet_bodies = [
+    "Привет, ищу компанию для поездки на Дизайн Выходные в Смоленске. Особенно ищу того, кому интересны лекции от Яндекса",
+    "Хочу найти единомышленников для похода в библиотеку и обсудить интересные книги. Буду рада пообщаться",
+    "Давайте сходим в кино на новый фильм! Интересно обсудить сюжет и актёров с теми, кто увлекается кино.",
+    "Ребят, ищу компанию для обеда в уютном кафе. Буду рада компании девушек",
+    "Хэй, а кто‑нибудь может пойти на мастер-классы по рисованию?",
+    "Давайте сходим на лекции по дизайну. Буду рада обсудить современные тренды с теми, кто хочет узнать больше.",
+    "Ребят, ищу компанию для вечеринки с настольными играми. Интересно поиграть с теми, кто любит командные игры.",
+    "Хочу найти людей для прогулки в парке и обсудить учебные планы. Буду рада пообщаться с теми, кто хочет поделиться своими идеями."
   ]
-  meets.each do |attrs|
-    Meet.create!(
-      body: attrs[:body],
-      placed_at: attrs[:placed_at],
-      hosted_at: attrs[:date],
-      user: User.all.sample
+
+  count.times do |idx|
+    # Все встречи на ближайшую неделю (1-7 дней в будущем)
+    days_offset = rand(1..7)
+    meet = Meet.create!(
+      body: meet_bodies[idx % meet_bodies.length],
+      placed_at: @places.sample,
+      hosted_at: Date.today + days_offset,
+      user: users.sample
     )
+    # Генерируем комментарии и ответы
+    create_comments_for_commentable(meet, users)
+  end
+end
+
+def create_event_responses
+  puts "\nСоздаю регистрации пользователей на события..."
+  
+  events = Event.all
+  users = User.all
+  
+  events.each do |event|
+    # Для каждого события регистрируем случайное количество пользователей (от 1 до 8)
+    participants_count = rand(1..8)
+    
+    # Выбираем случайных пользователей для регистрации на это событие
+    participants = users.sample(participants_count)
+    
+    participants.each do |user|
+      # Проверяем, что пользователь не создатель события и еще не зарегистрирован
+      next if user == event.user || Response.exists?(user: user, responseable: event)
+      
+      Response.create!(
+        user: user,
+        responseable: event
+      )
+    end
+    
+    puts "На событие '#{event.title}' зарегистрировано #{participants.count} пользователей"
+  end
+  
+  total_responses = Response.count
+  puts "Всего создано регистраций: #{total_responses}"
+  
+  # Статистика по событиям
+  puts "\nСтатистика регистраций по событиям:"
+  events.each do |event|
+    response_count = event.responses.count
+    puts "  #{event.title}: #{response_count} участников"
+  end
+end
+
+def create_meet_responses
+  puts "\nСоздаю регистрации пользователей на встречи..."
+  
+  meets = Meet.all
+  users = User.all
+  
+  meets.each do |meet|
+    # Для каждой встречи регистрируем случайное количество пользователей (от 1 до 8)
+    participants_count = rand(1..8)
+    
+    # Выбираем случайных пользователей для регистрации на эту встречу
+    participants = users.sample(participants_count)
+    
+    participants.each do |user|
+      # Проверяем, что пользователь не создатель встречи и еще не зарегистрирован
+      next if user == meet.user || Response.exists?(user: user, responseable: meet)
+      
+      Response.create!(
+        user: user,
+        responseable: meet
+      )
+    end
+    
+    puts "На встречу '#{meet.body}' зарегистрировано #{participants.count} пользователей"
+  end
+  
+  total_responses = Response.count
+  puts "Всего создано регистраций: #{total_responses}"
+  
+  # Статистика по встречам
+  puts "\nСтатистика регистраций по встречам:"
+  meets.each do |meet|
+    response_count = meet.responses.count
+    puts "  #{meet.body}: #{response_count} участников"
   end
 end
 
 seed
-

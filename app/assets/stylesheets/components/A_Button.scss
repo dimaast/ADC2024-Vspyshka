@@ -1,23 +1,88 @@
+.A_Button, .Button, button, input[type="submit"] {
+    background: var(--121212) !important;
+    color: var(--white) !important;
+    border: none;
+    border-radius: 8px;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: var(--shadow-card);
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.A_Button:hover, .Button:hover, button:hover, input[type="submit"]:hover {
+    background: var(--232323) !important;
+    transform: translateY(-1px);
+}
+.A_Button:active, .Button:active, button:active, input[type="submit"]:active {
+    transform: translateY(0);
+}
+.Button--black {
+    background: var(--121212) !important;
+    color: var(--white) !important;
+}
+.Button--black:hover {
+    background: var(--232323) !important;
+}
+.Button--primary {
+    background: var(--121212) !important;
+    color: var(--white) !important;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: var(--shadow-card);
+}
+.Button--primary:hover {
+    background: var(--232323) !important;
+    transform: translateY(-1px);
+}
+.Button--primary:active {
+    transform: translateY(0);
+}
+.Button--secondary {
+    background: var(--f5f5f5) !important;
+    color: var(--222) !important;
+    border: 1px solid var(--e1e5e9);
+    border-radius: 8px;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.1s;
+    box-shadow: var(--shadow-blue-9);
+}
+.Button--secondary:hover {
+    background: var(--ededed) !important;
+    color: var(--121212) !important;
+}
+.Button--secondary:active {
+    transform: translateY(0);
+}
+
 .A_Button {
     cursor: pointer;
 
-    &.NavbarButton {
+    &.A_NavbarButton {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 41px;
-        height: 41px;
-        border-radius: 12px;
+        width: 42px !important;
+        height: 42px !important;
+        border-radius: 12px !important;
+        padding: 0 !important; // Переопределяем общие стили
+        margin: 0 !important; // Убираем возможные отступы
+        box-shadow: none !important; // Убираем тень из общих стилей
 
-        &.SearchButton {
-            background-color: #FBFBFB;
-            border: 1px solid #DDDDDD;
-        }
-
-        &.AddButton {
-            background-color: #0F0F0F;
+        &.A_AddButton {
+            background-color: var(--black);
         }
     }
-
-
 }

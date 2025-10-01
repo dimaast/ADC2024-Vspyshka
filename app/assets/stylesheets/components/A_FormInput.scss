@@ -1,0 +1,12 @@
+.A_FormInput {
+  padding: 0.75rem;
+  border: 1px solid var(--ddd);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.A_FormInput:focus {
+  outline: none;
+  border-color: var(--violet);
+  box-shadow: var(--shadow-blue-2);
+}

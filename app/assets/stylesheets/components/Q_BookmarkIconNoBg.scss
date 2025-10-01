@@ -1,0 +1,58 @@
+.Q_BookmarkIconNoBg {
+  width: 50px;
+  height: 50px;
+  background: #000000;
+  border-radius: 8px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 2;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: #333333;
+  }
+}
+
+.Q_BookmarkIconNoBg:hover {
+  transform: scale(1.1);
+}
+
+.Q_BookmarkIconNoBg svg {
+  width: 20px;
+  height: 20px;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.Q_BookmarkIconNoBg svg path {
+  fill: transparent;
+  stroke: #ffffff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: all 0.3s ease;
+}
+
+.Q_BookmarkIconNoBg:hover svg path {
+  fill: #ffffff;
+}
+
+.Q_BookmarkIconNoBg.active svg path {
+  fill: #ffffff;
+  stroke: #ffffff;
+  animation: fillBookmark 0.4s ease-out;
+}
+
+@keyframes fillBookmark {
+  0% {
+    fill: transparent;
+  }
+  100% {
+    fill: #ffffff;
+  }
+}

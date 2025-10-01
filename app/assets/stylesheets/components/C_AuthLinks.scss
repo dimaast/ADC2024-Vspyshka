@@ -1,0 +1,39 @@
+.C_AuthLinks {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 0;
+}
+.C_AuthLinks p {
+  margin: 0;
+  color: #666666;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.C_AuthLinks a {
+  color: #7CCEC2;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  font-size: 20px;
+}
+.C_AuthLinks a:hover {
+  color: #6BB5A8;
+  text-decoration: underline;
+}
+.C_AuthLinks .delete-account-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.C_AuthLinks .delete-account-btn:hover {
+  background: #c0392b;
+}

@@ -1,25 +1,55 @@
 <turbo-frame id="filters">
-  <form id="filters_form" action="<%= by_tag_events_path %>" method="get" data-turbo-frame="events_list">
-    <div class="C_Filters" id="C_EventFilters">
-      <div>
-        <label for="category_select">Тип события:</label><br>
-        <select id="category_select" name="category" class="M_SelectBox">
-          <option value="">Все</option>
-          <% @categories.each do |category| %>
-            <option value="<%= category.name %>" <%= params[:category] == category.name ? 'selected' : '' %>><%= category.name %></option>
-          <% end %>
-        </select>
-      </div>
-
-      <div>
-        <label for="tag_select">Теги:</label><br>
-        <select id="tag_select" name="tag" class="M_SelectBox">
-          <option value="">Все</option>
-          <% @tags.each do |tag| %>
-            <option value="<%= tag.name %>" <%= params[:tag] == tag.name ? 'selected' : '' %>><%= tag.name %></option>
-          <% end %>
-        </select>
-      </div>
+  <div class="O_CommunitiesTagsFilter" id="firstRow">
+    <% @categories.first(6).each do |category| %>
+      <%= link_to events_path(category: category.name, tag: params[:tag]), class: "O_CommunitiesTagsFilterLink #{(params[:category] == category.name ? 'active' : '')}", data: { turbo_frame: 'events_list' } do %>
+        <i class="fas fa-<%= category_icon(category.name) %>"></i>
+        <span><%= category.name %></span>
+      <% end %>
+    <% end %>
+    
+    <% @tags.first(6).each do |tag| %>
+      <%= link_to by_tag_events_path(tag: tag.name), class: "O_CommunitiesTagsFilterLink #{(params[:tag] == tag.name ? 'active' : '')}", data: { turbo_frame: 'events_list' } do %>
+        <i class="fas fa-<%= tag_icon(tag.name) %>"></i>
+        <span><%= tag.name %></span>
+      <% end %>
+    <% end %>
+    
+    <button class="more-tags-btn" onclick="toggleMoreTags()">
+      <i class="fas fa-plus"></i>
+      <span>Больше тегов</span>
+    </button>
+  </div>
+  
+  <div class="more-tags-container" id="moreTags" style="display: none;">
+    <div class="O_CommunitiesTagsFilter" id="secondRow">
+      <% @categories.offset(6).each do |category| %>
+        <%= link_to events_path(category: category.name, tag: params[:tag]), class: "O_CommunitiesTagsFilterLink #{(params[:category] == category.name ? 'active' : '')}", data: { turbo_frame: 'events_list' } do %>
+          <i class="fas fa-<%= category_icon(category.name) %>"></i>
+          <span><%= category.name %></span>
+        <% end %>
+      <% end %>
+      
+      <% @tags.offset(6).each do |tag| %>
+        <%= link_to by_tag_events_path(tag: tag.name), class: "O_CommunitiesTagsFilterLink #{(params[:tag] == tag.name ? 'active' : '')}", data: { turbo_frame: 'events_list' } do %>
+          <i class="fas fa-<%= tag_icon(tag.name) %>"></i>
+          <span><%= tag.name %></span>
+        <% end %>
+      <% end %>
     </div>
-  </form>
+  </div>
 </turbo-frame>
+
+<script>
+function toggleMoreTags() {
+  const moreTags = document.getElementById('moreTags');
+  const moreBtn = document.querySelector('.more-tags-btn');
+  
+  if (moreTags.style.display === 'none') {
+    moreTags.style.display = 'block';
+    moreBtn.innerHTML = '<i class="fas fa-minus"></i><span>Меньше тегов</span>';
+  } else {
+    moreTags.style.display = 'none';
+    moreBtn.innerHTML = '<i class="fas fa-plus"></i><span>Больше тегов</span>';
+  }
+}
+</script>

@@ -1,0 +1,50 @@
+<h2>Выберите интересы</h2>
+<p>Выберите несколько интересов, чтобы мы могли подобрать для вас подходящий контент. Можно пропустить этот шаг.</p>
+
+<div id="interests-bubbles" class="interests-bubbles"></div>
+
+<form id="interests-form" action="<%= save_interests_path %>" method="post">
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <input type="hidden" name="tags[]" id="selected-tags" value="<%= @selected_tags.join(',') %>">
+  <button type="submit" class="A_Button">Сохранить интересы</button>
+  <%= link_to 'Пропустить', profile_path(current_user.profile), class: 'A_Button', style: 'margin-left: 16px;' %>
+</form>
+
+<script>
+(function() {
+  const container = document.getElementById('interests-bubbles');
+  const tags = <%= raw @tags.map { |t| { name: t.name, size: t.taggings_count || 10 } }.to_json %>;
+  const selected = new Set(<%= raw @selected_tags.to_json %>);
+
+  if (!container) return;
+  container.innerHTML = '';
+  if (!tags || tags.length === 0) {
+    const msg = document.createElement('div');
+    msg.textContent = 'Нет доступных интересов';
+    msg.style.color = '#888';
+    msg.style.fontSize = '18px';
+    msg.style.textAlign = 'center';
+    msg.style.width = '100%';
+    container.appendChild(msg);
+    return;
+  }
+  tags.forEach((tag) => {
+    const bubble = document.createElement('div');
+    bubble.className = 'interest-bubble';
+    bubble.textContent = tag.name;
+    if (selected.has(tag.name)) bubble.classList.add('selected');
+    bubble.addEventListener('click', function() {
+      if (selected.has(tag.name)) {
+        selected.delete(tag.name);
+        bubble.classList.remove('selected');
+      } else {
+        selected.add(tag.name);
+        bubble.classList.add('selected');
+      }
+      const input = document.getElementById('selected-tags');
+      if (input) input.value = Array.from(selected).join(',');
+    });
+    container.appendChild(bubble);
+  });
+})();
+</script>

@@ -1,0 +1,15 @@
+.M_AuthForm {
+  background: #fff;
+  border-radius: var(--space-l);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+@media (max-width: 480px) {
+  .M_AuthForm {
+    padding: 2rem 1.5rem;
+    border-radius: var(--space-m);
+  }
+}

@@ -1,0 +1,33 @@
+.M_FavouriteButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.M_FavouriteButton .M_FavouriteCount {
+  font-weight: 600;
+  color: var(--333);
+  font-size: 1rem;
+}
+.M_FavouriteButton .M_FavouriteLink {
+  background: var(--f8f9fa);
+  color: var(--666);
+  border: 1px solid var(--e9ecef);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+.M_FavouriteButton .M_FavouriteLink:hover {
+  background: var(--e9ecef);
+  color: var(--333);
+}
+.M_FavouriteButton.active .M_FavouriteLink {
+  background: var(--ffd700);
+  color: var(--333);
+  border-color: var(--ffd700);
+}
+.M_FavouriteButton.active .M_FavouriteLink:hover {
+  background: var(--ffed4e);
+}

@@ -1,0 +1,17 @@
+.M_NotificationsPanel {
+  display: none;
+  position: absolute;
+  top: 60px;
+  right: 16px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+.M_NotificationsPanel.is-open {
+  display: block;
+}

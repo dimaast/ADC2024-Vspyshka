@@ -1,0 +1,13 @@
+.O_FormInput {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--black);
+  background-color: var(--white);
+}
+.O_FormInput:focus {
+  outline: none;
+  background-color: var(--f8f8f8);
+}
